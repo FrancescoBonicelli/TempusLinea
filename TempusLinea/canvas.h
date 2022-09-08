@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include <QPainter>
+#include <QMouseEvent>
 
 #include <array>
 
@@ -14,10 +15,16 @@ public:
 
 protected:
     void paintEvent(QPaintEvent *event) override;
+    void mouseMoveEvent(QMouseEvent *event) override;
+    void mousePressEvent(QMouseEvent *event) override;
+    void mouseReleaseEvent(QMouseEvent *event) override;
 
 private:
     int range_begin, range_end;
     int v_offset;
+
+    QPoint starting_drag_position;
+    bool dragging;
 
 
 

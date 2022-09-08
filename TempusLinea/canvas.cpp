@@ -21,3 +21,30 @@ void Canvas::paintEvent(QPaintEvent *)
     painter.setPen(timeline_color);
     painter.drawLine(0, (height() / 2) + v_offset, width(), (height() / 2) + v_offset);
 }
+
+void Canvas::mousePressEvent(QMouseEvent *event)
+{
+    if (event->button() == Qt::RightButton)
+    {
+        starting_drag_position = event->pos();
+        dragging = true;
+    }
+}
+
+void Canvas::mouseReleaseEvent(QMouseEvent *event)
+{
+    if (event->button() == Qt::RightButton)
+    {
+        dragging = false;
+    }
+}
+
+void Canvas::mouseMoveEvent(QMouseEvent *event)
+{
+    if(dragging)
+    {
+        v_offset = event->pos().y() - starting_drag_position.y();
+        update();
+    }
+}
+
