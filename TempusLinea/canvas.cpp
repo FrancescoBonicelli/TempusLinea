@@ -43,7 +43,8 @@ void Canvas::mouseMoveEvent(QMouseEvent *event)
 {
     if(dragging)
     {
-        v_offset = event->pos().y() - starting_drag_position.y();
+        v_offset += event->pos().y() - starting_drag_position.y();
+        starting_drag_position = event->pos();
         update();
     }
 }
