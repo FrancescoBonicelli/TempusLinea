@@ -9,6 +9,7 @@ Canvas::Canvas(QWidget *parent) : QWidget{parent}
     range_end = 2050 * 12 * 31;
 
     v_offset = 0;
+    dragging = false;
 }
 
 void Canvas::paintEvent(QPaintEvent *)
