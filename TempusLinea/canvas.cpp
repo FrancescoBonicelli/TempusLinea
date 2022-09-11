@@ -26,17 +26,17 @@ void Canvas::paintEvent(QPaintEvent *)
     painter.drawLine(0, y, width(), y);
 
     // Compute the timelline ticks
-    int i = 1;
-    while ((canvas_end.year() - canvas_start.year()) / i > width() / 40)
+    std::array<int, 9> ticks_width{ 1, 2, 5, 10, 20, 50, 100, 200, 500 };
+    int i = 0;
+    while ((canvas_end.year() - canvas_start.year()) / ticks_width.at(i) > width() / 100)
     {
-        // TODO: find a better scaling logic, I don't like 1.5.25.125, 1.5.10.20.50.100 is better
-        i *= 5;
+        i++;
     }
 
     // Draw the timeline ticks
     int x_span = (canvas_end-canvas_start).days();
-    date first_tick_date(canvas_start.year() - (canvas_start.year() % i), 1, 1);
-    for (date d = first_tick_date; d <= canvas_end; d += years(i))
+    date first_tick_date(canvas_start.year() - (canvas_start.year() % ticks_width.at(i)), 1, 1);
+    for (date d = first_tick_date; d <= canvas_end; d += years(ticks_width.at(i)))
     {
         int x = width() * (d - canvas_start).days() / x_span;
         painter.drawLine(x, y + 5, x, y - 5);
