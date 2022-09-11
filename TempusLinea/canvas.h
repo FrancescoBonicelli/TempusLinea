@@ -6,6 +6,7 @@
 #include <QMouseEvent>
 
 #include <array>
+#include <cmath>
 #include <boost/date_time/gregorian/greg_date.hpp>
 #include "boost/date_time/gregorian/gregorian.hpp"
 

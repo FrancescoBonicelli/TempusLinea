@@ -26,18 +26,20 @@ void Canvas::paintEvent(QPaintEvent *)
     painter.drawLine(0, y, width(), y);
 
     // Compute the timelline ticks
-    std::array<int, 9> ticks_width{ 1, 2, 5, 10, 20, 50, 100, 200, 500 };
-    int i = 0;
-    while ((canvas_end.year() - canvas_start.year()) / ticks_width.at(i) > width() / 100)
+    std::array<int, 3> ticks_width_array{ 1, 2, 5};
+    int ticks_width = ticks_width_array[0];
+    for (int i = 0; (canvas_end.year() - canvas_start.year()) / ticks_width > width() / 100; i++)
     {
-        i++;
-        if (i == ticks_width.size() - 1) break;
+        ticks_width = ticks_width_array[i % 3] * std::pow(10, int(i / 3));
+
+        // if i >= 10 -> exception when computing years()
+        if (i >= 9) break;
     }
 
     // Draw the timeline ticks
     int x_span = (canvas_end-canvas_start).days();
-    date first_tick_date(canvas_start.year() - (canvas_start.year() % ticks_width.at(i)), 1, 1);
-    for (date d = first_tick_date; d <= canvas_end; d += years(ticks_width.at(i)))
+    date first_tick_date(canvas_start.year() - (canvas_start.year() % ticks_width), 1, 1);
+    for (date d = first_tick_date; d <= canvas_end; d += years(ticks_width))
     {
         int x = width() * (d - canvas_start).days() / x_span;
         painter.drawLine(x, y + 5, x, y - 5);
