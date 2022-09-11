@@ -26,7 +26,7 @@ protected:
     void mouseReleaseEvent(QMouseEvent *event) override;
 
 private:
-    date canvas_start, canvas_end;
+    date canvas_start_date, canvas_end_date;
     int v_offset;
 
     QPoint starting_drag_position;

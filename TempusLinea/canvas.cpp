@@ -5,10 +5,10 @@
 Canvas::Canvas(QWidget* parent) : QWidget{parent}
 {
     //Setup default parameters
-    //canvas_start = date(1949, 1, 1);
-    //canvas_end = date(2049, 1, 1);
-    canvas_start = date(6949, 1, 1);
-    canvas_end = date(7049, 1, 1);
+    //canvas_start_date = date(1949, 1, 1);
+    //canvas_end_date = date(2049, 1, 1);
+    canvas_start_date = date(6949, 1, 1);
+    canvas_end_date = date(7049, 1, 1);
 
     v_offset = 0;
     dragging = false;
@@ -28,7 +28,7 @@ void Canvas::paintEvent(QPaintEvent *)
     // Compute the timelline ticks
     std::array<int, 3> ticks_width_array{ 1, 2, 5};
     int ticks_width = ticks_width_array[0];
-    for (int i = 0; (canvas_end.year() - canvas_start.year()) / ticks_width > width() / 100; i++)
+    for (int i = 0; (canvas_end_date.year() - canvas_start_date.year()) / ticks_width > width() / 100; i++)
     {
         ticks_width = ticks_width_array[i % 3] * std::pow(10, int(i / 3));
 
@@ -37,11 +37,11 @@ void Canvas::paintEvent(QPaintEvent *)
     }
 
     // Draw the timeline ticks
-    int x_span = (canvas_end-canvas_start).days();
-    date first_tick_date(canvas_start.year() - (canvas_start.year() % ticks_width), 1, 1);
-    for (date d = first_tick_date; d <= canvas_end; d += years(ticks_width))
+    int x_span = (canvas_end_date-canvas_start_date).days();
+    date first_tick_date(canvas_start_date.year() - (canvas_start_date.year() % ticks_width), 1, 1);
+    for (date d = first_tick_date; d <= canvas_end_date; d += years(ticks_width))
     {
-        int x = width() * (d - canvas_start).days() / x_span;
+        int x = width() * (d - canvas_start_date).days() / x_span;
         painter.drawLine(x, y + 5, x, y - 5);
         painter.drawText(x, y - 10, std::to_string(d.year()).data());
     }
@@ -69,8 +69,8 @@ void Canvas::mouseMoveEvent(QMouseEvent *event)
     if(dragging)
     {
         v_offset += event->pos().y() - starting_drag_position.y();
-        canvas_start -= days((event->pos().x() - starting_drag_position.x()) * (canvas_end - canvas_start).days() / width());
-        canvas_end -= days((event->pos().x() - starting_drag_position.x()) * (canvas_end - canvas_start).days() / width());
+        canvas_start_date -= days((event->pos().x() - starting_drag_position.x()) * (canvas_end_date - canvas_start_date).days() / width());
+        canvas_end_date -= days((event->pos().x() - starting_drag_position.x()) * (canvas_end_date - canvas_start_date).days() / width());
         starting_drag_position = event->pos();
         update();
     }
@@ -78,21 +78,21 @@ void Canvas::mouseMoveEvent(QMouseEvent *event)
 
 void Canvas::wheelEvent(QWheelEvent* event)
 {
-    int delta_x = event->angleDelta().y() * (canvas_end - canvas_start).days() / width();
+    int delta_x = event->angleDelta().y() * (canvas_end_date - canvas_start_date).days() / width();
 
     // Reducing range -> min 5 years
-    if (delta_x > 0 && canvas_end - years(5) < canvas_start + days(delta_x))
+    if (delta_x > 0 && canvas_end_date - years(5) < canvas_start_date + days(delta_x))
     {
-        delta_x = (canvas_end - (canvas_start + years(5))).days();
+        delta_x = (canvas_end_date - (canvas_start_date + years(5))).days();
     }
     // Enlarging range -> max 2000 years
-    else if (delta_x < 0 && canvas_end - years(2000) > canvas_start + days(delta_x))
+    else if (delta_x < 0 && canvas_end_date - years(2000) > canvas_start_date + days(delta_x))
     {
-        delta_x = (canvas_end - (canvas_start + years(2000))).days();
+        delta_x = (canvas_end_date - (canvas_start_date + years(2000))).days();
     }
 
     float cursor_position = (float)event->position().x() / width();
-    canvas_start += days(delta_x * cursor_position);
-    canvas_end -= days(delta_x * (1 - cursor_position));
+    canvas_start_date += days(delta_x * cursor_position);
+    canvas_end_date -= days(delta_x * (1 - cursor_position));
     update();
 }
