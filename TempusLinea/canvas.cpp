@@ -31,6 +31,7 @@ void Canvas::paintEvent(QPaintEvent *)
     while ((canvas_end.year() - canvas_start.year()) / ticks_width.at(i) > width() / 100)
     {
         i++;
+        if (i == ticks_width.size() - 1) break;
     }
 
     // Draw the timeline ticks
