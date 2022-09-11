@@ -66,6 +66,8 @@ void Canvas::mouseReleaseEvent(QMouseEvent *event)
 
 void Canvas::mouseMoveEvent(QMouseEvent *event)
 {
+    // TODO: prevent dates < 1400
+
     if(dragging)
     {
         v_offset += event->pos().y() - starting_drag_position.y();
@@ -78,6 +80,8 @@ void Canvas::mouseMoveEvent(QMouseEvent *event)
 
 void Canvas::wheelEvent(QWheelEvent* event)
 {
+    // TODO: prevent dates < 1400
+
     int delta_x = event->angleDelta().y() * (canvas_end_date - canvas_start_date).days() / width();
 
     // Reducing range -> min 5 years
