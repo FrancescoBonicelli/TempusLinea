@@ -30,10 +30,10 @@ void Canvas::paintEvent(QPaintEvent *)
     int ticks_width = ticks_width_array[0];
     for (int i = 0; (canvas_end_date.year() - canvas_start_date.year()) / ticks_width > width() / 100; i++)
     {
-        ticks_width = ticks_width_array[i % 3] * std::pow(10, int(i / 3));
+        ticks_width = ticks_width_array[i % ticks_width_array.size()] * std::pow(10, int(i / ticks_width_array.size()));
 
         // if i >= 10 -> exception when computing years()
-        if (i >= 9) break;
+        if (i >= 3 * ticks_width_array.size()) break;
     }
 
     // Draw the timeline ticks
