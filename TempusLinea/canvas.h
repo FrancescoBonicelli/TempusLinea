@@ -6,6 +6,10 @@
 #include <QMouseEvent>
 
 #include <array>
+#include <boost/date_time/gregorian/greg_date.hpp>
+#include "boost/date_time/gregorian/gregorian.hpp"
+
+using namespace boost::gregorian;
 
 class Canvas : public QWidget
 {
@@ -21,7 +25,7 @@ protected:
     void mouseReleaseEvent(QMouseEvent *event) override;
 
 private:
-    int range_begin, range_end;
+    date canvas_start, canvas_end;
     int v_offset;
 
     QPoint starting_drag_position;
