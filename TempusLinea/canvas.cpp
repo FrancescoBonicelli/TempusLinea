@@ -12,15 +12,26 @@ Canvas::Canvas(QWidget* parent) : QWidget{parent}
 
     v_offset = 0;
     dragging = false;
+
+    eras_vector.push_back(Era("Test_1", date(7000, 1, 1), date(7100, 1, 1), QColor(255, 0, 0, 50)));  // Test era 1
+    eras_vector.push_back(Era("Test_2", date(6800, 1, 1), date(6900, 1, 1), QColor(0, 255, 0, 50)));  // Test era 2
 }
 
 void Canvas::paintEvent(QPaintEvent *)
 {
     QPainter painter(this);
 
-    QColor timeline_color(0, 0,0);
+    // Paint Eras
+    for(Era e : eras_vector)
+    {
+        QPoint starting_point(getDatePosition(e.getStartingDate()), 0);
+        QPoint ending_point(getDatePosition(e.getEndingDate()), height());
+
+        painter.fillRect(QRect(starting_point, ending_point), e.getColor());
+    }
 
     // Paint Timeline
+    QColor timeline_color(0, 0, 0);
     painter.setPen(timeline_color);
     int y = (height() / 2) + v_offset;
     painter.drawLine(0, y, width(), y);
@@ -37,11 +48,10 @@ void Canvas::paintEvent(QPaintEvent *)
     }
 
     // Draw the timeline ticks
-    int x_span = (canvas_end_date-canvas_start_date).days();
     date first_tick_date(canvas_start_date.year() - (canvas_start_date.year() % ticks_width), 1, 1);
     for (date d = first_tick_date; d <= canvas_end_date; d += years(ticks_width))
     {
-        int x = width() * (d - canvas_start_date).days() / x_span;
+        int x = getDatePosition(d);
         painter.drawLine(x, y + 5, x, y - 5);
         painter.drawText(x, y - 10, std::to_string(d.year()).data());
     }
@@ -99,4 +109,10 @@ void Canvas::wheelEvent(QWheelEvent* event)
     canvas_start_date += days(delta_x * cursor_position);
     canvas_end_date -= days(delta_x * (1 - cursor_position));
     update();
+}
+
+int Canvas::getDatePosition(date d)
+{
+    int x_span = (canvas_end_date - canvas_start_date).days();
+    return width() * (d - canvas_start_date).days() / x_span;
 }

@@ -6,9 +6,13 @@
 #include <QMouseEvent>
 
 #include <array>
+#include <vector>
 #include <cmath>
+
 #include <boost/date_time/gregorian/greg_date.hpp>
 #include <boost/date_time/gregorian/gregorian.hpp>
+
+#include "Era.h"
 
 using namespace boost::gregorian;
 
@@ -32,7 +36,9 @@ private:
     QPoint starting_drag_position;
     bool dragging;
 
+    std::vector<Era> eras_vector;
 
+    int getDatePosition(date d);
 
 signals:
 

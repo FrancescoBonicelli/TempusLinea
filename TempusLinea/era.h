@@ -14,9 +14,12 @@ class Era
 {
 public:
     Era(date starting_date, date ending_date);
+    Era(std::string name, date starting_date, date ending_date, QColor color);
     ~Era();
 
     date_period getPeriod();
+    date getStartingDate();
+    date getEndingDate();
 
     void setName(std::string name);
     std::string getName();
