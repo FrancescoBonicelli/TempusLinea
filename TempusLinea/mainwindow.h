@@ -2,6 +2,8 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QFile>
+#include <QJsonDocument>
 
 #include "canvas.h"
 
@@ -15,5 +17,9 @@ public:
 
 private:
     Canvas* canvas;
+
+    bool loadCanvas();
+    bool saveCanvas() const;
+
 };
 #endif // MAINWINDOW_H

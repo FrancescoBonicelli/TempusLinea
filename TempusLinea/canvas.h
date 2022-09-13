@@ -4,6 +4,8 @@
 #include <QWidget>
 #include <QPainter>
 #include <QMouseEvent>
+#include <QJsonObject>
+#include <QJsonArray>
 
 #include <array>
 #include <vector>
@@ -21,6 +23,9 @@ class Canvas : public QWidget
     Q_OBJECT
 public:
     explicit Canvas(QWidget *parent = nullptr);
+
+    void read(const QJsonObject& json);
+    void write(QJsonObject& json) const;
 
 protected:
     void paintEvent(QPaintEvent *event) override;

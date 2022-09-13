@@ -116,3 +116,29 @@ int Canvas::getDatePosition(date d)
     int x_span = (canvas_end_date - canvas_start_date).days();
     return width() * (d - canvas_start_date).days() / x_span;
 }
+
+void Canvas::read(const QJsonObject& json)
+{
+    if (json.contains("eras") && json["eras"].isArray()) {
+        QJsonArray eras_array = json["eras"].toArray();
+        eras_vector.clear();
+        for (int era_index = 0; era_index < eras_array.size(); ++era_index) {
+            QJsonObject era_obj = eras_array[era_index].toObject();
+            Era era;
+            era.read(era_obj);
+            eras_vector.push_back(era);
+        }
+    }
+}
+
+void Canvas::write(QJsonObject& json) const
+{
+    QJsonArray eras_array;
+    for (Era e : eras_vector)
+    {
+        QJsonObject era_object;
+        e.write(era_object);
+        eras_array.append(era_object);
+    }
+    json["eras"] = eras_array;
+}
