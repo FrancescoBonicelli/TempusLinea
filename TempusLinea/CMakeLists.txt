@@ -29,6 +29,8 @@ set(PROJECT_SOURCES
         era.h
         eraForm.cpp
         eraForm.h
+        mouseMenu.cpp
+        mouseMenu.h
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
