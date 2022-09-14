@@ -16,8 +16,6 @@
 
 #include "Era.h"
 
-using namespace boost::gregorian;
-
 class Canvas : public QWidget
 {
     Q_OBJECT
@@ -26,6 +24,8 @@ public:
 
     void read(const QJsonObject& json);
     void write(QJsonObject& json) const;
+
+    std::vector<Era> eras_vector;
 
 protected:
     void paintEvent(QPaintEvent *event) override;
@@ -40,8 +40,6 @@ private:
 
     QPoint starting_drag_position;
     bool dragging;
-
-    std::vector<Era> eras_vector;
 
     int getDatePosition(date d);
 
