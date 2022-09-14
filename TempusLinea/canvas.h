@@ -14,7 +14,10 @@
 #include <boost/date_time/gregorian/greg_date.hpp>
 #include <boost/date_time/gregorian/gregorian.hpp>
 
-#include "Era.h"
+#include "era.h"
+#include "mouseMenu.h"
+
+#define MOUSE_MENU_SIZE 80
 
 using namespace boost::gregorian;
 
@@ -44,6 +47,8 @@ private:
     std::vector<Era> eras_vector;
 
     int getDatePosition(date d);
+
+    MouseMenu *mouse_menu;
 
 signals:
 

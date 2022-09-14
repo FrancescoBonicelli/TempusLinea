@@ -27,6 +27,8 @@ set(PROJECT_SOURCES
         canvas.h
         era.cpp
         era.h
+        mouseMenu.cpp
+        mouseMenu.h
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)

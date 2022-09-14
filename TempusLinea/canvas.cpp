@@ -15,6 +15,11 @@ Canvas::Canvas(QWidget* parent) : QWidget{parent}
 
     eras_vector.push_back(Era("Test_1", date(7000, 1, 1), date(7100, 1, 1), QColor(255, 0, 0, 50)));  // Test era 1
     eras_vector.push_back(Era("Test_2", date(6800, 1, 1), date(6900, 1, 1), QColor(0, 255, 0, 50)));  // Test era 2
+
+    // Implement mouse menu
+    mouse_menu = new MouseMenu(this);
+    mouse_menu->resize(QSize(80, 80));
+    mouse_menu->setVisible(false);
 }
 
 void Canvas::paintEvent(QPaintEvent *)
@@ -63,6 +68,13 @@ void Canvas::mousePressEvent(QMouseEvent *event)
     {
         starting_drag_position = event->pos();
         dragging = true;
+    }
+
+    if (event->button() == Qt::LeftButton)
+    {
+        QPoint mouse_position = event->pos();
+        mouse_menu->setGeometry(QRect(mouse_position - QPoint(MOUSE_MENU_SIZE/2, MOUSE_MENU_SIZE/2), QSize(MOUSE_MENU_SIZE, MOUSE_MENU_SIZE)));
+        mouse_menu->setVisible(true);
     }
 }
 
