@@ -23,5 +23,6 @@ void ColorPicker::paintEvent(QPaintEvent *event)
 
 void ColorPicker::mousePressEvent(QMouseEvent *event)
 {
+    // TODO: manage calcel btn
     current_color = QColorDialog::getColor();
 }
