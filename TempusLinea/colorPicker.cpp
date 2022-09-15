@@ -1,8 +1,8 @@
 #include "colorPicker.h"
 
-ColorPicker::ColorPicker()
+ColorPicker::ColorPicker(QWidget *parent) : QWidget{parent}
 {
-    current_color = QColor(0, 0, 255, 50);
+    current_color = QColor(0, 0, 255);
 }
 
 QColor ColorPicker::getCurrentColor()

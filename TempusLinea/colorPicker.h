@@ -10,7 +10,7 @@
 class ColorPicker : public QWidget
 {
 public:
-    ColorPicker();
+    ColorPicker(QWidget *parent = nullptr);
 
     QColor getCurrentColor();
 

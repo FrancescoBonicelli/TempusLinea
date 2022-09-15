@@ -8,8 +8,8 @@ EraForm::EraForm(const QString& title, QWidget* parent)
     name_value = new QLineEdit;
     starting_date_label = new QLabel(tr("Starting date:"));
     ending_date_label = new QLabel(tr("Ending date:"));
-    starting_date_value = new QCalendarWidget();
-    ending_date_value = new QCalendarWidget();
+    starting_date_value = new DatePicker();
+    ending_date_value = new DatePicker();
     color_label = new QLabel(tr("Color:"));
     color_value = new ColorPicker();
 
@@ -41,12 +41,12 @@ QString EraForm::name() const
 
 QDate EraForm::startingDate() const
 {
-    return starting_date_value->selectedDate();
+    return starting_date_value->getSelectedDate();
 }
 
 QDate EraForm::endingDate() const
 {
-    return ending_date_value->selectedDate();
+    return ending_date_value->getSelectedDate();
 }
 
 QColor EraForm::color() const
@@ -56,7 +56,7 @@ QColor EraForm::color() const
 
 void EraForm::verify()
 {
-    if (!name_value->text().isEmpty() && starting_date_value->selectedDate().isValid() && ending_date_value->selectedDate().isValid()) {
+    if (!name_value->text().isEmpty() && starting_date_value->getSelectedDate().isValid() && ending_date_value->getSelectedDate().isValid()) {
         accept();
         return;
     }
