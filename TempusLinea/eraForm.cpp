@@ -1,4 +1,5 @@
-#include<eraForm.h>
+#include "colorPicker.h"
+#include <eraForm.h>
 
 EraForm::EraForm(const QString& title, QWidget* parent)
     : QDialog(parent)
@@ -10,7 +11,7 @@ EraForm::EraForm(const QString& title, QWidget* parent)
     starting_date_value = new QCalendarWidget();
     ending_date_value = new QCalendarWidget();
     color_label = new QLabel(tr("Color:"));
-    color_value = new QColorDialog;
+    color_value = new ColorPicker();
 
     button_box = new QDialogButtonBox(QDialogButtonBox::Ok
         | QDialogButtonBox::Cancel);
@@ -50,7 +51,7 @@ QDate EraForm::endingDate() const
 
 QColor EraForm::color() const
 {
-    return color_value->selectedColor();
+    return color_value->getCurrentColor();
 }
 
 void EraForm::verify()

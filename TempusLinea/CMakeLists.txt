@@ -31,6 +31,8 @@ set(PROJECT_SOURCES
         eraForm.h
         mouseMenu.cpp
         mouseMenu.h
+        colorPicker.cpp
+        colorPicker.h
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)

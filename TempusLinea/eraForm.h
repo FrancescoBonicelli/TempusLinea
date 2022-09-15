@@ -13,6 +13,8 @@
 #include <QGridLayout>
 #include <QMessageBox>
 
+#include "colorPicker.h"
+
 class EraForm : public QDialog
 {
     Q_OBJECT
@@ -37,7 +39,7 @@ private:
     QLabel* ending_date_label;
     QCalendarWidget* ending_date_value;
     QLabel* color_label;
-    QColorDialog* color_value;
+    ColorPicker* color_value;
     QDialogButtonBox* button_box;
 };
 
