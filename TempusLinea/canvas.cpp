@@ -72,10 +72,18 @@ void Canvas::mousePressEvent(QMouseEvent *event)
 
     if (event->button() == Qt::LeftButton)
     {
+        if(mouse_menu->isVisible())
+        {
+            mouse_menu->setVisible(false);
+        }
+    }
+}
+
+void Canvas::mouseDoubleClickEvent(QMouseEvent *event)
+{
         QPoint mouse_position = event->pos();
         mouse_menu->setGeometry(QRect(mouse_position - QPoint(MOUSE_MENU_SIZE/2, MOUSE_MENU_SIZE/2), QSize(MOUSE_MENU_SIZE, MOUSE_MENU_SIZE)));
         mouse_menu->setVisible(true);
-    }
 }
 
 void Canvas::mouseReleaseEvent(QMouseEvent *event)
