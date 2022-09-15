@@ -18,6 +18,8 @@ Canvas::Canvas(QWidget* parent) : QWidget{parent}
     mouse_menu = new MouseMenu(this);
     mouse_menu->resize(QSize(80, 80));
     mouse_menu->setVisible(false);
+
+    connect(mouse_menu, SIGNAL(newEraClicked()), this, SLOT(openEraCreationDialog()));
 }
 
 void Canvas::paintEvent(QPaintEvent *)
@@ -151,4 +153,19 @@ void Canvas::write(QJsonObject& json) const
         eras_array.append(era_object);
     }
     json["eras"] = eras_array;
+}
+
+void Canvas::openEraCreationDialog()
+{
+    EraForm dialog(tr("Era Details"), this);
+
+    if (dialog.exec() == QDialog::Accepted)
+    {
+        eras_vector.push_back(Era(dialog.name(), qdate2date(dialog.startingDate()), qdate2date(dialog.endingDate()), dialog.color()));
+    }
+}
+
+date Canvas::qdate2date(QDate qdate)
+{
+    return date(qdate.year(), qdate.month(), qdate.day());
 }

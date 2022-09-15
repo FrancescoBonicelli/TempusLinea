@@ -12,9 +12,13 @@ class MouseMenuButton : public QWidget
 public:
     explicit MouseMenuButton(QWidget *parent = nullptr);
 
+signals:
+    void clicked();
+
 protected:
     void paintEvent(QPaintEvent *event) override;
     void resizeEvent(QResizeEvent *event) override;
+    void mousePressEvent(QMouseEvent *event) override;
 };
 
 
@@ -23,6 +27,14 @@ class MouseMenu : public QWidget
     Q_OBJECT
 public:
     explicit MouseMenu(QWidget *parent = nullptr);
+
+signals:
+    void newEraClicked();
+    void newEventClicked();
+
+public slots:
+    void createEra();
+    void createEvent();
 
 protected:
     void resizeEvent(QResizeEvent *event) override;

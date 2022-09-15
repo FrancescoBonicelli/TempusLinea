@@ -2,11 +2,6 @@
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 {
-    QMenu* fileMenu = new QMenu(tr("&File"), this);
-    QAction* new_action = fileMenu->addAction(tr("&New..."));
-    menuBar()->addMenu(fileMenu);
-    connect(new_action, &QAction::triggered, this, &MainWindow::openDialog);
-
     canvas = new Canvas(this);
     setCentralWidget(canvas);
     setWindowTitle(tr("TempusLinea"));
@@ -47,18 +42,4 @@ bool MainWindow::saveCanvas() const
     save_file.write(QJsonDocument(canvas_obj).toJson());
 
     return true;
-}
-
-void MainWindow::openDialog()
-{
-    EraForm dialog(tr("Era Details"), this);
-
-    if (dialog.exec() == QDialog::Accepted) {
-        canvas->eras_vector.push_back(Era(dialog.name(), qdate2date(dialog.startingDate()), qdate2date(dialog.endingDate()), dialog.color()));
-    }
-}
-
-date MainWindow::qdate2date(QDate qdate)
-{
-    return date(qdate.year(), qdate.month(), qdate.day());
 }
