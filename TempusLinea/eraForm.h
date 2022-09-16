@@ -12,9 +12,9 @@
 #include <QDialogButtonBox>
 #include <QGridLayout>
 #include <QMessageBox>
+#include <QDateTimeEdit>
 
 #include "colorPicker.h"
-#include "datePicker.h"
 
 class EraForm : public QDialog
 {
@@ -36,9 +36,9 @@ private:
     QLabel* name_label;
     QLineEdit* name_value;
     QLabel* starting_date_label;
-    DatePicker* starting_date_value;
+    QDateEdit* starting_date_value;
     QLabel* ending_date_label;
-    DatePicker* ending_date_value;
+    QDateEdit* ending_date_value;
     QLabel* color_label;
     ColorPicker* color_value;
     QDialogButtonBox* button_box;

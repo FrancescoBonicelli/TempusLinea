@@ -8,10 +8,16 @@ EraForm::EraForm(const QString& title, QWidget* parent)
     name_value = new QLineEdit;
     starting_date_label = new QLabel(tr("Starting date:"));
     ending_date_label = new QLabel(tr("Ending date:"));
-    starting_date_value = new DatePicker();
-    ending_date_value = new DatePicker();
+    starting_date_value = new QDateEdit();
+    ending_date_value = new QDateEdit();
     color_label = new QLabel(tr("Color:"));
     color_value = new ColorPicker();
+
+    starting_date_value->setCalendarPopup(true);
+    ending_date_value->setCalendarPopup(true);
+
+    starting_date_value->setDate(QDate::currentDate().addYears(5000));
+    ending_date_value->setDate(QDate::currentDate().addYears(5000));
 
     button_box = new QDialogButtonBox(QDialogButtonBox::Ok
         | QDialogButtonBox::Cancel);
@@ -41,12 +47,12 @@ QString EraForm::name() const
 
 QDate EraForm::startingDate() const
 {
-    return starting_date_value->getSelectedDate();
+    return starting_date_value->date();
 }
 
 QDate EraForm::endingDate() const
 {
-    return ending_date_value->getSelectedDate();
+    return ending_date_value->date();
 }
 
 QColor EraForm::color() const
@@ -56,7 +62,7 @@ QColor EraForm::color() const
 
 void EraForm::verify()
 {
-    if (!name_value->text().isEmpty() && starting_date_value->getSelectedDate().isValid() && ending_date_value->getSelectedDate().isValid()) {
+    if (!name_value->text().isEmpty() && starting_date_value->date().isValid() && ending_date_value->date().isValid()) {
         accept();
         return;
     }
