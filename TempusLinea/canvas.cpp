@@ -68,13 +68,13 @@ void Canvas::mousePressEvent(QMouseEvent *event)
     {
         starting_drag_position = event->pos();
         dragging = true;
-
-        if (mouse_menu->isVisible())
-        {
-            mouse_menu->setVisible(false);
-        }
     }
     else dragging = false;
+
+    if (mouse_menu->isVisible())
+    {
+        mouse_menu->setVisible(false);
+    }
 }
 
 void Canvas::mouseDoubleClickEvent(QMouseEvent *event)
@@ -127,6 +127,11 @@ void Canvas::wheelEvent(QWheelEvent* event)
     canvas_start_date += days(delta_x * cursor_position);
     canvas_end_date -= days(delta_x * (1 - cursor_position));
     update();
+
+    if (mouse_menu->isVisible())
+    {
+        mouse_menu->setVisible(false);
+    }
 }
 
 int Canvas::getDatePosition(date d)
