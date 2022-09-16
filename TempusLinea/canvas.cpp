@@ -68,12 +68,13 @@ void Canvas::mousePressEvent(QMouseEvent *event)
     {
         starting_drag_position = event->pos();
         dragging = true;
-    
-        if(mouse_menu->isVisible())
+
+        if (mouse_menu->isVisible())
         {
             mouse_menu->setVisible(false);
         }
     }
+    else dragging = false;
 }
 
 void Canvas::mouseDoubleClickEvent(QMouseEvent *event)
