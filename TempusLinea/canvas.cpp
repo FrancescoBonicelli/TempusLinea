@@ -64,14 +64,11 @@ void Canvas::paintEvent(QPaintEvent *)
 
 void Canvas::mousePressEvent(QMouseEvent *event)
 {
-    if (event->button() == Qt::RightButton)
+    if (event->button() == Qt::LeftButton)
     {
         starting_drag_position = event->pos();
         dragging = true;
-    }
-
-    if (event->button() == Qt::LeftButton)
-    {
+    
         if(mouse_menu->isVisible())
         {
             mouse_menu->setVisible(false);
