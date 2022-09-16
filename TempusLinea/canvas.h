@@ -18,7 +18,7 @@
 #include "mouseMenu.h"
 #include "eraForm.h"
 
-#define MOUSE_MENU_SIZE 80
+#define MOUSE_MENU_SIZE 100
 
 class Canvas : public QWidget
 {

@@ -10,7 +10,7 @@ class MouseMenuButton : public QWidget
 {
     Q_OBJECT
 public:
-    explicit MouseMenuButton(QWidget *parent = nullptr);
+    explicit MouseMenuButton(QWidget *parent = nullptr, QString text = "");
 
 signals:
     void clicked();
@@ -19,6 +19,9 @@ protected:
     void paintEvent(QPaintEvent *event) override;
     void resizeEvent(QResizeEvent *event) override;
     void mousePressEvent(QMouseEvent *event) override;
+
+private:
+    QString btn_text;
 };
 
 

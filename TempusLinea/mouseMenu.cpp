@@ -1,8 +1,8 @@
 #include "mouseMenu.h"
 
-MouseMenuButton::MouseMenuButton(QWidget *parent) : QWidget{parent}
+MouseMenuButton::MouseMenuButton(QWidget *parent, QString text) : QWidget{parent}
 {
-
+    btn_text = text;
 }
 
 void MouseMenuButton::paintEvent(QPaintEvent *event)
@@ -12,7 +12,10 @@ void MouseMenuButton::paintEvent(QPaintEvent *event)
     QPoint starting_point(5, 5);
     QPoint ending_point(width()-5, height()-5);
 
-    painter.fillRect(QRect(starting_point, ending_point), QColor(0, 0, 0, 100));
+    QRect rect = QRect(starting_point, ending_point);
+
+    painter.drawRoundedRect(rect, 5, 5);
+    painter.drawText(rect, Qt::AlignCenter, btn_text);
 }
 
 void MouseMenuButton::resizeEvent(QResizeEvent *event)
@@ -31,9 +34,9 @@ void MouseMenuButton::mousePressEvent(QMouseEvent *event)
 
 MouseMenu::MouseMenu(QWidget *parent) : QWidget{parent}
 {
-    new_era_button = new MouseMenuButton(this);
+    new_era_button = new MouseMenuButton(this, "New\nERA");
     new_era_button->setGeometry(QRect(0, 0, width()/2, height()/2));
-    new_event_button = new MouseMenuButton(this);
+    new_event_button = new MouseMenuButton(this, "New\nEVENT");
     new_event_button->setGeometry(QRect(width()/2, 0, width()/2, height()/2));
 
     connect(new_era_button, SIGNAL(clicked()), this, SLOT(createEra()));
