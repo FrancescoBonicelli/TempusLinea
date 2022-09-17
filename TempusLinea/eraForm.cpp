@@ -71,17 +71,34 @@ QColor EraForm::color() const
 
 void EraForm::verify()
 {
-    if (!name_value->text().isEmpty() && starting_date_value->date().isValid() && ending_date_value->date().isValid()) {
+    if (name_value->text().isEmpty() || !starting_date_value->date().isValid() || !ending_date_value->date().isValid()) {
+        QMessageBox::StandardButton answer;
+        answer = QMessageBox::warning(this, tr("Incomplete Form"),
+            tr("The form does not contain all the necessary information.\n"
+                "Do you want to discard it?"),
+            QMessageBox::Yes | QMessageBox::No);
+
+        if (answer == QMessageBox::Yes)
+            reject();
+    }
+    else if (starting_date_value->date().daysTo(ending_date_value->date()) <= 0)
+    {
+        QMessageBox::StandardButton answer;
+        answer = QMessageBox::warning(this, tr("Dates Error"),
+            tr("The ending date is prior to the starting date.\n"
+                "Do you want to invert them?"),
+            QMessageBox::Yes | QMessageBox::No);
+
+        if (answer == QMessageBox::Yes)
+        {
+            QDate tmp = starting_date_value->date();
+            starting_date_value->setDate(ending_date_value->date());
+            ending_date_value->setDate(tmp);
+        }
+    }
+    else
+    {
         accept();
         return;
     }
-
-    QMessageBox::StandardButton answer;
-    answer = QMessageBox::warning(this, tr("Incomplete Form"),
-        tr("The form does not contain all the necessary information.\n"
-            "Do you want to discard it?"),
-        QMessageBox::Yes | QMessageBox::No);
-
-    if (answer == QMessageBox::Yes)
-        reject();
 }
