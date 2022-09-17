@@ -68,8 +68,7 @@ void Canvas::paintEvent(QPaintEvent *)
     }
 
     // Paint Timeline
-    QColor timeline_color(0, 0, 0);
-    painter.setPen(timeline_color);
+    painter.setPen(QPen(Qt::black));
     int y = (height() / 2) + v_offset;
     painter.drawLine(0, y, width(), y);
 
@@ -93,6 +92,10 @@ void Canvas::paintEvent(QPaintEvent *)
         painter.drawLine(x, y + 5, x, y - 5);
         painter.drawText(x, y - 10, std::to_string(d.year()).data());
     }
+
+    painter.setPen(QPen(Qt::red, 0.5));
+    int current_date_position = getDatePosition(QDate::currentDate());
+    painter.drawLine(current_date_position, 0, current_date_position, height());
 }
 
 void Canvas::mousePressEvent(QMouseEvent *event)
