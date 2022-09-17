@@ -7,7 +7,7 @@ ColorPicker::ColorPicker(QWidget *parent) : QWidget{parent}
 
 QColor ColorPicker::getCurrentColor()
 {
-    current_color.setAlpha(100);
+    current_color.setAlpha(50);
     return current_color;
 }
 
