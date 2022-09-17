@@ -11,7 +11,6 @@ Canvas::Canvas(QWidget* parent) : QWidget{parent}
 
     eras_vector.push_back(new Era("Test_1", QDate(2000, 1, 1), QDate(2100, 1, 1), QColor(255, 0, 0, 50), this));  // Test era 1
     eras_vector.push_back(new Era("Test_2_with_a_really_long_name", QDate(1800, 1, 1), QDate(1900, 1, 1), QColor(0, 255, 0, 50), this));  // Test era 2
-    eras_vector.push_back(new Era("Test_2_with_a_really_long_name", QDate(-1, 1, 1), QDate(10, 1, 1), QColor(0, 255, 0, 50), this));  // Test era 2
 
     // Implement mouse menu
     mouse_menu = new MouseMenu(this);
@@ -78,9 +77,6 @@ void Canvas::paintEvent(QPaintEvent *)
     for (int i = 0; (canvas_end_date.year() - canvas_start_date.year()) / ticks_width > width() / 100; i++)
     {
         ticks_width = ticks_width_array[i % ticks_width_array.size()] * std::pow(10, int(i / ticks_width_array.size()));
-
-        // if i >= 10 -> exception when computing years()
-        if (i >= 3 * ticks_width_array.size()) break;
     }
 
     // TODO: fix negative to positive dates transition

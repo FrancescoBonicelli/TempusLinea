@@ -18,11 +18,6 @@ void MouseMenuButton::paintEvent(QPaintEvent *event)
     painter.drawText(rect, Qt::AlignCenter, btn_text);
 }
 
-void MouseMenuButton::resizeEvent(QResizeEvent *event)
-{
-    //repaint();
-}
-
 void MouseMenuButton::mousePressEvent(QMouseEvent *event)
 {
     if (event->button() == Qt::LeftButton)
