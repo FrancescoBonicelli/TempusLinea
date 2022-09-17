@@ -3,16 +3,15 @@
 Canvas::Canvas(QWidget* parent) : QWidget{parent}
 {
     //Setup default parameters
-    //canvas_start_date = date(1949, 1, 1);
-    //canvas_end_date = date(2049, 1, 1);
-    canvas_start_date = date(6949, 1, 1);
-    canvas_end_date = date(7049, 1, 1);
+    canvas_start_date = QDate(1949, 1, 1);
+    canvas_end_date = QDate(2049, 1, 1);
 
     v_offset = 0;
     dragging = false;
 
-    eras_vector.push_back(new Era("Test_1", date(7000, 1, 1), date(7100, 1, 1), QColor(255, 0, 0, 50), this));  // Test era 1
-    eras_vector.push_back(new Era("Test_2_with_a_really_long_name", date(6800, 1, 1), date(6900, 1, 1), QColor(0, 255, 0, 50), this));  // Test era 2
+    eras_vector.push_back(new Era("Test_1", QDate(2000, 1, 1), QDate(2100, 1, 1), QColor(255, 0, 0, 50), this));  // Test era 1
+    eras_vector.push_back(new Era("Test_2_with_a_really_long_name", QDate(1800, 1, 1), QDate(1900, 1, 1), QColor(0, 255, 0, 50), this));  // Test era 2
+    eras_vector.push_back(new Era("Test_2_with_a_really_long_name", QDate(-1, 1, 1), QDate(10, 1, 1), QColor(0, 255, 0, 50), this));  // Test era 2
 
     // Implement mouse menu
     mouse_menu = new MouseMenu(this);
@@ -58,7 +57,7 @@ void Canvas::paintEvent(QPaintEvent *)
                 label_width + 20, label_height));
             e->setVisible(true);
         }
-        else if (e->getEndingDate() > canvas_start_date + days(0.02*(canvas_end_date - canvas_start_date).days()))
+        else if (e->getEndingDate() > canvas_start_date.addDays(0.02 * (canvas_start_date.daysTo(canvas_end_date))))
         {
             // Place at the left margin and show the widget
             e->setGeometry(QRect(0, height() - label_height,
@@ -85,9 +84,10 @@ void Canvas::paintEvent(QPaintEvent *)
         if (i >= 3 * ticks_width_array.size()) break;
     }
 
+    // TODO: fix negative to positive dates transition
     // Draw the timeline ticks
-    date first_tick_date(canvas_start_date.year() - (canvas_start_date.year() % ticks_width), 1, 1);
-    for (date d = first_tick_date; d <= canvas_end_date; d += years(ticks_width))
+    QDate first_tick_date(canvas_start_date.addYears(- canvas_start_date.year() % ticks_width).year(), 1, 1);
+    for (QDate d = first_tick_date; d <= canvas_end_date; d = d.addYears(ticks_width))
     {
         int x = getDatePosition(d);
         painter.drawLine(x, y + 5, x, y - 5);
@@ -127,13 +127,11 @@ void Canvas::mouseReleaseEvent(QMouseEvent *event)
 
 void Canvas::mouseMoveEvent(QMouseEvent *event)
 {
-    // TODO: prevent dates < 1400
-
     if(dragging)
     {
         v_offset += event->pos().y() - starting_drag_position.y();
-        canvas_start_date -= days((event->pos().x() - starting_drag_position.x()) * (canvas_end_date - canvas_start_date).days() / width());
-        canvas_end_date -= days((event->pos().x() - starting_drag_position.x()) * (canvas_end_date - canvas_start_date).days() / width());
+        canvas_start_date = canvas_start_date.addDays(-(event->pos().x() - starting_drag_position.x()) * (canvas_start_date.daysTo(canvas_end_date)) / width());
+        canvas_end_date = canvas_end_date.addDays(-(event->pos().x() - starting_drag_position.x()) * (canvas_start_date.daysTo(canvas_end_date)) / width());
         starting_drag_position = event->pos();
         update();
     }
@@ -141,24 +139,22 @@ void Canvas::mouseMoveEvent(QMouseEvent *event)
 
 void Canvas::wheelEvent(QWheelEvent* event)
 {
-    // TODO: prevent dates < 1400
-
-    int delta_x = event->angleDelta().y() * (canvas_end_date - canvas_start_date).days() / width();
+    int delta_x = event->angleDelta().y() * (canvas_start_date.daysTo(canvas_end_date)) / width();
 
     // Reducing range -> min 5 years
-    if (delta_x > 0 && canvas_end_date - years(5) < canvas_start_date + days(delta_x))
+    if (delta_x > 0 && canvas_end_date.addYears(-5) < canvas_start_date.addDays(delta_x))
     {
-        delta_x = (canvas_end_date - (canvas_start_date + years(5))).days();
+        delta_x = canvas_start_date.addYears(5).daysTo(canvas_end_date);
     }
     // Enlarging range -> max 2000 years
-    else if (delta_x < 0 && canvas_end_date - years(2000) > canvas_start_date + days(delta_x))
+    else if (delta_x < 0 && canvas_end_date.addYears(-2000) > canvas_start_date.addDays(delta_x))
     {
-        delta_x = (canvas_end_date - (canvas_start_date + years(2000))).days();
+        delta_x = canvas_start_date.addYears(2000).daysTo(canvas_end_date);
     }
 
     float cursor_position = (float)event->position().x() / width();
-    canvas_start_date += days(delta_x * cursor_position);
-    canvas_end_date -= days(delta_x * (1 - cursor_position));
+    canvas_start_date = canvas_start_date.addDays(delta_x * cursor_position);
+    canvas_end_date = canvas_end_date.addDays(-delta_x * (1 - cursor_position));
     update();
 
     if (mouse_menu->isVisible())
@@ -167,10 +163,10 @@ void Canvas::wheelEvent(QWheelEvent* event)
     }
 }
 
-int Canvas::getDatePosition(date d)
+int Canvas::getDatePosition(QDate d)
 {
-    int x_span = (canvas_end_date - canvas_start_date).days();
-    return width() * (d - canvas_start_date).days() / x_span;
+    int x_span = canvas_start_date.daysTo(canvas_end_date);
+    return width() * canvas_start_date.daysTo(d) / x_span;
 }
 
 void Canvas::read(const QJsonObject& json)
@@ -205,11 +201,6 @@ void Canvas::openEraCreationDialog()
 
     if (dialog.exec() == QDialog::Accepted)
     {
-        eras_vector.push_back(new Era(dialog.name(), qdate2date(dialog.startingDate()), qdate2date(dialog.endingDate()), dialog.color(), this));
+        eras_vector.push_back(new Era(dialog.name(), dialog.startingDate(), dialog.endingDate(), dialog.color(), this));
     }
-}
-
-date Canvas::qdate2date(QDate qdate)
-{
-    return date(qdate.year(), qdate.month(), qdate.day());
 }

@@ -20,7 +20,7 @@ void MouseMenuButton::paintEvent(QPaintEvent *event)
 
 void MouseMenuButton::resizeEvent(QResizeEvent *event)
 {
-    repaint();
+    //repaint();
 }
 
 void MouseMenuButton::mousePressEvent(QMouseEvent *event)

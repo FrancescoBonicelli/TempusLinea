@@ -11,9 +11,6 @@
 #include <vector>
 #include <cmath>
 
-#include <boost/date_time/gregorian/greg_date.hpp>
-#include <boost/date_time/gregorian/gregorian.hpp>
-
 #include "era.h"
 #include "mouseMenu.h"
 #include "eraForm.h"
@@ -41,7 +38,7 @@ protected:
     void mouseDoubleClickEvent(QMouseEvent *event) override;
 
 private:
-    date canvas_start_date, canvas_end_date;
+    QDate canvas_start_date, canvas_end_date;
     int v_offset;
 
     std::vector<Era*> eras_vector;
@@ -49,8 +46,7 @@ private:
     QPoint starting_drag_position;
     bool dragging;
 
-    int getDatePosition(date d);
-    date qdate2date(QDate qdate);
+    int getDatePosition(QDate d);
 
     MouseMenu *mouse_menu;
 

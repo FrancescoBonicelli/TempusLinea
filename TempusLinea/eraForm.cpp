@@ -16,8 +16,8 @@ EraForm::EraForm(const QString& title, QWidget* parent)
     starting_date_value->setCalendarPopup(true);
     ending_date_value->setCalendarPopup(true);
 
-    starting_date_value->setDate(QDate::currentDate().addYears(5000));
-    ending_date_value->setDate(QDate::currentDate().addYears(5000));
+    starting_date_value->setDate(QDate::currentDate());
+    ending_date_value->setDate(QDate::currentDate());
 
     button_box = new QDialogButtonBox(QDialogButtonBox::Ok
         | QDialogButtonBox::Cancel);
@@ -43,10 +43,10 @@ EraForm::EraForm(const QString& title, QWidget* parent)
 EraForm::EraForm(const QString& title, Era* era, QWidget* parent)
     : QDialog(parent)
 {
-    EraForm::EraForm(title, parent);
+    EraForm(title, parent);
     name_value->setText(era->getName());
-    starting_date_value->setDate(date2qdate(era->getStartingDate()));
-    ending_date_value->setDate(date2qdate(era->getEndingDate()));
+    starting_date_value->setDate(era->getStartingDate());
+    ending_date_value->setDate(era->getEndingDate());
     color_value->setCurrentColor(era->getColor());
 }
 
@@ -85,9 +85,4 @@ void EraForm::verify()
 
     if (answer == QMessageBox::Yes)
         reject();
-}
-
-QDate EraForm::date2qdate(date date)
-{
-    return QDate(date.year(), date.month(), date.day());
 }

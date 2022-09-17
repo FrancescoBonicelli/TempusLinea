@@ -8,8 +8,6 @@
 
 #include "canvas.h"
 
-using namespace boost::gregorian;
-
 class MainWindow : public QMainWindow
 {
     Q_OBJECT

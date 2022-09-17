@@ -44,8 +44,6 @@ private:
     QLabel* color_label;
     ColorPicker* color_value;
     QDialogButtonBox* button_box;
-
-    QDate date2qdate(date qdate);
 };
 
 #endif // ERAFORM_H

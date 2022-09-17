@@ -7,16 +7,18 @@ Era::Era()
 Era::Era(const Era& era) : QWidget{ era.era_parent }
 {
     era_name = era.era_name;
-    era_period = era.era_period;
     era_color = era.era_color;
+    era_starting_date = era.era_starting_date;
+    era_ending_date = era.era_ending_date;
     setVisible(false);
 }
 
-Era::Era(QString name, date starting_date, date ending_date, QColor color, QWidget* parent) : QWidget{ parent }
+Era::Era(QString name, QDate starting_date, QDate ending_date, QColor color, QWidget* parent) : QWidget{ parent }
 {
-    era_period = new date_period(starting_date, ending_date);
     era_name = name;
     era_color = color;
+    era_starting_date = starting_date;
+    era_ending_date = ending_date;
 
     era_parent = parent;
     setVisible(false);
@@ -27,19 +29,14 @@ Era::~Era()
     //delete era_period;
 }
 
-date_period Era::getPeriod()
+QDate Era::getStartingDate()
 {
-    return *era_period;
+    return era_starting_date;
 }
 
-date Era::getStartingDate()
+QDate Era::getEndingDate()
 {
-    return era_period->begin();
-}
-
-date Era::getEndingDate()
-{
-    return era_period->end();
+    return era_ending_date;
 }
 
 void Era::setName(QString name)
@@ -64,14 +61,10 @@ QColor Era::getColor()
 
 void Era::read(const QJsonObject& json)
 {
-    if (json.contains("era_period") && json["era_period"].isString())
-    {
-        QStringList dates = json["era_period"].toString().remove('[').remove(']').split('/');
-
-        era_period = new date_period(
-            from_string(dates.first().toStdString()),
-            from_string(dates.last().toStdString()));
-    }
+    if (json.contains("era_starting_date") && json["era_starting_date"].isString())
+        era_starting_date = QDate::fromString(json["era_starting_string"].toString());
+    if (json.contains("era_ending_date") && json["era_ending_date"].isString())
+        era_ending_date = QDate::fromString(json["era_ending_date"].toString());
     if (json.contains("era_name") && json["era_name"].isString())
         era_name = json["era_name"].toString();
     if (json.contains("era_color") && json["era_color"].isString())
@@ -80,7 +73,8 @@ void Era::read(const QJsonObject& json)
 
 void Era::write(QJsonObject& json) const
 {
-    json["era_period"] = QString::fromStdString(to_simple_string(*era_period));
+    json["era_starting_date"] = era_starting_date.toString();
+    json["era_ending_date"] = era_ending_date.toString();
     json["era_name"] = era_name;
     json["era_color"] = era_color.name(QColor::HexArgb);
 }
