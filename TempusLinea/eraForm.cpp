@@ -41,9 +41,8 @@ EraForm::EraForm(const QString& title, QWidget* parent)
 }
 
 EraForm::EraForm(const QString& title, Era* era, QWidget* parent)
-    : QDialog(parent)
+    : EraForm(title, parent)
 {
-    EraForm(title, parent);
     name_value->setText(era->getName());
     starting_date_value->setDate(era->getStartingDate());
     ending_date_value->setDate(era->getEndingDate());

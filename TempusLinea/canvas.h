@@ -28,6 +28,7 @@ public:
 
 public slots:
     void openEraCreationDialog();
+    void openEraEditDialog(Era* era);
 
 protected:
     void paintEvent(QPaintEvent *event) override;
@@ -49,9 +50,6 @@ private:
     int getDatePosition(QDate d);
 
     MouseMenu *mouse_menu;
-
-signals:
-
 };
 
 #endif // CANVAS_H

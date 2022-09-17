@@ -1,6 +1,6 @@
 #include "era.h"
 
-Era::Era()
+Era::Era(QWidget* parent)
 {
 }
 
@@ -34,9 +34,19 @@ QDate Era::getStartingDate()
     return era_starting_date;
 }
 
+void Era::setStartingDate(QDate starting_date)
+{
+    era_starting_date = starting_date;
+}
+
 QDate Era::getEndingDate()
 {
     return era_ending_date;
+}
+
+void Era::setEndingDate(QDate ending_date)
+{
+    era_ending_date = ending_date;
 }
 
 void Era::setName(QString name)
@@ -92,7 +102,7 @@ void Era::paintEvent(QPaintEvent* event)
     painter.drawText(rect, Qt::AlignCenter, era_name);
 }
 
-void Era::mousePressEvent(QMouseEvent* event)
+void Era::mouseDoubleClickEvent(QMouseEvent* event)
 {
     if (event->button() == Qt::LeftButton)
     {

@@ -12,13 +12,15 @@ class Era : public QWidget
 {
     Q_OBJECT
 public:
-    Era();
-    Era(const Era&);
+    explicit Era(QWidget* parent = nullptr);
+    explicit Era(const Era&);
     explicit Era(QString, QDate starting_date, QDate ending_date, QColor color, QWidget* parent = nullptr);
     ~Era();
 
     QDate getStartingDate();
+    void setStartingDate(QDate starting_date);
     QDate getEndingDate();
+    void setEndingDate(QDate ending_date);
 
     void setName(QString name);
     QString getName();
@@ -30,7 +32,7 @@ public:
     void write(QJsonObject& json) const;
 
 signals:
-    void editEra(Era* era);
+    void editEra(Era*);
 
 private:
     QString era_name;
@@ -42,7 +44,7 @@ private:
 
 protected:
     void paintEvent(QPaintEvent* event) override;
-    void mousePressEvent(QMouseEvent* event) override;
+    void mouseDoubleClickEvent(QMouseEvent* event) override;
 };
 
 #endif // ERA_H

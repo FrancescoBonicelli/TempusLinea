@@ -18,6 +18,11 @@ Canvas::Canvas(QWidget* parent) : QWidget{parent}
     mouse_menu->setVisible(false);
 
     connect(mouse_menu, SIGNAL(newEraClicked()), this, SLOT(openEraCreationDialog()));
+
+    for(int i = 0; i < eras_vector.size(); i++)
+    {
+        connect(eras_vector.at(i), SIGNAL(editEra(Era*)), this, SLOT(openEraEditDialog(Era*)));
+    }
 }
 
 void Canvas::paintEvent(QPaintEvent *)
@@ -175,8 +180,9 @@ void Canvas::read(const QJsonObject& json)
         eras_vector.clear();
         for (int era_index = 0; era_index < eras_array.size(); ++era_index) {
             QJsonObject era_obj = eras_array[era_index].toObject();
-            Era* era;
+            Era* era = new Era(this);
             era->read(era_obj);
+            connect(era, SIGNAL(editEra(Era*)), this, SLOT(openEraEditDialog(Era*)));
             eras_vector.push_back(era);
         }
     }
@@ -200,6 +206,21 @@ void Canvas::openEraCreationDialog()
 
     if (dialog.exec() == QDialog::Accepted)
     {
-        eras_vector.push_back(new Era(dialog.name(), dialog.startingDate(), dialog.endingDate(), dialog.color(), this));
+        Era* new_era = new Era(dialog.name(), dialog.startingDate(), dialog.endingDate(), dialog.color(), this);
+        connect(new_era, SIGNAL(editEra(Era*)), this, SLOT(openEraEditDialog(Era*)));
+        eras_vector.push_back(new_era);
+    }
+}
+
+void Canvas::openEraEditDialog(Era* era)
+{
+    EraForm dialog(era->getName() + tr("Era Details"), era, this);
+
+    if (dialog.exec() == QDialog::Accepted)
+    {
+        era->setName(dialog.name());
+        era->setStartingDate(dialog.startingDate());
+        era->setEndingDate(dialog.endingDate());
+        era->setColor(dialog.color());
     }
 }
