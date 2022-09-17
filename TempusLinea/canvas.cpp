@@ -11,8 +11,8 @@ Canvas::Canvas(QWidget* parent) : QWidget{parent}
     v_offset = 0;
     dragging = false;
 
-    eras_vector.push_back(Era("Test_1", date(7000, 1, 1), date(7100, 1, 1), QColor(255, 0, 0, 50)));  // Test era 1
-    eras_vector.push_back(Era("Test_2", date(6800, 1, 1), date(6900, 1, 1), QColor(0, 255, 0, 50)));  // Test era 2
+    eras_vector.push_back(new Era("Test_1", date(7000, 1, 1), date(7100, 1, 1), QColor(255, 0, 0, 50), this));  // Test era 1
+    eras_vector.push_back(new Era("Test_2_with_a_really_long_name", date(6800, 1, 1), date(6900, 1, 1), QColor(0, 255, 0, 50), this));  // Test era 2
 
     // Implement mouse menu
     mouse_menu = new MouseMenu(this);
@@ -27,12 +27,43 @@ void Canvas::paintEvent(QPaintEvent *)
     QPainter painter(this);
 
     // Paint Eras
-    for(Era e : eras_vector)
+    for(Era* e : eras_vector)
     {
-        QPoint starting_point(getDatePosition(e.getStartingDate()), 0);
-        QPoint ending_point(getDatePosition(e.getEndingDate()), height());
+        // Paint eras background
+        QPoint starting_point(getDatePosition(e->getStartingDate()), 0);
+        QPoint ending_point(getDatePosition(e->getEndingDate()), height());
 
-        painter.fillRect(QRect(starting_point, ending_point), e.getColor());
+        painter.fillRect(QRect(starting_point, ending_point), e->getColor());
+
+        // Paint era labels (widget)
+        // Get label width
+        QFontMetrics fm = painter.fontMetrics();
+        int label_width = fm.horizontalAdvance(e->getName());
+
+        int i = 0;
+        int label_height = 30;
+        if (e->getStartingDate() > canvas_start_date)
+        {
+            // Compute vertical position to avoid overlapping
+            while (Era* test = dynamic_cast<Era*>(this->childAt(QPoint(getDatePosition(e->getStartingDate()), height() - (0.5 + i) * label_height))))
+            {
+                if (test->getName() == e->getName()) break;
+                i++;
+            }
+
+            // Place and show the widget
+            e->setGeometry(QRect(getDatePosition(e->getStartingDate()), height() - label_height * (1 + i),
+                label_width + 20, label_height));
+            e->setVisible(true);
+        }
+        else if (e->getEndingDate() > canvas_start_date + days(0.02*(canvas_end_date - canvas_start_date).days()))
+        {
+            // Place at the left margin and show the widget
+            e->setGeometry(QRect(0, height() - label_height,
+                label_width + 20, label_height));
+            e->setVisible(true);
+        }
+        else e->setVisible(false);
     }
 
     // Paint Timeline
@@ -147,8 +178,8 @@ void Canvas::read(const QJsonObject& json)
         eras_vector.clear();
         for (int era_index = 0; era_index < eras_array.size(); ++era_index) {
             QJsonObject era_obj = eras_array[era_index].toObject();
-            Era era;
-            era.read(era_obj);
+            Era* era;
+            era->read(era_obj);
             eras_vector.push_back(era);
         }
     }
@@ -157,10 +188,10 @@ void Canvas::read(const QJsonObject& json)
 void Canvas::write(QJsonObject& json) const
 {
     QJsonArray eras_array;
-    for (Era e : eras_vector)
+    for (Era* e : eras_vector)
     {
         QJsonObject era_object;
-        e.write(era_object);
+        e->write(era_object);
         eras_array.append(era_object);
     }
     json["eras"] = eras_array;
@@ -168,11 +199,11 @@ void Canvas::write(QJsonObject& json) const
 
 void Canvas::openEraCreationDialog()
 {
-    EraForm dialog(tr("Era Details"), this);
+    EraForm dialog(tr("New Era Details"), this);
 
     if (dialog.exec() == QDialog::Accepted)
     {
-        eras_vector.push_back(Era(dialog.name(), qdate2date(dialog.startingDate()), qdate2date(dialog.endingDate()), dialog.color()));
+        eras_vector.push_back(new Era(dialog.name(), qdate2date(dialog.startingDate()), qdate2date(dialog.endingDate()), dialog.color()));
     }
 }
 

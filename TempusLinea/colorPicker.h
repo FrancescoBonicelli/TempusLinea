@@ -13,6 +13,7 @@ public:
     ColorPicker(QWidget *parent = nullptr);
 
     QColor getCurrentColor();
+    void setCurrentColor(QColor color);
 
 protected:
     void paintEvent(QPaintEvent *event) override;

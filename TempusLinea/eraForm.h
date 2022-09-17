@@ -15,6 +15,7 @@
 #include <QDateTimeEdit>
 
 #include "colorPicker.h"
+#include <era.h>
 
 class EraForm : public QDialog
 {
@@ -22,6 +23,7 @@ class EraForm : public QDialog
 
 public:
     EraForm(const QString& title, QWidget* parent);
+    EraForm(const QString& title, Era* era, QWidget* parent);
 
 public slots:
     void verify();
@@ -42,6 +44,8 @@ private:
     QLabel* color_label;
     ColorPicker* color_value;
     QDialogButtonBox* button_box;
+
+    QDate date2qdate(date qdate);
 };
 
 #endif // ERAFORM_H

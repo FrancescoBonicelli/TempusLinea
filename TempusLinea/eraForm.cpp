@@ -40,6 +40,16 @@ EraForm::EraForm(const QString& title, QWidget* parent)
     setWindowTitle(title);
 }
 
+EraForm::EraForm(const QString& title, Era* era, QWidget* parent)
+    : QDialog(parent)
+{
+    EraForm::EraForm(title, parent);
+    name_value->setText(era->getName());
+    starting_date_value->setDate(date2qdate(era->getStartingDate()));
+    ending_date_value->setDate(date2qdate(era->getEndingDate()));
+    color_value->setCurrentColor(era->getColor());
+}
+
 QString EraForm::name() const
 {
     return name_value->text();
@@ -75,4 +85,9 @@ void EraForm::verify()
 
     if (answer == QMessageBox::Yes)
         reject();
+}
+
+QDate EraForm::date2qdate(date date)
+{
+    return QDate(date.year(), date.month(), date.day());
 }

@@ -44,7 +44,7 @@ private:
     date canvas_start_date, canvas_end_date;
     int v_offset;
 
-    std::vector<Era> eras_vector;
+    std::vector<Era*> eras_vector;
 
     QPoint starting_drag_position;
     bool dragging;

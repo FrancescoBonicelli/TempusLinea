@@ -4,16 +4,22 @@ Era::Era()
 {
 }
 
-Era::Era(date starting_date, date ending_date)
+Era::Era(const Era& era) : QWidget{ era.era_parent }
 {
-    era_period = new date_period(starting_date, ending_date);
+    era_name = era.era_name;
+    era_period = era.era_period;
+    era_color = era.era_color;
+    setVisible(false);
 }
 
-Era::Era(QString name, date starting_date, date ending_date, QColor color)
+Era::Era(QString name, date starting_date, date ending_date, QColor color, QWidget* parent) : QWidget{ parent }
 {
     era_period = new date_period(starting_date, ending_date);
     era_name = name;
     era_color = color;
+
+    era_parent = parent;
+    setVisible(false);
 }
 
 Era::~Era()
@@ -77,4 +83,25 @@ void Era::write(QJsonObject& json) const
     json["era_period"] = QString::fromStdString(to_simple_string(*era_period));
     json["era_name"] = era_name;
     json["era_color"] = era_color.name(QColor::HexArgb);
+}
+
+void Era::paintEvent(QPaintEvent* event)
+{
+    QPainter painter(this);
+
+    QPoint starting_point(5, 5);
+    QPoint ending_point(width()-5, height()-5);
+
+    QRect rect = QRect(starting_point, ending_point);
+
+    painter.drawRoundedRect(rect, 5, 5);
+    painter.drawText(rect, Qt::AlignCenter, era_name);
+}
+
+void Era::mousePressEvent(QMouseEvent* event)
+{
+    if (event->button() == Qt::LeftButton)
+    {
+        emit editEra(this);
+    }
 }
