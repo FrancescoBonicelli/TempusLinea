@@ -203,7 +203,7 @@ void Canvas::openEraCreationDialog()
 
     if (dialog.exec() == QDialog::Accepted)
     {
-        eras_vector.push_back(new Era(dialog.name(), qdate2date(dialog.startingDate()), qdate2date(dialog.endingDate()), dialog.color()));
+        eras_vector.push_back(new Era(dialog.name(), qdate2date(dialog.startingDate()), qdate2date(dialog.endingDate()), dialog.color(), this));
     }
 }
 
