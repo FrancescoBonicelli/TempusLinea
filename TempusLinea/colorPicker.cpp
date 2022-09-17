@@ -14,7 +14,7 @@ QColor ColorPicker::getCurrentColor()
 void ColorPicker::setCurrentColor(QColor color)
 {
     current_color = color;
-    current_color.setAlpha(0);
+    current_color.setAlpha(255);
 }
 
 void ColorPicker::paintEvent(QPaintEvent *event)
