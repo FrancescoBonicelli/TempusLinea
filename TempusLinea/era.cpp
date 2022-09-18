@@ -1,6 +1,6 @@
 #include "era.h"
 
-Era::Era(QWidget* parent)
+Era::Era(QWidget* parent) : QWidget{ parent }
 {
     setVisible(false);
 }
