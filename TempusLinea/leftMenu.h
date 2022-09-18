@@ -32,9 +32,11 @@ public:
 
 signals:
     void saveCanvasButtonClicked();
+    void loadCanvasButtonClicked();
 
 public slots:
     void saveCanvas();
+    void loadCanvas();
 
 protected:
     void paintEvent(QPaintEvent *event) override;
@@ -43,7 +45,7 @@ private:
     QVBoxLayout* layout;
 
     LeftMenuButton* canvas_save_button;
-
+    LeftMenuButton* canvas_load_button;
 };
 
 #endif // LEFTMENU_H

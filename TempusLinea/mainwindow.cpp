@@ -11,6 +11,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
     left_menu->setGeometry(QRect(QPoint(0, 0), QPoint(width()/8, height())));
 
     connect(left_menu, SIGNAL(saveCanvasButtonClicked()), this, SLOT(saveCanvasSlot()));
+    connect(left_menu, SIGNAL(loadCanvasButtonClicked()), this, SLOT(loadCanvasSlot()));
 }
 
 void MainWindow::resizeEvent(QResizeEvent *event)
@@ -58,4 +59,9 @@ bool MainWindow::saveCanvas() const
 void MainWindow::saveCanvasSlot()
 {
     saveCanvas();
+}
+
+void MainWindow::loadCanvasSlot()
+{
+    loadCanvas();
 }

@@ -19,6 +19,7 @@ public:
 
 public slots:
     void saveCanvasSlot();
+    void loadCanvasSlot();
 
 protected:
     void resizeEvent(QResizeEvent *event) override;
