@@ -7,6 +7,7 @@
 #include <QAction>
 
 #include "canvas.h"
+#include "leftMenu.h"
 
 class MainWindow : public QMainWindow
 {
@@ -16,8 +17,15 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+public slots:
+    void saveCanvasSlot();
+
+protected:
+    void resizeEvent(QResizeEvent *event) override;
+
 private:
     Canvas* canvas;
+    LeftMenu* left_menu;
 
     bool loadCanvas();
     bool saveCanvas() const;

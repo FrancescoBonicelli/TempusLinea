@@ -28,6 +28,8 @@ set(PROJECT_SOURCES
         mouseMenu.h
         colorPicker.cpp
         colorPicker.h
+        leftMenu.cpp
+        leftMenu.h
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)

@@ -2,9 +2,20 @@
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 {
+    setWindowTitle(tr("TempusLinea"));
+
     canvas = new Canvas(this);
     setCentralWidget(canvas);
-    setWindowTitle(tr("TempusLinea"));
+
+    left_menu = new LeftMenu(this);
+    left_menu->setGeometry(QRect(QPoint(0, 0), QPoint(width()/8, height())));
+
+    connect(left_menu, SIGNAL(saveCanvasButtonClicked()), this, SLOT(saveCanvasSlot()));
+}
+
+void MainWindow::resizeEvent(QResizeEvent *event)
+{
+    left_menu->setGeometry(QRect(QPoint(0, 0), QPoint(width()/8, height())));
 }
 
 MainWindow::~MainWindow()
@@ -42,4 +53,9 @@ bool MainWindow::saveCanvas() const
     save_file.write(QJsonDocument(canvas_obj).toJson());
 
     return true;
+}
+
+void MainWindow::saveCanvasSlot()
+{
+    saveCanvas();
 }
