@@ -42,7 +42,8 @@ bool MainWindow::loadCanvas(QString file_name)
 
 bool MainWindow::saveCanvas(QString file_name)
 {
-    QFile save_file(file_name + ".json");
+    if(!file_name.endsWith(".json")) file_name += ".json";
+    QFile save_file(file_name);
 
     if (!save_file.open(QIODevice::WriteOnly)) {
         qWarning("Couldn't open save file.");
