@@ -29,6 +29,6 @@ private:
     LeftMenu* left_menu;
 
     bool loadCanvas();
-    bool saveCanvas() const;
+    bool saveCanvas();
 };
 #endif // MAINWINDOW_H

@@ -40,7 +40,7 @@ bool MainWindow::loadCanvas()
     return true;
 }
 
-bool MainWindow::saveCanvas() const
+bool MainWindow::saveCanvas()
 {
     QFile save_file(QStringLiteral("save.json"));
 
