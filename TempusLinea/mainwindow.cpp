@@ -59,7 +59,9 @@ bool MainWindow::saveCanvas(QString file_name)
 void MainWindow::saveCanvasSlot()
 {
     QString file_name = QFileDialog::getSaveFileName(0, "Save Canvas");
-    saveCanvas(file_name);
+
+    if(!file_name.isEmpty())
+        saveCanvas(file_name);
 }
 
 void MainWindow::loadCanvasSlot()
