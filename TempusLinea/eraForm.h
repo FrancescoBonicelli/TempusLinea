@@ -10,6 +10,7 @@
 #include <QColor>
 #include <QColorDialog>
 #include <QDialogButtonBox>
+#include <QPushButton>
 #include <QGridLayout>
 #include <QMessageBox>
 #include <QDateTimeEdit>
@@ -25,8 +26,10 @@ public:
     EraForm(const QString& title, QWidget* parent);
     EraForm(const QString& title, Era* era, QWidget* parent);
 
+
 public slots:
     void verify();
+    void deleteEra();
 
 public:
     QString name() const;
@@ -44,6 +47,7 @@ private:
     QLabel* color_label;
     ColorPicker* color_value;
     QDialogButtonBox* button_box;
+    QPushButton* delete_era;
 };
 
 #endif // ERAFORM_H

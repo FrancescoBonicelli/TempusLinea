@@ -216,11 +216,17 @@ void Canvas::openEraEditDialog(Era* era)
 {
     EraForm dialog(era->getName() + tr("Era Details"), era, this);
 
-    if (dialog.exec() == QDialog::Accepted)
+    int out = dialog.exec();
+    if (out == QDialog::Accepted)
     {
         era->setName(dialog.name());
         era->setStartingDate(dialog.startingDate());
         era->setEndingDate(dialog.endingDate());
         era->setColor(dialog.color());
+    }
+    else if (out == QDialog::Rejected && dialog.name() == "~")
+    {
+        delete(era);
+        eras_vector.erase(std::remove(eras_vector.begin(), eras_vector.end(), era), eras_vector.end());
     }
 }

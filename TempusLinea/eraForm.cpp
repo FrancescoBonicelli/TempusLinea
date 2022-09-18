@@ -13,6 +13,9 @@ EraForm::EraForm(const QString& title, QWidget* parent)
     color_label = new QLabel(tr("Color:"));
     color_value = new ColorPicker();
 
+    delete_era = new QPushButton("Delete era");
+    delete_era->setVisible(false);
+
     starting_date_value->setCalendarPopup(true);
     ending_date_value->setCalendarPopup(true);
 
@@ -24,6 +27,7 @@ EraForm::EraForm(const QString& title, QWidget* parent)
 
     connect(button_box, &QDialogButtonBox::accepted, this, &EraForm::verify);
     connect(button_box, &QDialogButtonBox::rejected, this, &EraForm::reject);
+    connect(delete_era, SIGNAL(clicked()), this, SLOT(deleteEra()));
 
     QGridLayout* mainLayout = new QGridLayout;
     mainLayout->addWidget(name_label, 0, 0);
@@ -35,6 +39,7 @@ EraForm::EraForm(const QString& title, QWidget* parent)
     mainLayout->addWidget(ending_date_label, 1, 2);
     mainLayout->addWidget(ending_date_value, 1, 3);
     mainLayout->addWidget(button_box, 2, 3);
+    mainLayout->addWidget(delete_era, 2, 0);
     setLayout(mainLayout);
 
     setWindowTitle(title);
@@ -47,6 +52,8 @@ EraForm::EraForm(const QString& title, Era* era, QWidget* parent)
     starting_date_value->setDate(era->getStartingDate());
     ending_date_value->setDate(era->getEndingDate());
     color_value->setCurrentColor(era->getColor());
+
+    delete_era->setVisible(true);
 }
 
 QString EraForm::name() const
@@ -101,4 +108,10 @@ void EraForm::verify()
         accept();
         return;
     }
+}
+
+void EraForm::deleteEra()
+{
+    name_value->setText("~");
+    reject();
 }
