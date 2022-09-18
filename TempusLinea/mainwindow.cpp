@@ -24,9 +24,9 @@ MainWindow::~MainWindow()
     delete canvas;
 }
 
-bool MainWindow::loadCanvas()
+bool MainWindow::loadCanvas(QString file_name)
 {
-    QFile load_file(QStringLiteral("save.json"));
+    QFile load_file(file_name);
 
     if (!load_file.open(QIODevice::ReadOnly)) {
         qWarning("Couldn't open save file.");
@@ -40,9 +40,9 @@ bool MainWindow::loadCanvas()
     return true;
 }
 
-bool MainWindow::saveCanvas()
+bool MainWindow::saveCanvas(QString file_name)
 {
-    QFile save_file(QStringLiteral("save.json"));
+    QFile save_file(file_name + ".json");
 
     if (!save_file.open(QIODevice::WriteOnly)) {
         qWarning("Couldn't open save file.");
@@ -58,10 +58,12 @@ bool MainWindow::saveCanvas()
 
 void MainWindow::saveCanvasSlot()
 {
-    saveCanvas();
+    QString file_name = QFileDialog::getSaveFileName();
+    saveCanvas(file_name);
 }
 
 void MainWindow::loadCanvasSlot()
 {
-    loadCanvas();
+    QString file_name = QFileDialog::getOpenFileName();
+    loadCanvas(file_name);
 }
