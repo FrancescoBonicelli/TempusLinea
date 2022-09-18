@@ -177,6 +177,7 @@ void Canvas::read(const QJsonObject& json)
 {
     if (json.contains("eras") && json["eras"].isArray()) {
         QJsonArray eras_array = json["eras"].toArray();
+        for (Era* e : eras_vector) delete(e);
         eras_vector.clear();
         for (int era_index = 0; era_index < eras_array.size(); ++era_index) {
             QJsonObject era_obj = eras_array[era_index].toObject();
