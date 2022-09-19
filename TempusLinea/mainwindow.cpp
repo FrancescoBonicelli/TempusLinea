@@ -102,7 +102,7 @@ void MainWindow::exportCanvasSlot()
         &file_filter);
 
     if (!file_name.endsWith(".bmp") && !file_name.endsWith(".jpg") && 
-        !file_name.endsWith(".jpeg") && !file_name.endsWith(".bmp")) file_name += ".jpeg";
+        !file_name.endsWith(".jpeg") && !file_name.endsWith(".png")) file_name += ".jpeg";
 
     if (!file_name.isEmpty())
     {
