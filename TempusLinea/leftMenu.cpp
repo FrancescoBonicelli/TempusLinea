@@ -63,7 +63,7 @@ LeftMenuToggler::LeftMenuToggler(QWidget *parent)
 void LeftMenuToggler::paintEvent(QPaintEvent *event)
 {
     QPainter painter(this);
-    painter.setPen(QPen(Qt::black));
-    QImage image("TempusLineaIcon.ico");
+    painter.setRenderHint(QPainter::Antialiasing);
+    QImage image("TempusLineaLogo_50.png");
     painter.drawImage(QRect(QPoint(0, 0), QPoint(width(), height())), image);
 }

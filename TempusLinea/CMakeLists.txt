@@ -65,6 +65,8 @@ set_target_properties(TempusLinea PROPERTIES
     WIN32_EXECUTABLE TRUE
 )
 
+configure_file(TempusLineaLogo_50.png TempusLineaLogo_50.png COPYONLY)
+
 install(TARGETS TempusLinea
     BUNDLE DESTINATION .
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR})

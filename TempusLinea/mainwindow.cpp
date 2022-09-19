@@ -12,7 +12,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
     left_menu->setVisible(false);
 
     left_menu_toggle_button = new LeftMenuToggler(this);
-    left_menu_toggle_button->setGeometry(QRect(QPoint(10, 10), QPoint(width()/20, width()/20)));
+    left_menu_toggle_button->setGeometry(QRect(QPoint(10, 10), QPoint(60, 60)));
 
     connect(left_menu, SIGNAL(saveCanvasButtonClicked()), this, SLOT(saveCanvasSlot()));
     connect(left_menu, SIGNAL(loadCanvasButtonClicked()), this, SLOT(loadCanvasSlot()));
