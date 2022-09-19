@@ -64,6 +64,6 @@ void LeftMenuToggler::paintEvent(QPaintEvent *event)
 {
     QPainter painter(this);
     painter.setPen(QPen(Qt::black));
-    QImage image("../TempusLinea/TempusLineaIcon.ico");
+    QImage image("TempusLineaIcon.ico");
     painter.drawImage(QRect(QPoint(0, 0), QPoint(width(), height())), image);
 }
