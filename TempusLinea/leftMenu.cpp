@@ -15,8 +15,8 @@ LeftMenuButton::LeftMenuButton(QString text, QWidget * parent)
 void LeftMenuButton::paintEvent(QPaintEvent *event)
 {
     QPainter painter(this);
-    QRect rect = QRect(QPoint(0, 0), QPoint(width(), height()));
-    painter.fillRect(rect, QColor(180, 180, 180));
+    QRect rect = QRect(QPoint(5, 5), QPoint(width()-5, height()-5));
+    painter.drawRoundedRect(rect, 5, 5);
     painter.drawText(rect, Qt::AlignCenter, button_text);
 }
 
@@ -39,7 +39,8 @@ LeftMenu::LeftMenu(QWidget *parent)
 void LeftMenu::paintEvent(QPaintEvent *event)
 {
     QPainter painter(this);
-
+    canvas_save_button->resize(canvas_save_button->width(), 50);
+    canvas_load_button->resize(canvas_save_button->width(), 50);
     painter.fillRect(QRect(QPoint(0, 0), QPoint(width(), height())), QColor(200, 200, 200));
 }
 
