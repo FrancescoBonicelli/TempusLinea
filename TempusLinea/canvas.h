@@ -28,6 +28,7 @@ public:
 
 signals:
     void mousePress();
+    void mouseWheel();
 
 public slots:
     void openEraCreationDialog();

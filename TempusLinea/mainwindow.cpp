@@ -19,6 +19,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
     connect(left_menu, SIGNAL(exportCanvasButtonClicked()), this, SLOT(exportCanvasSlot()));
     connect(left_menu_toggle_button, &LeftMenuToggler::clicked, [this](){left_menu->setVisible(!left_menu->isVisible());});
     connect(canvas, &Canvas::mousePress, [this](){left_menu->setVisible(false);});
+    connect(canvas, &Canvas::mouseWheel, [this](){left_menu->setVisible(false);});
 }
 
 void MainWindow::resizeEvent(QResizeEvent *event)
