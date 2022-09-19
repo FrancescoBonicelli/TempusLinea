@@ -48,4 +48,14 @@ private:
     LeftMenuButton* canvas_load_button;
 };
 
+class LeftMenuToggler : public QPushButton
+{
+    Q_OBJECT
+public:
+    explicit LeftMenuToggler(QWidget *parent = nullptr);
+
+protected:
+    void paintEvent(QPaintEvent *event) override;
+};
+
 #endif // LEFTMENU_H

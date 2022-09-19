@@ -53,3 +53,17 @@ void LeftMenu::loadCanvas()
 {
     emit loadCanvasButtonClicked();
 }
+
+LeftMenuToggler::LeftMenuToggler(QWidget *parent)
+    : QPushButton{parent}
+{
+
+}
+
+void LeftMenuToggler::paintEvent(QPaintEvent *event)
+{
+    QPainter painter(this);
+    painter.setPen(QPen(Qt::black));
+    QImage image("../TempusLinea/TempusLineaIcon.ico");
+    painter.drawImage(QRect(QPoint(0, 0), QPoint(width(), height())), image);
+}

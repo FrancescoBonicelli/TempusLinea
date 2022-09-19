@@ -9,14 +9,20 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 
     left_menu = new LeftMenu(this);
     left_menu->setGeometry(QRect(QPoint(0, 0), QPoint(width()/8, height())));
+    left_menu->setVisible(false);
+
+    left_menu_toggle_button = new LeftMenuToggler(this);
+    left_menu_toggle_button->setGeometry(QRect(QPoint(10, 10), QPoint(width()/20, width()/20)));
 
     connect(left_menu, SIGNAL(saveCanvasButtonClicked()), this, SLOT(saveCanvasSlot()));
     connect(left_menu, SIGNAL(loadCanvasButtonClicked()), this, SLOT(loadCanvasSlot()));
+    connect(left_menu_toggle_button, SIGNAL(clicked(bool)), this, SLOT(toggleLeftMenu()));
 }
 
 void MainWindow::resizeEvent(QResizeEvent *event)
 {
     left_menu->setGeometry(QRect(QPoint(0, 0), QPoint(width()/8, height())));
+    left_menu_toggle_button->setGeometry(QRect(QPoint(10, 10), QPoint(60, 60)));
 }
 
 MainWindow::~MainWindow()
@@ -74,4 +80,9 @@ void MainWindow::loadCanvasSlot()
                                                      tr("All files (*.*);;JSON (*.json)"),
                                                      &file_filter);
     loadCanvas(file_name);
+}
+
+void MainWindow::toggleLeftMenu()
+{
+    left_menu->setVisible(!left_menu->isVisible());
 }

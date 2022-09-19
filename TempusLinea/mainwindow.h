@@ -21,6 +21,7 @@ public:
 public slots:
     void saveCanvasSlot();
     void loadCanvasSlot();
+    void toggleLeftMenu();
 
 protected:
     void resizeEvent(QResizeEvent *event) override;
@@ -28,6 +29,7 @@ protected:
 private:
     Canvas* canvas;
     LeftMenu* left_menu;
+    LeftMenuToggler* left_menu_toggle_button;
 
     bool loadCanvas(QString file_name);
     bool saveCanvas(QString file_name);
