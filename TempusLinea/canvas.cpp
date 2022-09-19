@@ -147,6 +147,8 @@ void Canvas::mouseMoveEvent(QMouseEvent *event)
 
 void Canvas::wheelEvent(QWheelEvent* event)
 {
+    emit mouseWheel();
+
     int delta_x = event->angleDelta().y() * (canvas_start_date.daysTo(canvas_end_date)) / width();
 
     // Reducing range -> min 5 years
