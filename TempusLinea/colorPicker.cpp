@@ -7,14 +7,13 @@ ColorPicker::ColorPicker(QWidget *parent) : QWidget{parent}
 
 QColor ColorPicker::getCurrentColor()
 {
-    current_color.setAlpha(50);
+    current_color;
     return current_color;
 }
 
 void ColorPicker::setCurrentColor(QColor color)
 {
     current_color = color;
-    current_color.setAlpha(255);
 }
 
 void ColorPicker::paintEvent(QPaintEvent *event)

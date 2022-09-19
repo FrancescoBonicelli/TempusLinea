@@ -9,8 +9,8 @@ Canvas::Canvas(QWidget* parent) : QWidget{parent}
     v_offset = 0;
     dragging = false;
 
-    eras_vector.push_back(new Era("Test_1", QDate(2000, 1, 1), QDate(2100, 1, 1), QColor(255, 0, 0, 50), this));  // Test era 1
-    eras_vector.push_back(new Era("Test_2_with_a_really_long_name", QDate(1800, 1, 1), QDate(1900, 1, 1), QColor(0, 255, 0, 50), this));  // Test era 2
+    eras_vector.push_back(new Era("Test_1", QDate(2000, 1, 1), QDate(2100, 1, 1), QColor(255, 0, 0), this));  // Test era 1
+    eras_vector.push_back(new Era("Test_2_with_a_really_long_name", QDate(1800, 1, 1), QDate(1900, 1, 1), QColor(0, 255, 0), this));  // Test era 2
 
     // Implement mouse menu
     mouse_menu = new MouseMenu(this);
@@ -28,6 +28,7 @@ Canvas::Canvas(QWidget* parent) : QWidget{parent}
 void Canvas::paintEvent(QPaintEvent *)
 {
     QPainter painter(this);
+    painter.setRenderHint(QPainter::Antialiasing);
 
     // Paint Eras
     for(Era* e : eras_vector)
@@ -35,8 +36,9 @@ void Canvas::paintEvent(QPaintEvent *)
         // Paint eras background
         QPoint starting_point(getDatePosition(e->getStartingDate()), 0);
         QPoint ending_point(getDatePosition(e->getEndingDate()), height());
-
-        painter.fillRect(QRect(starting_point, ending_point), e->getColor());
+        QColor era_color = e->getColor();
+        era_color.setAlpha(50);
+        painter.fillRect(QRect(starting_point, ending_point), era_color);
 
         // Paint era labels (widget)
         // Get label width
