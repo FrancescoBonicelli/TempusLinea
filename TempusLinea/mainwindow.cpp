@@ -8,7 +8,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
     setCentralWidget(canvas);
 
     left_menu = new LeftMenu(this);
-    left_menu->setGeometry(QRect(QPoint(0, 0), QPoint(width()/8, height())));
+    left_menu->setGeometry(QRect(QPoint(0, 0), QPoint(120, height())));
     left_menu->setVisible(false);
 
     left_menu_toggle_button = new LeftMenuToggler(this);
@@ -21,7 +21,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 
 void MainWindow::resizeEvent(QResizeEvent *event)
 {
-    left_menu->setGeometry(QRect(QPoint(0, 0), QPoint(width()/8, height())));
+    left_menu->setGeometry(QRect(QPoint(0, 0), QPoint(120, height())));
     left_menu_toggle_button->setGeometry(QRect(QPoint(10, 10), QPoint(60, 60)));
 }
 
@@ -42,6 +42,7 @@ bool MainWindow::loadCanvas(QString file_name)
     QByteArray save_data = load_file.readAll();
     QJsonDocument load_doc(QJsonDocument::fromJson(save_data));
     canvas->read(load_doc.object());
+    load_file.close();
 
     return true;
 }
@@ -59,13 +60,19 @@ bool MainWindow::saveCanvas(QString file_name)
     QJsonObject canvas_obj;
     canvas->write(canvas_obj);
     save_file.write(QJsonDocument(canvas_obj).toJson());
+    save_file.close();
 
     return true;
 }
 
 void MainWindow::saveCanvasSlot()
 {
-    QString file_name = QFileDialog::getSaveFileName(0, "Save Canvas");
+    QString file_filter = tr("JSON (*.json)");
+    QString file_name = QFileDialog::getSaveFileName(0,
+                                                     "Save Canvas",
+                                                     "",
+                                                     tr("All files (*.*);;JSON (*.json)"),
+                                                     &file_filter);
 
     if(!file_name.isEmpty())
         saveCanvas(file_name);
