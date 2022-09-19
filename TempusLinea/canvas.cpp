@@ -103,6 +103,8 @@ void Canvas::paintEvent(QPaintEvent *)
 
 void Canvas::mousePressEvent(QMouseEvent *event)
 {
+    emit mousePress();
+
     if (event->button() == Qt::LeftButton)
     {
         starting_drag_position = event->pos();

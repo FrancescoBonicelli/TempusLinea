@@ -21,7 +21,6 @@ public:
 public slots:
     void saveCanvasSlot();
     void loadCanvasSlot();
-    void toggleLeftMenu();
 
 protected:
     void resizeEvent(QResizeEvent *event) override;

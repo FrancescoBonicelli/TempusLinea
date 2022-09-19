@@ -16,7 +16,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 
     connect(left_menu, SIGNAL(saveCanvasButtonClicked()), this, SLOT(saveCanvasSlot()));
     connect(left_menu, SIGNAL(loadCanvasButtonClicked()), this, SLOT(loadCanvasSlot()));
-    connect(left_menu_toggle_button, SIGNAL(clicked(bool)), this, SLOT(toggleLeftMenu()));
+    connect(left_menu_toggle_button, &LeftMenuToggler::clicked, [this](){left_menu->setVisible(!left_menu->isVisible());});
+    connect(canvas, &Canvas::mousePress, [this](){left_menu->setVisible(false);});
 }
 
 void MainWindow::resizeEvent(QResizeEvent *event)
@@ -87,9 +88,4 @@ void MainWindow::loadCanvasSlot()
                                                      tr("All files (*.*);;JSON (*.json)"),
                                                      &file_filter);
     loadCanvas(file_name);
-}
-
-void MainWindow::toggleLeftMenu()
-{
-    left_menu->setVisible(!left_menu->isVisible());
 }

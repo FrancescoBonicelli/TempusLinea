@@ -26,6 +26,9 @@ public:
     void read(const QJsonObject& json);
     void write(QJsonObject& json) const;
 
+signals:
+    void mousePress();
+
 public slots:
     void openEraCreationDialog();
     void openEraEditDialog(Era* era);
