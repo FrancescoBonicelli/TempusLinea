@@ -59,7 +59,12 @@ bool MainWindow::saveCanvas(QString file_name)
 
 void MainWindow::saveCanvasSlot()
 {
-    QString file_name = QFileDialog::getSaveFileName(0, "Save Canvas");
+    QString file_filter = tr("JSON (*.json)");
+    QString file_name = QFileDialog::getSaveFileName(0,
+                                                     "Save Canvas",
+                                                     "",
+                                                     tr("All files (*.*);;JSON (*.json)"),
+                                                     &file_filter);
 
     if(!file_name.isEmpty())
         saveCanvas(file_name);
