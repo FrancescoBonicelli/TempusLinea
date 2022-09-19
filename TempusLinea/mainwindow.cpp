@@ -16,6 +16,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 
     connect(left_menu, SIGNAL(saveCanvasButtonClicked()), this, SLOT(saveCanvasSlot()));
     connect(left_menu, SIGNAL(loadCanvasButtonClicked()), this, SLOT(loadCanvasSlot()));
+    connect(left_menu, SIGNAL(exportCanvasButtonClicked()), this, SLOT(exportCanvasSlot()));
     connect(left_menu_toggle_button, &LeftMenuToggler::clicked, [this](){left_menu->setVisible(!left_menu->isVisible());});
     connect(canvas, &Canvas::mousePress, [this](){left_menu->setVisible(false);});
 }
@@ -88,4 +89,24 @@ void MainWindow::loadCanvasSlot()
                                                      tr("All files (*.*);;JSON (*.json)"),
                                                      &file_filter);
     loadCanvas(file_name);
+}
+
+void MainWindow::exportCanvasSlot()
+{
+    QString file_filter = tr("Images (*.bmp *.jpg *.jpeg *.png)");
+    QString file_name = QFileDialog::getSaveFileName(0,
+        "Save Canvas",
+        "",
+        tr("All files (*.*);;Images (*.bmp *.jpg *.jpeg *.png)"),
+        &file_filter);
+
+    if (!file_name.endsWith(".bmp") || !file_name.endsWith(".jpg") || 
+        !file_name.endsWith(".jpeg") || !file_name.endsWith(".bmp")) file_name += ".jpeg";
+
+    if (!file_name.isEmpty())
+    {
+        QPixmap pixmap(canvas->size());
+        canvas->render(&pixmap);
+        pixmap.save(file_name);
+    }
 }

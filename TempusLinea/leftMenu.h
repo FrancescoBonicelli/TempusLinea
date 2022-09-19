@@ -33,10 +33,12 @@ public:
 signals:
     void saveCanvasButtonClicked();
     void loadCanvasButtonClicked();
+    void exportCanvasButtonClicked();
 
 public slots:
     void saveCanvas();
     void loadCanvas();
+    void exportCanvas();
 
 protected:
     void paintEvent(QPaintEvent *event) override;
@@ -46,6 +48,7 @@ private:
 
     LeftMenuButton* canvas_save_button;
     LeftMenuButton* canvas_load_button;
+    LeftMenuButton* canvas_export_button;
 };
 
 class LeftMenuToggler : public QPushButton
