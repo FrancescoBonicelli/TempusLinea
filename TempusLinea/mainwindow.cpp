@@ -36,6 +36,7 @@ bool MainWindow::loadCanvas(QString file_name)
     QByteArray save_data = load_file.readAll();
     QJsonDocument load_doc(QJsonDocument::fromJson(save_data));
     canvas->read(load_doc.object());
+    load_file.close();
 
     return true;
 }
@@ -53,6 +54,7 @@ bool MainWindow::saveCanvas(QString file_name)
     QJsonObject canvas_obj;
     canvas->write(canvas_obj);
     save_file.write(QJsonDocument(canvas_obj).toJson());
+    save_file.close();
 
     return true;
 }
