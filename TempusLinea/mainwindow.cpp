@@ -8,7 +8,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
     setCentralWidget(canvas);
 
     left_menu = new LeftMenu(this);
-    left_menu->setGeometry(QRect(QPoint(0, 0), QPoint(width()/8, height())));
+    left_menu->setGeometry(QRect(QPoint(0, 0), QPoint(120, height())));
 
     connect(left_menu, SIGNAL(saveCanvasButtonClicked()), this, SLOT(saveCanvasSlot()));
     connect(left_menu, SIGNAL(loadCanvasButtonClicked()), this, SLOT(loadCanvasSlot()));
@@ -16,7 +16,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 
 void MainWindow::resizeEvent(QResizeEvent *event)
 {
-    left_menu->setGeometry(QRect(QPoint(0, 0), QPoint(width()/8, height())));
+    left_menu->setGeometry(QRect(QPoint(0, 0), QPoint(120, height())));
 }
 
 MainWindow::~MainWindow()
