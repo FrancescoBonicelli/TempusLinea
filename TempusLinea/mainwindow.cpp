@@ -101,8 +101,8 @@ void MainWindow::exportCanvasSlot()
         tr("All files (*.*);;Images (*.bmp *.jpg *.jpeg *.png)"),
         &file_filter);
 
-    if (!file_name.endsWith(".bmp") || !file_name.endsWith(".jpg") || 
-        !file_name.endsWith(".jpeg") || !file_name.endsWith(".bmp")) file_name += ".jpeg";
+    if (!file_name.endsWith(".bmp") && !file_name.endsWith(".jpg") && 
+        !file_name.endsWith(".jpeg") && !file_name.endsWith(".bmp")) file_name += ".jpeg";
 
     if (!file_name.isEmpty())
     {
