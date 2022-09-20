@@ -74,6 +74,6 @@ void LeftMenuToggler::paintEvent(QPaintEvent *event)
 {
     QPainter painter(this);
     painter.setRenderHint(QPainter::Antialiasing);
-    QImage image("TempusLineaLogo_50.png");
+    QImage image("TempusLineaLogo_100.png");
     painter.drawImage(QRect(QPoint(0, 0), QPoint(width(), height())), image);
 }
