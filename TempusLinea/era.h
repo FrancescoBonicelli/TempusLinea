@@ -35,12 +35,12 @@ signals:
     void editEra(Era*);
 
 private:
-    QString era_name;
-    QColor era_color;
-    QDate era_starting_date;
-    QDate era_ending_date;
+    QString name;
+    QColor color;
+    QDate starting_date;
+    QDate ending_date;
 
-    QWidget* era_parent = nullptr;
+    QWidget* parent = nullptr;
 
 protected:
     void paintEvent(QPaintEvent* event) override;
