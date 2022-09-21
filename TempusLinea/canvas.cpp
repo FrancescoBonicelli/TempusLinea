@@ -49,12 +49,10 @@ void Canvas::paintEvent(QPaintEvent *)
         int label_height = 30;
         if (e->getStartingDate() > canvas_start_date)
         {
-
-            e->setVisible(false);
-
             // Compute vertical position to avoid overlapping
             while (Era* test = dynamic_cast<Era*>(this->childAt(QPoint(getDatePosition(e->getStartingDate()), height() - (0.5 + i) * label_height))))
             {
+                if (test == e) break;
                 i++;
             }
 
