@@ -3,14 +3,11 @@
 Canvas::Canvas(QWidget* parent) : QWidget{parent}
 {
     //Setup default parameters
-    canvas_start_date = QDate(1949, 1, 1);
-    canvas_end_date = QDate(2049, 1, 1);
+    canvas_start_date = QDate(1929, 1, 1);
+    canvas_end_date = QDate(2029, 1, 1);
 
     v_offset = 0;
     dragging = false;
-
-    eras_vector.push_back(new Era("Test_1", QDate(2000, 1, 1), QDate(2100, 1, 1), QColor(255, 0, 0), this));  // Test era 1
-    eras_vector.push_back(new Era("Test_2_with_a_really_long_name", QDate(1800, 1, 1), QDate(1900, 1, 1), QColor(0, 255, 0), this));  // Test era 2
 
     // Implement mouse menu
     mouse_menu = new MouseMenu(this);
@@ -19,10 +16,18 @@ Canvas::Canvas(QWidget* parent) : QWidget{parent}
 
     connect(mouse_menu, SIGNAL(newEraClicked()), this, SLOT(openEraCreationDialog()));
 
+
+    // ---------- TEST LINES - TO BE REMOVED ----------
+
+    eras_vector.push_back(new Era("Test_1", QDate(2000, 1, 1), QDate(2100, 1, 1), QColor(255, 0, 0), this));  // Test era 1
+    eras_vector.push_back(new Era("Test_2_with_a_really_long_name", QDate(1800, 1, 1), QDate(1900, 1, 1), QColor(0, 255, 0), this));  // Test era 2
+
     for(int i = 0; i < eras_vector.size(); i++)
     {
         connect(eras_vector.at(i), SIGNAL(editEra(Era*)), this, SLOT(openEraEditDialog(Era*)));
     }
+
+    // ---------- END OF TEST LINES ----------
 }
 
 void Canvas::paintEvent(QPaintEvent *)
@@ -56,7 +61,6 @@ void Canvas::paintEvent(QPaintEvent *)
 
         if (e->getStartingDate() > canvas_start_date)
         {
-
             // Place and show the widget
             e->setGeometry(QRect(getDatePosition(e->getStartingDate()), height() - label_height * (1 + i),
                 label_width + 20, label_height));
