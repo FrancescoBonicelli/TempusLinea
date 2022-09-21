@@ -33,17 +33,19 @@ public:
 signals:
     void newEraClicked();
     void newEventClicked();
+    void newPeriodClicked();
 
 public slots:
     void createEra();
     void createEvent();
+    void createPeriod();
 
 protected:
     void resizeEvent(QResizeEvent *event) override;
     void mousePressEvent(QMouseEvent *event) override;
 
 private:
-    MouseMenuButton *new_era_button, *new_event_button;
+    MouseMenuButton *new_era_button, *new_event_button, *new_period_button, *spare_button;
 
 };
 
