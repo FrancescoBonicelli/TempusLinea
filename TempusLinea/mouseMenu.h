@@ -11,6 +11,7 @@ class MouseMenuButton : public QWidget
     Q_OBJECT
 public:
     explicit MouseMenuButton(QWidget *parent = nullptr, QString text = "");
+    void setRotation(int angleDeg);
 
 signals:
     void clicked();
@@ -21,6 +22,7 @@ protected:
 
 private:
     QString btn_text;
+    int rotation;
 };
 
 
