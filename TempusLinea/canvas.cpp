@@ -44,28 +44,44 @@ void Canvas::paintEvent(QPaintEvent *)
         // Get label width
         QFontMetrics fm = painter.fontMetrics();
         int label_width = fm.horizontalAdvance(e->getName());
+        int label_height = 30;
 
         int i = 0;
-        int label_height = 30;
+        // Compute vertical position to avoid overlapping
+        while (Era* test = dynamic_cast<Era*>(this->childAt(QPoint(getDatePosition(e->getStartingDate()), height() - (0.5 + i) * label_height))))
+        {
+            if (test == e) break;
+            i++;
+        }
+
         if (e->getStartingDate() > canvas_start_date)
         {
-            // Compute vertical position to avoid overlapping
-            while (Era* test = dynamic_cast<Era*>(this->childAt(QPoint(getDatePosition(e->getStartingDate()), height() - (0.5 + i) * label_height))))
-            {
-                if (test == e) break;
-                i++;
-            }
 
             // Place and show the widget
             e->setGeometry(QRect(getDatePosition(e->getStartingDate()), height() - label_height * (1 + i),
                 label_width + 20, label_height));
             e->setVisible(true);
         }
-        else if (e->getEndingDate() > canvas_start_date.addDays(0.02 * (canvas_start_date.daysTo(canvas_end_date))))
+        else if (e->getEndingDate() > canvas_start_date)
         {
-            // Place at the left margin and show the widget
-            e->setGeometry(QRect(0, height() - label_height,
-                label_width + 20, label_height));
+            // If the visible era is larger than the label width, place the label to the left margin
+            if (getDatePosition(e->getEndingDate()) > label_width + 20)
+            {
+                e->setGeometry(QRect(0, height() - label_height * (1 + i), label_width + 20, label_height));
+            }
+            // If the era is larger than the label width, place the end of the label @ era end date
+            else if (getDatePosition(e->getEndingDate()) - getDatePosition(e->getStartingDate()) > label_width + 20)
+            {
+                e->setGeometry(QRect(getDatePosition(e->getEndingDate()) - label_width - 20, height() - label_height * (1 + i),
+                    label_width + 20, label_height));
+            }
+            // Else place the start of the label @ era start date
+            else
+            {
+                e->setGeometry(QRect(getDatePosition(e->getStartingDate()), height() - label_height * (1 + i),
+                    label_width + 20, label_height));
+            }
+            
             e->setVisible(true);
         }
         else e->setVisible(false);
