@@ -30,6 +30,12 @@ set(PROJECT_SOURCES
         colorPicker.h
         leftMenu.cpp
         leftMenu.h
+        category.cpp
+        category.h
+        event.cpp
+        event.h
+        period.cpp
+        period.h
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
