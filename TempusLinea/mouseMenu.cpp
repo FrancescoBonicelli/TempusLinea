@@ -19,8 +19,8 @@ void MouseMenuButton::paintEvent(QPaintEvent *event)
     painter.rotate(rotation);
     painter.translate(-rect.center());
 
-    painter.drawArc(5, 5, (width() - 5) * 2, (height()-5) * 2, 90 * 16, 86 * 16);
-    painter.drawArc(30, 30, (width() - 30) * 2, (height()-30) * 2, 88 * 16, 86 * 16);
+    painter.drawArc(5, 5, (width() - 5) * 2, (height()-5) * 2, 92 * 16, 86 * 16);
+    painter.drawArc(30, 30, (width() - 30) * 2, (height()-30) * 2, 92 * 16, 86 * 16);
     painter.drawLine(5, height()-1, 30, height()-1);
     painter.drawLine(width()-1, 5, width()-1, 30);
     painter.translate(rect.center()+QPoint(1,1));

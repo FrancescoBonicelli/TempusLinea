@@ -75,8 +75,8 @@ void Era::read(const QJsonObject& json)
     if (json.contains("period") && json["period"].isString())
     {
         QStringList dates = json["period"].toString().split(", ");
-        starting_date = QDate::fromString(dates.first());
-        ending_date = QDate::fromString(dates.last());
+        starting_date = QDate::fromString(dates.first(), Qt::ISODate);
+        ending_date = QDate::fromString(dates.last(), Qt::ISODate);
     }
     if (json.contains("name") && json["name"].isString())
         name = json["name"].toString();
@@ -86,7 +86,7 @@ void Era::read(const QJsonObject& json)
 
 void Era::write(QJsonObject& json) const
 {
-    json["period"] = starting_date.toString() + ", " + ending_date.toString();
+    json["period"] = starting_date.toString(Qt::ISODate) + ", " + ending_date.toString(Qt::ISODate);
     json["name"] = name;
     json["color"] = color.name(QColor::HexArgb);
 }
