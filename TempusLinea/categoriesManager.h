@@ -17,6 +17,7 @@ public:
     explicit CategoriesManager(std::vector<Category>& categories, QWidget *parent = nullptr);
 
 signals:
+    void resized();
 
 protected:
     void paintEvent(QPaintEvent *event) override;

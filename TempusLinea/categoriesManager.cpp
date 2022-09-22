@@ -4,7 +4,7 @@ CategoriesManager::CategoriesManager(QWidget *parent)
     : QWidget{parent}
 {
     add_category_button = new QPushButton("+", this);
-    add_category_button->setGeometry(QRect(QPoint(width()-50, 10), QPoint(width()-10, 50)));
+    add_category_button->setGeometry(QRect(QPoint(width()-30, 10), QPoint(width()-10, 30)));
 }
 
 CategoriesManager::CategoriesManager(std::vector<Category>& categories, QWidget *parent)
@@ -24,5 +24,6 @@ void CategoriesManager::paintEvent(QPaintEvent *)
 
 void CategoriesManager::resizeEvent(QResizeEvent *event)
 {
-    add_category_button->setGeometry(QRect(QPoint(width()-50, 10), QPoint(width()-10, 50)));
+    add_category_button->setGeometry(QRect(QPoint(width()-30, 10), QPoint(width()-10, 30)));
+    emit resized();
 }

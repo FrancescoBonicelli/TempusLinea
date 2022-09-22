@@ -16,6 +16,12 @@ Canvas::Canvas(QWidget* parent) : QWidget{parent}
 
     connect(mouse_menu, SIGNAL(newEraClicked()), this, SLOT(openEraCreationDialog()));
 
+    // Implement Categories Manager
+    categories_manager = new CategoriesManager(categories, this);
+    categories_manager->move(QPoint(0, height() - categories_manager->height()) + CATEGORIES_MANAGER_MARGINS);
+    categories_manager->resize(CATEGORIES_MANAGER_WIDTH, 100);
+
+    connect(categories_manager, &CategoriesManager::resized, [this](){categories_manager->move(QPoint(0, height() - categories_manager->height()) + CATEGORIES_MANAGER_MARGINS);});
 
     // ---------- TEST LINES - TO BE REMOVED ----------
 
@@ -193,7 +199,7 @@ void Canvas::wheelEvent(QWheelEvent* event)
 
 void Canvas::resizeEvent(QResizeEvent *event)
 {
-
+    categories_manager->move(QPoint(0, height() - categories_manager->height()) + CATEGORIES_MANAGER_MARGINS);
 }
 
 int Canvas::getDatePosition(QDate d)
