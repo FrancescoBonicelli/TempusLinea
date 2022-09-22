@@ -15,6 +15,8 @@ Canvas::Canvas(QWidget* parent) : QWidget{parent}
     mouse_menu->setVisible(false);
 
     connect(mouse_menu, SIGNAL(newEraClicked()), this, SLOT(openEraCreationDialog()));
+    connect(mouse_menu, SIGNAL(newEventClicked()), this, SLOT(openEventCreationDialog()));
+    connect(mouse_menu, SIGNAL(newPeriodClicked()), this, SLOT(openPeriodCreationDialog()));
 
     // Implement Categories Manager
     categories_manager = new CategoriesManager(categories, this);
@@ -280,4 +282,24 @@ void Canvas::openEraEditDialog(Era* era)
         delete(era);
         eras_vector.erase(std::remove(eras_vector.begin(), eras_vector.end(), era), eras_vector.end());
     }
+}
+
+void Canvas::openEventCreationDialog()
+{
+
+}
+
+void Canvas::openEventEditDialog(Event* event)
+{
+
+}
+
+void Canvas::openPeriodCreationDialog()
+{
+
+}
+
+void Canvas::openPeriodEditDialog(Period* period)
+{
+
 }

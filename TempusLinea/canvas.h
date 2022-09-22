@@ -37,6 +37,10 @@ signals:
 public slots:
     void openEraCreationDialog();
     void openEraEditDialog(Era* era);
+    void openEventCreationDialog();
+    void openEventEditDialog(Event* event);
+    void openPeriodCreationDialog();
+    void openPeriodEditDialog(Period* period);
 
 protected:
     void paintEvent(QPaintEvent *event) override;
