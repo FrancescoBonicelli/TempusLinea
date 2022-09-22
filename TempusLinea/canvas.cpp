@@ -217,6 +217,11 @@ void Canvas::read(const QJsonObject& json)
         canvas_end_date = QDate::fromString(dates.last(), Qt::ISODate);
     }
 
+    if (json.contains("canvas_v_offset") && json["canvas_v_offset"].isString())
+    {
+        v_offset = json["canvas_v_offset"].toString().toInt();
+    }
+
     if (json.contains("eras") && json["eras"].isArray()) {
         QJsonArray eras_array = json["eras"].toArray();
         for (Era* e : eras_vector) delete(e);
@@ -234,6 +239,7 @@ void Canvas::read(const QJsonObject& json)
 void Canvas::write(QJsonObject& json) const
 {
     json["canvas_period"] = canvas_start_date.toString(Qt::ISODate) + ", " + canvas_end_date.toString(Qt::ISODate);
+    json["canvas_v_offset"] = QString::number(v_offset);
 
     QJsonArray eras_array;
     for (Era* e : eras_vector)
