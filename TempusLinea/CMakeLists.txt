@@ -36,6 +36,8 @@ set(PROJECT_SOURCES
         event.h
         period.cpp
         period.h
+        categoriesManager.cpp
+        categoriesManager.h
         categoryForm.cpp
         categoryForm.h
 )

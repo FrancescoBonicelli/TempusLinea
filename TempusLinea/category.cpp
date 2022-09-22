@@ -21,6 +21,11 @@ void Category::setColor(QColor color)
     this->color = color;
 }
 
+void Category::setVisibility(bool visible)
+{
+    this->visible = visible;
+}
+
 QString Category::getName()
 {
     return name;
@@ -29,4 +34,9 @@ QString Category::getName()
 QColor Category::getColor()
 {
     return color;
+}
+
+bool Category::isVisible()
+{
+    return visible;
 }
