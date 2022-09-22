@@ -19,7 +19,7 @@ Canvas::Canvas(QWidget* parent) : QWidget{parent}
     // Implement Categories Manager
     categories_manager = new CategoriesManager(categories, this);
     categories_manager->move(QPoint(width() - categories_manager->width(), 0) + CATEGORIES_MANAGER_MARGINS);
-    categories_manager->resize(CATEGORIES_MANAGER_WIDTH, 100);
+    categories_manager->resize(CATEGORIES_MANAGER_WIDTH, 35);
 
     connect(categories_manager, &CategoriesManager::resized, [this](){categories_manager->move(QPoint(width() - categories_manager->width(), 0) + CATEGORIES_MANAGER_MARGINS);});
 
