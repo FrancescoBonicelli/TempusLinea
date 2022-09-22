@@ -1,12 +1,10 @@
-#ifndef ERAFORM_H
-#define ERAFORM_H
+#ifndef CATEGORYFORM_H
+#define CATEGORYFORM_H
 
 #include <QWidget>
 #include <QDialog>
 #include <QLabel>
 #include <QLineEdit>
-#include <QDate>
-#include <QCalendarWidget>
 #include <QColor>
 #include <QDialogButtonBox>
 #include <QPushButton>
@@ -15,38 +13,32 @@
 #include <QDateTimeEdit>
 
 #include "colorPicker.h"
-#include <era.h>
+#include <category.h>
 
-class EraForm : public QDialog
+class CategoryForm : public QDialog
 {
     Q_OBJECT
 
 public:
-    EraForm(const QString& title, QWidget* parent);
-    EraForm(const QString& title, Era* era, QWidget* parent);
+    CategoryForm(const QString& title, QWidget* parent);
+    CategoryForm(const QString& title, Category* category, QWidget* parent);
 
 
 public slots:
     void verify();
-    void deleteEra();
+    void deleteCategory();
 
 public:
     QString name() const;
-    QDate startingDate() const;
-    QDate endingDate() const;
     QColor color() const;
 
 private:
     QLabel* name_label;
     QLineEdit* name_value;
-    QLabel* starting_date_label;
-    QDateEdit* starting_date_value;
-    QLabel* ending_date_label;
-    QDateEdit* ending_date_value;
     QLabel* color_label;
     ColorPicker* color_value;
     QDialogButtonBox* button_box;
-    QPushButton* delete_era;
+    QPushButton* delete_category;
 };
 
-#endif // ERAFORM_H
+#endif // CATEGORYFORM_H

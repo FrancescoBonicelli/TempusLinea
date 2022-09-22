@@ -38,6 +38,8 @@ set(PROJECT_SOURCES
         period.h
         categoriesManager.cpp
         categoriesManager.h
+        categoryForm.cpp
+        categoryForm.h
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
