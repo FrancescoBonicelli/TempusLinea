@@ -14,6 +14,8 @@
 #include "era.h"
 #include "mouseMenu.h"
 #include "eraForm.h"
+#include "category.h"
+#include "categoriesManager.h"
 
 #define MOUSE_MENU_SIZE 100
 
@@ -41,12 +43,15 @@ protected:
     void mousePressEvent(QMouseEvent *event) override;
     void mouseReleaseEvent(QMouseEvent *event) override;
     void mouseDoubleClickEvent(QMouseEvent *event) override;
+    void resizeEvent(QResizeEvent *event) override;
 
 private:
     QDate canvas_start_date, canvas_end_date;
     int v_offset;
 
     std::vector<Era*> eras_vector;
+    std::vector<Category> categories;
+    CategoriesManager* categories_manager;
 
     QPoint starting_drag_position;
     bool dragging;

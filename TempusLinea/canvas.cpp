@@ -191,6 +191,11 @@ void Canvas::wheelEvent(QWheelEvent* event)
     }
 }
 
+void Canvas::resizeEvent(QResizeEvent *event)
+{
+
+}
+
 int Canvas::getDatePosition(QDate d)
 {
     int x_span = canvas_start_date.daysTo(canvas_end_date);
