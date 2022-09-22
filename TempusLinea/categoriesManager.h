@@ -6,6 +6,7 @@
 #include <QWidget>
 #include <QPainter>
 #include <QPushButton>
+#include <QPainterPath>
 
 #include "category.h"
 

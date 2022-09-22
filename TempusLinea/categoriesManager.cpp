@@ -17,9 +17,12 @@ void CategoriesManager::paintEvent(QPaintEvent *)
 {
     QPainter painter(this);
     painter.setRenderHint(QPainter::Antialiasing);
-    painter.setPen(QPen(Qt::black));
-
-    painter.drawRoundedRect(QRect(QPoint(2, 2), QPoint(width()-2, height()-2)), 5, 5);
+    QPen pen(Qt::black);
+    QPainterPath path;
+    path.addRoundedRect(QRect(QPoint(2, 2), QPoint(width()-2, height()-2)), 5, 5);
+    painter.setPen(pen);
+    painter.fillPath(path, Qt::white);
+    painter.drawPath(path);
 }
 
 void CategoriesManager::resizeEvent(QResizeEvent *event)
