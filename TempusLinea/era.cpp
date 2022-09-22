@@ -94,6 +94,7 @@ void Era::write(QJsonObject& json) const
 void Era::paintEvent(QPaintEvent* event)
 {
     QPainter painter(this);
+    painter.setRenderHint(QPainter::Antialiasing);
 
     QPoint starting_point(5, 5);
     QPoint ending_point(width()-5, height()-5);

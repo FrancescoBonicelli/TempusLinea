@@ -9,6 +9,7 @@ MouseMenuButton::MouseMenuButton(QWidget *parent, QString text) : QWidget{parent
 void MouseMenuButton::paintEvent(QPaintEvent *event)
 {
     QPainter painter(this);
+    painter.setRenderHint(QPainter::Antialiasing);
 
     QPoint starting_point(5, 5);
     QPoint ending_point(width(), height());
