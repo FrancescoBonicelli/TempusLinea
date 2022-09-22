@@ -248,7 +248,7 @@ void Canvas::openEraCreationDialog()
 
 void Canvas::openEraEditDialog(Era* era)
 {
-    EraForm dialog(era->getName() + tr("Era Details"), era, this);
+    EraForm dialog(era->getName() + tr(" Era Details"), era, this);
 
     int out = dialog.exec();
     if (out == QDialog::Accepted)
