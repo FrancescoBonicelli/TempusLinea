@@ -47,7 +47,7 @@ void Category::read(const QJsonObject& json)
         name = json["name"].toString();
     if (json.contains("color") && json["color"].isString())
         color = json["color"].toString();
-    if (json.contains("visible") && json["visible"].isString())
+    if (json.contains("visible") && json["visible"].isBool())
         visible = json["visible"].toBool();
 
     if (json.contains("events") && json["events"].isArray()) {
