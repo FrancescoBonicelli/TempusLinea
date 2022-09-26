@@ -9,6 +9,7 @@ Category::Category(QString name, QColor color)
 {
     this->name = name;
     this->color = color;
+    this->visible = true;
 }
 
 void Category::setName(QString name)

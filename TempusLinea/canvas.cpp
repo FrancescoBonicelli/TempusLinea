@@ -40,9 +40,6 @@ Canvas::Canvas(QWidget* parent) : QWidget{parent}
 
 void Canvas::paintEvent(QPaintEvent *)
 {
-    // Resize categories legend
-    categories_manager->resize(CATEGORIES_MANAGER_WIDTH, 35 + 20 * categories.size());
-
     QPainter painter(this);
     painter.setRenderHint(QPainter::Antialiasing);
 

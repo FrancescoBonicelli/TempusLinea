@@ -18,8 +18,6 @@
 #include "categoriesManager.h"
 
 #define MOUSE_MENU_SIZE 100
-#define CATEGORIES_MANAGER_MARGINS QPoint(-10, 10)
-#define CATEGORIES_MANAGER_WIDTH 150
 
 class Canvas : public QWidget
 {

@@ -1,5 +1,23 @@
 #include "categoriesManager.h"
 
+CategoriesManagerLine::CategoriesManagerLine(Category* category, QWidget *parent)
+    : QWidget{parent}
+{
+    this->category = category;
+
+    label = new QLabel(category->getName());
+
+    check_box = new QCheckBox();
+    check_box->setChecked(category->isVisible());
+
+    layout = new QHBoxLayout();
+    setLayout(layout);
+
+    layout->addWidget(check_box);
+    layout->addWidget(label);
+}
+
+
 CategoriesManager::CategoriesManager(QWidget *parent)
     : QWidget{parent}
 {
@@ -34,13 +52,6 @@ void CategoriesManager::paintEvent(QPaintEvent *)
     painter.setFont(font);
     painter.drawText(8, 22, "Categories:");
     painter.restore();
-
-    // Categories
-    for (int i = 0; i < categories->size(); i++)
-    {
-        // TODO -> draw categories widgets
-        painter.drawText(8, 22 + 20*(i+1), categories->at(i)->getName());
-    }
 }
 
 void CategoriesManager::resizeEvent(QResizeEvent *event)
@@ -57,5 +68,12 @@ void CategoriesManager::createCategory()
     {
         Category* new_category = new Category(dialog.name(), dialog.color());
         categories->push_back(new_category);
+
+        CategoriesManagerLine *line = new CategoriesManagerLine(new_category, this);
+        line->setGeometry(0, 22 + 20*lines.size(), CATEGORIES_MANAGER_WIDTH, 40);
+        line->show();
+        lines.push_back(line);
     }
+
+    resize(CATEGORIES_MANAGER_WIDTH, 35 + 20 * lines.size());
 }
