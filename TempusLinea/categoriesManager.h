@@ -9,23 +9,27 @@
 #include <QPainterPath>
 
 #include "category.h"
+#include "categoryForm.h"
 
 class CategoriesManager : public QWidget
 {
     Q_OBJECT
 public:
     explicit CategoriesManager(QWidget *parent = nullptr);
-    explicit CategoriesManager(std::vector<Category>& categories, QWidget *parent = nullptr);
+    explicit CategoriesManager(std::vector<Category*>& categories, QWidget *parent = nullptr);
 
 signals:
     void resized();
+
+public slots:
+        void createCategory();
 
 protected:
     void paintEvent(QPaintEvent *event) override;
     void resizeEvent(QResizeEvent *event) override;
 
 private:
-    std::vector<Category>* categories;
+    std::vector<Category*>* categories;
     QPushButton* add_category_button;
 };
 

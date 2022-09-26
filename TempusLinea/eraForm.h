@@ -46,7 +46,7 @@ private:
     QLabel* color_label;
     ColorPicker* color_value;
     QDialogButtonBox* button_box;
-    QPushButton* delete_era;
+    QPushButton* delete_era_button;
 };
 
 #endif // ERAFORM_H

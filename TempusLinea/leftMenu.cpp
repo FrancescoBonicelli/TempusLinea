@@ -36,9 +36,9 @@ LeftMenu::LeftMenu(QWidget *parent)
     layout->addWidget(canvas_load_button);
     layout->addWidget(canvas_export_button);
 
-    connect(canvas_save_button, SIGNAL(clicked(bool)), this, SLOT(saveCanvas()));
-    connect(canvas_load_button, SIGNAL(clicked(bool)), this, SLOT(loadCanvas()));
-    connect(canvas_export_button, SIGNAL(clicked(bool)), this, SLOT(exportCanvas()));
+    connect(canvas_save_button, &LeftMenuButton::clicked, this, &LeftMenu::saveCanvas);
+    connect(canvas_load_button, &LeftMenuButton::clicked, this, &LeftMenu::loadCanvas);
+    connect(canvas_export_button, &LeftMenuButton::clicked, this, &LeftMenu::exportCanvas);
 }
 
 void LeftMenu::paintEvent(QPaintEvent *event)

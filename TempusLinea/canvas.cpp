@@ -14,14 +14,14 @@ Canvas::Canvas(QWidget* parent) : QWidget{parent}
     mouse_menu->resize(QSize(80, 80));
     mouse_menu->setVisible(false);
 
-    connect(mouse_menu, SIGNAL(newEraClicked()), this, SLOT(openEraCreationDialog()));
-    connect(mouse_menu, SIGNAL(newEventClicked()), this, SLOT(openEventCreationDialog()));
-    connect(mouse_menu, SIGNAL(newPeriodClicked()), this, SLOT(openPeriodCreationDialog()));
+    connect(mouse_menu, &MouseMenu::newEraClicked, this, &Canvas::openEraCreationDialog);
+    connect(mouse_menu, &MouseMenu::newEventClicked, this, &Canvas::openEventCreationDialog);
+    connect(mouse_menu, &MouseMenu::newPeriodClicked, this, &Canvas::openPeriodCreationDialog);
 
     // Implement Categories Manager
     categories_manager = new CategoriesManager(categories, this);
     categories_manager->move(QPoint(width() - categories_manager->width(), 0) + CATEGORIES_MANAGER_MARGINS);
-    categories_manager->resize(CATEGORIES_MANAGER_WIDTH, 35);
+    categories_manager->resize(CATEGORIES_MANAGER_WIDTH, 35 + 20*categories.size());
 
     connect(categories_manager, &CategoriesManager::resized, [this](){categories_manager->move(QPoint(width() - categories_manager->width(), 0) + CATEGORIES_MANAGER_MARGINS);});
 
@@ -32,7 +32,7 @@ Canvas::Canvas(QWidget* parent) : QWidget{parent}
 
     for(int i = 0; i < eras_vector.size(); i++)
     {
-        connect(eras_vector.at(i), SIGNAL(editEra(Era*)), this, SLOT(openEraEditDialog(Era*)));
+        connect(eras_vector.at(i), &Era::editEra, this, &Canvas::openEraEditDialog);
     }
 
     // ---------- END OF TEST LINES ----------
@@ -40,6 +40,9 @@ Canvas::Canvas(QWidget* parent) : QWidget{parent}
 
 void Canvas::paintEvent(QPaintEvent *)
 {
+    // Resize categories legend
+    categories_manager->resize(CATEGORIES_MANAGER_WIDTH, 35 + 20 * categories.size());
+
     QPainter painter(this);
     painter.setRenderHint(QPainter::Antialiasing);
 
@@ -232,7 +235,7 @@ void Canvas::read(const QJsonObject& json)
             QJsonObject era_obj = eras_array[era_index].toObject();
             Era* era = new Era(this);
             era->read(era_obj);
-            connect(era, SIGNAL(editEra(Era*)), this, SLOT(openEraEditDialog(Era*)));
+            connect(era, &Era::editEra, this, &Canvas::openEraEditDialog);
             eras_vector.push_back(era);
         }
     }
@@ -260,7 +263,7 @@ void Canvas::openEraCreationDialog()
     if (dialog.exec() == QDialog::Accepted)
     {
         Era* new_era = new Era(dialog.name(), dialog.startingDate(), dialog.endingDate(), dialog.color(), this);
-        connect(new_era, SIGNAL(editEra(Era*)), this, SLOT(openEraEditDialog(Era*)));
+        connect(new_era, &Era::editEra, this, &Canvas::openEraEditDialog);
         eras_vector.push_back(new_era);
     }
 }

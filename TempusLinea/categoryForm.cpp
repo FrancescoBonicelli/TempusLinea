@@ -16,7 +16,7 @@ CategoryForm::CategoryForm(const QString& title, QWidget* parent)
 
     connect(button_box, &QDialogButtonBox::accepted, this, &CategoryForm::verify);
     connect(button_box, &QDialogButtonBox::rejected, this, &CategoryForm::reject);
-    connect(delete_category, SIGNAL(clicked()), this, SLOT(deleteCategory()));
+    connect(delete_category, &QPushButton::clicked, this, &CategoryForm::deleteCategory);
 
     QGridLayout* mainLayout = new QGridLayout;
     mainLayout->addWidget(name_label, 0, 0);

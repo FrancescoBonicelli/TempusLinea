@@ -61,9 +61,9 @@ MouseMenu::MouseMenu(QWidget *parent) : QWidget{parent}
     spare_button->setGeometry(QRect(0, height()/2, width()/2, height()/2));
     spare_button->setRotation(270);
 
-    connect(new_era_button, SIGNAL(clicked()), this, SLOT(createEra()));
-    connect(new_event_button, SIGNAL(clicked()), this, SLOT(createEvent()));
-    connect(new_period_button, SIGNAL(clicked()), this, SLOT(createPeriod()));
+    connect(new_era_button, &MouseMenuButton::clicked, this, &MouseMenu::createEra);
+    connect(new_event_button, &MouseMenuButton::clicked, this, &MouseMenu::createEvent);
+    connect(new_period_button, &MouseMenuButton::clicked, this, &MouseMenu::createPeriod);
 }
 
 void MouseMenu::resizeEvent(QResizeEvent *event)

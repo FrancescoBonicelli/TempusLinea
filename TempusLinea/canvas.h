@@ -56,7 +56,7 @@ private:
     int v_offset;
 
     std::vector<Era*> eras_vector;
-    std::vector<Category> categories;
+    std::vector<Category*> categories;
     CategoriesManager* categories_manager;
 
     QPoint starting_drag_position;
