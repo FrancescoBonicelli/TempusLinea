@@ -62,7 +62,7 @@ void MouseMenu::resizeEvent(QResizeEvent *event)
     new_event_button->setGeometry(QRect(0, 0, width()/2, height()/2));
     new_period_button->setRotation(90);
     new_period_button->setGeometry(QRect(width()/2, 0, width()/2, height()/2));
-    new_era_button->setRotation(-90);
+    new_era_button->setRotation(270);
     new_era_button->setGeometry(QRect(0, height()/2, width()/2, height()/2));
     spare_button->setRotation(180);
     spare_button->setGeometry(QRect(width()/2, height()/2, width()/2, height()/2));

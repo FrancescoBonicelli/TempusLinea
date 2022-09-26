@@ -18,8 +18,8 @@ EraForm::EraForm(const QString& title, QWidget* parent)
     starting_date_value->setCalendarPopup(true);
     ending_date_value->setCalendarPopup(true);
 
-    starting_date_value->setDate(QDate::currentDate());
-    ending_date_value->setDate(QDate::currentDate());
+    starting_date_value->setDate(QDate(QDate::currentDate().year(), 1, 1));
+    ending_date_value->setDate(QDate(QDate::currentDate().year(), 12, 31));
 
     button_box = new QDialogButtonBox(QDialogButtonBox::Ok
         | QDialogButtonBox::Cancel);
