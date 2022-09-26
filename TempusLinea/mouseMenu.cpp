@@ -46,20 +46,10 @@ void MouseMenuButton::setRotation(int angleDeg)
 
 MouseMenu::MouseMenu(QWidget *parent) : QWidget{parent}
 {
-    new_era_button = new MouseMenuButton(this, "ERA");
-    new_era_button->setGeometry(QRect(0, 0, width()/2, height()/2));
-
     new_event_button = new MouseMenuButton(this, "EVENT");
-    new_event_button->setGeometry(QRect(width()/2, 0, width()/2, height()/2));
-    new_event_button->setRotation(90);
-
     new_period_button = new MouseMenuButton(this, "PERIOD");
-    new_period_button->setGeometry(QRect(width()/2, height()/2, width()/2, height()/2));
-    new_period_button->setRotation(180);
-
+    new_era_button = new MouseMenuButton(this, "ERA");
     spare_button = new MouseMenuButton(this, "SPARE");
-    spare_button->setGeometry(QRect(0, height()/2, width()/2, height()/2));
-    spare_button->setRotation(270);
 
     connect(new_era_button, &MouseMenuButton::clicked, this, &MouseMenu::createEra);
     connect(new_event_button, &MouseMenuButton::clicked, this, &MouseMenu::createEvent);
@@ -68,10 +58,14 @@ MouseMenu::MouseMenu(QWidget *parent) : QWidget{parent}
 
 void MouseMenu::resizeEvent(QResizeEvent *event)
 {
-    new_era_button->setGeometry(QRect(0, 0, width()/2, height()/2));
-    new_event_button->setGeometry(QRect(width()/2, 0, width()/2, height()/2));
-    new_period_button->setGeometry(QRect(width()/2, height()/2, width()/2, height()/2));
-    spare_button->setGeometry(QRect(0, height()/2, width()/2, height()/2));
+    new_event_button->setRotation(0);
+    new_event_button->setGeometry(QRect(0, 0, width()/2, height()/2));
+    new_period_button->setRotation(90);
+    new_period_button->setGeometry(QRect(width()/2, 0, width()/2, height()/2));
+    new_era_button->setRotation(-90);
+    new_era_button->setGeometry(QRect(0, height()/2, width()/2, height()/2));
+    spare_button->setRotation(180);
+    spare_button->setGeometry(QRect(width()/2, height()/2, width()/2, height()/2));
 }
 
 void MouseMenu::mousePressEvent(QMouseEvent *event)
