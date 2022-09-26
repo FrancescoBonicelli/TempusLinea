@@ -4,6 +4,8 @@
 #include <vector>
 #include <QString>
 #include <QColor>
+#include <QJsonObject>
+#include <QJsonArray>
 
 #include "event.h"
 #include "period.h"
@@ -24,6 +26,9 @@ public:
 
     std::vector<Event> events;
     std::vector<Period> periods;
+
+    void read(const QJsonObject& json);
+    void write(QJsonObject& json) const;
 
 private:
     QString name;

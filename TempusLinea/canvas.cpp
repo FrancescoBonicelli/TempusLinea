@@ -239,6 +239,18 @@ void Canvas::read(const QJsonObject& json)
             eras_vector.push_back(era);
         }
     }
+
+    if (json.contains("categories") && json["categories"].isArray()) {
+        QJsonArray categories_array = json["categories"].toArray();
+        for (Category* c : categories) delete(c);
+        categories.clear();
+        for (int category_index = 0; category_index < categories_array.size(); ++category_index) {
+            QJsonObject category_obj = categories_array[category_index].toObject();
+            Category* category = new Category();
+            category->read(category_obj);
+            categories.push_back(category);
+        }
+    }
 }
 
 void Canvas::write(QJsonObject& json) const
@@ -254,6 +266,15 @@ void Canvas::write(QJsonObject& json) const
         eras_array.append(era_object);
     }
     json["eras"] = eras_array;
+
+    QJsonArray categories_array;
+    for (Category* c : categories)
+    {
+        QJsonObject category_object;
+        c->write(category_object);
+        categories_array.append(category_object);
+    }
+    json["categories"] = categories_array;
 }
 
 void Canvas::openEraCreationDialog()

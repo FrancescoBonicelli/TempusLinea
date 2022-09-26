@@ -3,6 +3,7 @@
 
 #include <QString>
 #include <QDate>
+#include <QJsonObject>
 
 class Period
 {
@@ -17,6 +18,9 @@ public:
     QString getName();
     QDate getStartingDate();
     QDate getEndingDate();
+
+    void read(const QJsonObject& json);
+    void write(QJsonObject& json) const;
 
 private:
     QString name;

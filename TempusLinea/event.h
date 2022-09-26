@@ -3,6 +3,7 @@
 
 #include <QString>
 #include <QDate>
+#include <QJsonObject>
 
 class Event
 {
@@ -15,6 +16,9 @@ public:
 
     QString getName();
     QDate getDate();
+
+    void read(const QJsonObject& json);
+    void write(QJsonObject& json) const;
 
 private:
     QString name;
