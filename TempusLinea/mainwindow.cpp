@@ -73,7 +73,7 @@ void MainWindow::saveCanvasSlot()
     QString file_filter = tr("JSON (*.json)");
     QString file_name = QFileDialog::getSaveFileName(0,
                                                      "Save Canvas",
-                                                     "",
+                                                     QDir::homePath(),
                                                      tr("All files (*.*);;JSON (*.json)"),
                                                      &file_filter);
 
@@ -86,7 +86,7 @@ void MainWindow::loadCanvasSlot()
     QString file_filter = tr("JSON (*.json)");
     QString file_name = QFileDialog::getOpenFileName(0,
                                                      "Load Canvas",
-                                                     "",
+                                                     QDir::homePath(),
                                                      tr("All files (*.*);;JSON (*.json)"),
                                                      &file_filter);
     loadCanvas(file_name);
