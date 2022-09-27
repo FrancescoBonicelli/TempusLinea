@@ -247,6 +247,7 @@ void Canvas::read(const QJsonObject& json)
             category->read(category_obj);
             categories.push_back(category);
         }
+        categories_manager->refreshCategories();
     }
 }
 

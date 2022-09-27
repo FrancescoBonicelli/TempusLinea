@@ -40,6 +40,7 @@ class CategoriesManager : public QWidget
 public:
     explicit CategoriesManager(QWidget *parent = nullptr);
     explicit CategoriesManager(std::vector<Category*>& categories, QWidget *parent = nullptr);
+    void refreshCategories();
 
 signals:
     void resized();
@@ -58,6 +59,8 @@ private:
     std::vector<CategoriesManagerLine*> lines;
 
     QLabel *label;
+
+    void drawCategoryLine(Category* category);
 };
 
 #endif // CATEGORIESMANAGER_H

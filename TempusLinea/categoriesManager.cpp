@@ -69,11 +69,25 @@ void CategoriesManager::createCategory()
         Category* new_category = new Category(dialog.name(), dialog.color());
         categories->push_back(new_category);
 
-        CategoriesManagerLine *line = new CategoriesManagerLine(new_category, this);
-        line->setGeometry(0, 22 + 20*lines.size(), CATEGORIES_MANAGER_WIDTH, 40);
-        line->show();
-        lines.push_back(line);
+        drawCategoryLine(new_category);
     }
+}
+
+void CategoriesManager::refreshCategories()
+{
+    for (CategoriesManagerLine* line : lines) delete(line);
+    lines.clear();
+    for (int category_index = 0; category_index < categories->size(); ++category_index) {
+        drawCategoryLine(categories->at(category_index));
+    }
+}
+
+void CategoriesManager::drawCategoryLine(Category* c)
+{
+    CategoriesManagerLine* line = new CategoriesManagerLine(c, this);
+    line->setGeometry(0, 22 + 20 * lines.size(), CATEGORIES_MANAGER_WIDTH, 40);
+    line->show();
+    lines.push_back(line);
 
     resize(CATEGORIES_MANAGER_WIDTH, 35 + 20 * lines.size());
 }
