@@ -10,6 +10,7 @@
 #include <QCheckBox>
 #include <QLabel>
 #include <QHBoxLayout>
+#include <QVBoxLayout>
 
 #include "category.h"
 #include "categoryForm.h"
@@ -23,7 +24,13 @@ class CategoriesManagerLine : public QWidget
 public:
     explicit CategoriesManagerLine(Category *category, QWidget *parent = nullptr);
 
+    Category* getCategory();
+
+signals:
+    void deleteCategory(Category*);
+
 protected:
+    void mouseDoubleClickEvent(QMouseEvent *event) override;
 
 private:
     Category* category;
@@ -47,6 +54,7 @@ signals:
 
 public slots:
         void createCategory();
+        void deleteCategory(Category* category);
 
 protected:
     void paintEvent(QPaintEvent *event) override;
@@ -55,6 +63,7 @@ protected:
 private:
     std::vector<Category*>* categories;
     QPushButton* add_category_button;
+    QVBoxLayout* layout;
 
     std::vector<CategoriesManagerLine*> lines;
 

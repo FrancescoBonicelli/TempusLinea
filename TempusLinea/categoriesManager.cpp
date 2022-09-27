@@ -11,16 +11,46 @@ CategoriesManagerLine::CategoriesManagerLine(Category* category, QWidget *parent
     check_box->setChecked(category->isVisible());
 
     layout = new QHBoxLayout();
+    layout->setContentsMargins(0,0,0,0);
     setLayout(layout);
 
     layout->addWidget(check_box);
     layout->addWidget(label);
 }
 
+Category* CategoriesManagerLine::getCategory()
+{
+    return category;
+}
+
+void CategoriesManagerLine::mouseDoubleClickEvent(QMouseEvent *event)
+{
+    CategoryForm dialog("Edit Category", category, this);
+
+    if (dialog.exec() == QDialog::Accepted)
+    {
+        category->setName(dialog.name());
+        category->setColor(dialog.color());
+
+        label->setText(dialog.name());
+    }
+    else if(dialog.name() == "~")
+    {
+        emit deleteCategory(category);
+    }
+}
+
 
 CategoriesManager::CategoriesManager(QWidget *parent)
     : QWidget{parent}
 {
+    QLabel* title = new QLabel("Categories:");
+
+    layout = new QVBoxLayout();
+    setLayout(layout);
+
+    layout->addWidget(title);
+
     add_category_button = new QPushButton("+", this);
     connect(add_category_button, &QPushButton::clicked, this, &CategoriesManager::createCategory);
 }
@@ -45,13 +75,13 @@ void CategoriesManager::paintEvent(QPaintEvent *)
     painter.drawPath(path);
 
     // Legend title
-    painter.save();
-    QFont font;
-    font.setBold(true);
-    font.setPointSizeF(font.pointSizeF() * 1.2);
-    painter.setFont(font);
-    painter.drawText(8, 22, "Categories:");
-    painter.restore();
+//    painter.save();
+//    QFont font;
+//    font.setBold(true);
+//    font.setPointSizeF(font.pointSizeF() * 1.2);
+//    painter.setFont(font);
+//    painter.drawText(8, 22, "Categories:");
+//    painter.restore();
 }
 
 void CategoriesManager::resizeEvent(QResizeEvent *event)
@@ -73,6 +103,29 @@ void CategoriesManager::createCategory()
     }
 }
 
+void CategoriesManager::deleteCategory(Category* category)
+{
+    for(int i = 0; i < lines.size(); i++)
+    {
+        if(lines.at(i)->getCategory() == category)
+        {
+            lines.at(i)->close();
+            lines.erase(lines.begin() + i);
+        }
+    }
+
+    for(int i = 0; i < categories->size(); i++)
+    {
+        if(categories->at(i) == category)
+        {
+            delete categories->at(i);
+            categories->erase(categories->begin() + i);
+        }
+    }
+
+    resize(CATEGORIES_MANAGER_WIDTH, 35 + 20 * lines.size());
+}
+
 void CategoriesManager::refreshCategories()
 {
     for (CategoriesManagerLine* line : lines) delete(line);
@@ -84,9 +137,12 @@ void CategoriesManager::refreshCategories()
 
 void CategoriesManager::drawCategoryLine(Category* c)
 {
-    CategoriesManagerLine* line = new CategoriesManagerLine(c, this);
-    line->setGeometry(0, 22 + 20 * lines.size(), CATEGORIES_MANAGER_WIDTH, 40);
+    CategoriesManagerLine* line = new CategoriesManagerLine(c);
+    layout->addWidget(line);
     line->show();
+
+    connect(line, SIGNAL(deleteCategory(Category*)), this, SLOT(deleteCategory(Category*)));
+
     lines.push_back(line);
 
     resize(CATEGORIES_MANAGER_WIDTH, 35 + 20 * lines.size());
