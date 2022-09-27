@@ -45,6 +45,9 @@ CategoriesManager::CategoriesManager(QWidget *parent)
     : QWidget{parent}
 {
     QLabel* title = new QLabel("Categories:");
+    QFont font;
+    font.setBold(true);
+    title->setFont(font);
 
     layout = new QVBoxLayout();
     setLayout(layout);
@@ -73,15 +76,6 @@ void CategoriesManager::paintEvent(QPaintEvent *)
     painter.setPen(pen);
     painter.fillPath(path, Qt::white);
     painter.drawPath(path);
-
-    // Legend title
-//    painter.save();
-//    QFont font;
-//    font.setBold(true);
-//    font.setPointSizeF(font.pointSizeF() * 1.2);
-//    painter.setFont(font);
-//    painter.drawText(8, 22, "Categories:");
-//    painter.restore();
 }
 
 void CategoriesManager::resizeEvent(QResizeEvent *event)
