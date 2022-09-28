@@ -8,12 +8,12 @@ CategoriesManagerLine::CategoriesManagerLine(Category* category, QWidget *parent
     check_box = new QCheckBox();
     check_box->setChecked(category->isVisible());
 
-    QWidget* rect = new QWidget();
+    color_box = new QWidget();
     QPalette p(palette());
     p.setColor(QPalette::Window, category->getColor());
-    rect->setAutoFillBackground(true);
-    rect->setPalette(p);
-    rect->setFixedSize(15, 15);
+    color_box->setAutoFillBackground(true);
+    color_box->setPalette(p);
+    color_box->setFixedSize(15, 15);
 
     label = new QLabel(category->getName());
 
@@ -23,7 +23,7 @@ CategoriesManagerLine::CategoriesManagerLine(Category* category, QWidget *parent
     setLayout(layout);
 
     layout->addWidget(check_box);
-    layout->addWidget(rect);
+    layout->addWidget(color_box);
     layout->addWidget(label);
 }
 
@@ -40,6 +40,10 @@ void CategoriesManagerLine::mouseDoubleClickEvent(QMouseEvent *event)
     {
         category->setName(dialog.name());
         category->setColor(dialog.color());
+
+        QPalette p(palette());
+        p.setColor(QPalette::Window, category->getColor());
+        color_box->setPalette(p);
 
         label->setText(dialog.name());
     }
@@ -141,6 +145,7 @@ void CategoriesManager::refreshCategories()
 void CategoriesManager::drawCategoryLine(Category* c)
 {
     CategoriesManagerLine* line = new CategoriesManagerLine(c);
+    line->setToolTip(c->getName());
     layout->addWidget(line);
     line->show();
 

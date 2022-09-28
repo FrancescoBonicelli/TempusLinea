@@ -36,6 +36,7 @@ private:
     Category* category;
 
     QCheckBox *check_box;
+    QWidget* color_box;
     QLabel *label;
     QHBoxLayout *layout;
 };
