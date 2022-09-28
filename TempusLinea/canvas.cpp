@@ -332,7 +332,19 @@ void Canvas::openEventEditDialog(Event* event)
 
 void Canvas::openPeriodCreationDialog()
 {
+    PeriodForm dialog(tr("New Period Details"), categories, this);
 
+    if (dialog.exec() == QDialog::Accepted)
+    {
+        Period new_period = Period(dialog.name(), dialog.starting_date(), dialog.ending_date(), dialog.category()->name);
+        for (Category* c : categories)
+        {
+            if (c == dialog.category())
+            {
+                c->periods.push_back(new_period);
+            }
+        }
+    }
 }
 
 void Canvas::openPeriodEditDialog(Period* period)

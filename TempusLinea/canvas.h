@@ -18,6 +18,8 @@
 #include "categoriesManager.h"
 #include "event.h"
 #include "eventForm.h"
+#include "period.h"
+#include "periodForm.h"
 
 #define MOUSE_MENU_SIZE 100
 

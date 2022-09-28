@@ -5,11 +5,12 @@ Period::Period()
 
 }
 
-Period::Period(QString name, QDate starting_date, QDate ending_date)
+Period::Period(QString name, QDate starting_date, QDate ending_date, QString& category)
 {
     this->name = name;
     this->starting_date = starting_date;
     this->ending_date = ending_date;
+    this->category = &category;
 }
 
 void Period::setName(QString name)
@@ -27,6 +28,11 @@ void Period::setEndingDate(QDate ending_date)
     this->ending_date = ending_date;
 }
 
+void Period::setCategory(QString& category)
+{
+    this->category = &category;
+}
+
 QString Period::getName()
 {
     return name;
@@ -40,6 +46,11 @@ QDate Period::getStartingDate()
 QDate Period::getEndingDate()
 {
     return ending_date;
+}
+
+QString Period::getCategory()
+{
+    return *category;
 }
 
 void Period::read(const QJsonObject& json)

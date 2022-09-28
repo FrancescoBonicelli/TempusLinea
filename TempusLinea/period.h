@@ -9,15 +9,17 @@ class Period
 {
 public:
     Period();
-    Period(QString name, QDate starting_date, QDate ending_date);
+    Period(QString name, QDate starting_date, QDate ending_date, QString& category);
 
     void setName(QString name);
     void setStartingDate(QDate starting_date);
     void setEndingDate(QDate ending_date);
+    void setCategory(QString& category);
 
     QString getName();
     QDate getStartingDate();
     QDate getEndingDate();
+    QString getCategory();
 
     void read(const QJsonObject& json);
     void write(QJsonObject& json) const;
@@ -25,6 +27,7 @@ public:
 private:
     QString name;
     QDate starting_date, ending_date;
+    QString* category;
 };
 
 #endif // PERIOD_H

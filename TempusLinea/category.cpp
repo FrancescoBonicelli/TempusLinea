@@ -70,6 +70,7 @@ void Category::read(const QJsonObject& json)
             QJsonObject period_obj = periods_array[period_index].toObject();
             Period period = Period();
             period.read(period_obj);
+            period.setCategory(name);
             periods.push_back(period);
         }
     }

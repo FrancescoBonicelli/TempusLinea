@@ -66,7 +66,8 @@ Category* EventForm::category()
 
 void EventForm::verify()
 {
-    if (name_value->text().isEmpty() || !date_value->date().isValid()) {
+    if (name_value->text().isEmpty() || !date_value->date().isValid())
+    {
         QMessageBox::StandardButton answer;
         answer = QMessageBox::warning(this, tr("Incomplete Form"),
             tr("The form does not contain all the necessary information.\n"

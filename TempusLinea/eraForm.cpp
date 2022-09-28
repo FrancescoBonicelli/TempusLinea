@@ -77,7 +77,8 @@ QColor EraForm::color() const
 
 void EraForm::verify()
 {
-    if (name_value->text().isEmpty() || !starting_date_value->date().isValid() || !ending_date_value->date().isValid()) {
+    if (name_value->text().isEmpty() || !starting_date_value->date().isValid() || !ending_date_value->date().isValid())
+    {
         QMessageBox::StandardButton answer;
         answer = QMessageBox::warning(this, tr("Incomplete Form"),
             tr("The form does not contain all the necessary information.\n"
