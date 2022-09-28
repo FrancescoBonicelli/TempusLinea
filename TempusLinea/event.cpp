@@ -5,11 +5,11 @@ Event::Event()
 
 }
 
-Event::Event(QString name, QDate date, QString* category)
+Event::Event(QString name, QDate date, QString& category)
 {
     this->name = name;
     this->date = date;
-    this->category = category;
+    this->category = &category;
 }
 
 void Event::setName(QString name)

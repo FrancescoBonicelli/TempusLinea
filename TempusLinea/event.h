@@ -9,7 +9,7 @@ class Event
 {
 public:
     Event();
-    Event(QString name, QDate date, QString* category);
+    Event(QString name, QDate date, QString& category);
 
     void setName(QString name);
     void setDate(QDate date);
