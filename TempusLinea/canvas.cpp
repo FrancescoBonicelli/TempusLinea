@@ -18,10 +18,12 @@ Canvas::Canvas(QWidget* parent) : QWidget{parent}
     connect(mouse_menu, &MouseMenu::newEventClicked, this, &Canvas::openEventCreationDialog);
     connect(mouse_menu, &MouseMenu::newPeriodClicked, this, &Canvas::openPeriodCreationDialog);
 
+    // Add default category
+    categories.push_back(new Category("", Qt::transparent));
     // Implement Categories Manager
     categories_manager = new CategoriesManager(categories, this);
     categories_manager->move(QPoint(width() - categories_manager->width(), 0) + CATEGORIES_MANAGER_MARGINS);
-    categories_manager->resize(CATEGORIES_MANAGER_WIDTH, 35 + 20*categories.size());
+    categories_manager->resize(CATEGORIES_MANAGER_WIDTH, 35 + 20*(categories.size()-1));
 
     connect(categories_manager, &CategoriesManager::resized, [this](){categories_manager->move(QPoint(width() - categories_manager->width(), 0) + CATEGORIES_MANAGER_MARGINS);});
 
@@ -308,7 +310,19 @@ void Canvas::openEraEditDialog(Era* era)
 
 void Canvas::openEventCreationDialog()
 {
+    EventForm dialog(tr("New Event Details"), categories, this);
 
+    if (dialog.exec() == QDialog::Accepted)
+    {
+        Event new_event = Event(dialog.name(), dialog.date(), dialog.category()->name);
+        for (Category* c : categories)
+        {
+            if (c == dialog.category())
+            {
+                c->events.push_back(new_event);
+            }
+        }
+    }
 }
 
 void Canvas::openEventEditDialog(Event* event)

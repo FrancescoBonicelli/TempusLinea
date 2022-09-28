@@ -12,10 +12,12 @@
 #include <cmath>
 
 #include "era.h"
-#include "mouseMenu.h"
 #include "eraForm.h"
+#include "mouseMenu.h"
 #include "category.h"
 #include "categoriesManager.h"
+#include "event.h"
+#include "eventForm.h"
 
 #define MOUSE_MENU_SIZE 100
 

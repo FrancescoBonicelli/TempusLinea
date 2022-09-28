@@ -40,6 +40,8 @@ set(PROJECT_SOURCES
         categoriesManager.h
         categoryForm.cpp
         categoryForm.h
+        eventForm.cpp
+        eventForm.h
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)

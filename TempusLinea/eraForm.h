@@ -5,8 +5,6 @@
 #include <QDialog>
 #include <QLabel>
 #include <QLineEdit>
-#include <QDate>
-#include <QCalendarWidget>
 #include <QColor>
 #include <QDialogButtonBox>
 #include <QPushButton>
@@ -15,7 +13,7 @@
 #include <QDateTimeEdit>
 
 #include "colorPicker.h"
-#include <era.h>
+#include "era.h"
 
 class EraForm : public QDialog
 {
@@ -24,7 +22,6 @@ class EraForm : public QDialog
 public:
     EraForm(const QString& title, QWidget* parent);
     EraForm(const QString& title, Era* era, QWidget* parent);
-
 
 public slots:
     void verify();
