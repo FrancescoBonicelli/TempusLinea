@@ -5,10 +5,11 @@ Event::Event()
 
 }
 
-Event::Event(QString name, QDate date)
+Event::Event(QString name, QDate date, QString* category)
 {
     this->name = name;
     this->date = date;
+    this->category = category;
 }
 
 void Event::setName(QString name)
@@ -21,6 +22,11 @@ void Event::setDate(QDate date)
     this->date = date;
 }
 
+void Event::setCategory(QString& category)
+{
+    this->category = &category;
+}
+
 QString Event::getName()
 {
     return name;
@@ -29,6 +35,11 @@ QString Event::getName()
 QDate Event::getDate()
 {
     return date;
+}
+
+QString Event::getCategory()
+{
+    return *category;
 }
 
 void Event::read(const QJsonObject& json)

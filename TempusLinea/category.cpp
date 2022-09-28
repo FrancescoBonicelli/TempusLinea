@@ -58,6 +58,7 @@ void Category::read(const QJsonObject& json)
             QJsonObject event_obj = events_array[event_index].toObject();
             Event event = Event();
             event.read(event_obj);
+            event.setCategory(name);
             events.push_back(event);
         }
     }
