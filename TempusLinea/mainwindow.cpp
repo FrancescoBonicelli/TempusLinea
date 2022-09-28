@@ -79,6 +79,8 @@ void MainWindow::saveCanvasSlot()
 
     if(!file_name.isEmpty())
         saveCanvas(file_name);
+
+    left_menu->setVisible(false);
 }
 
 void MainWindow::loadCanvasSlot()
@@ -90,6 +92,8 @@ void MainWindow::loadCanvasSlot()
                                                      tr("All files (*.*);;JSON (*.json)"),
                                                      &file_filter);
     loadCanvas(file_name);
+
+    left_menu->setVisible(false);
 }
 
 void MainWindow::exportCanvasSlot()
@@ -110,4 +114,6 @@ void MainWindow::exportCanvasSlot()
         canvas->render(&pixmap);
         pixmap.save(file_name);
     }
+
+    left_menu->setVisible(false);
 }
