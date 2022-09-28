@@ -5,16 +5,25 @@ CategoriesManagerLine::CategoriesManagerLine(Category* category, QWidget *parent
 {
     this->category = category;
 
-    label = new QLabel(category->getName());
-
     check_box = new QCheckBox();
     check_box->setChecked(category->isVisible());
 
+    QWidget* rect = new QWidget();
+    QPalette p(palette());
+    p.setColor(QPalette::Window, category->getColor());
+    rect->setAutoFillBackground(true);
+    rect->setPalette(p);
+    rect->setFixedSize(15, 15);
+
+    label = new QLabel(category->getName());
+
     layout = new QHBoxLayout();
     layout->setContentsMargins(0,0,0,0);
+    layout->setAlignment(Qt::AlignLeft);
     setLayout(layout);
 
     layout->addWidget(check_box);
+    layout->addWidget(rect);
     layout->addWidget(label);
 }
 
