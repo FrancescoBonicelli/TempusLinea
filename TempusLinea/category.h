@@ -16,6 +16,8 @@ public:
     Category();
     Category(QString name, QColor color);
 
+    QString name;
+
     void setName(QString name);
     void setColor(QColor color);
     void setVisibility(bool visible);
@@ -31,7 +33,6 @@ public:
     void write(QJsonObject& json) const;
 
 private:
-    QString name;
     QColor color;
     bool visible;
 };
