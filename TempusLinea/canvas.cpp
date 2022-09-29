@@ -314,7 +314,7 @@ void Canvas::openEventCreationDialog()
 
     if (dialog.exec() == QDialog::Accepted)
     {
-        Event new_event = Event(dialog.name(), dialog.date(), dialog.category()->name);
+        Event new_event = Event(dialog.name(), dialog.date(), dialog.category()->name);        
         for (Category* c : categories)
         {
             if (c == dialog.category())

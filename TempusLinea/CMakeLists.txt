@@ -44,6 +44,8 @@ set(PROJECT_SOURCES
         eventForm.h
         periodForm.cpp
         periodForm.h
+        eventWidget.cpp
+        eventWidget.h
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
