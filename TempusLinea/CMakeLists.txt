@@ -82,6 +82,9 @@ set_target_properties(TempusLinea PROPERTIES
 )
 
 configure_file(TempusLineaLogo_100.png TempusLineaLogo_100.png COPYONLY)
+configure_file(eye-on.png eye-on.png COPYONLY)
+configure_file(eye-off.png eye-off.png COPYONLY)
+configure_file(stylesheet.qss stylesheet.qss COPYONLY)
 
 install(TARGETS TempusLinea
     BUNDLE DESTINATION .
