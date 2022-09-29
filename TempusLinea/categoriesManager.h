@@ -3,6 +3,7 @@
 
 #include <vector>
 
+#include <QFile>
 #include <QWidget>
 #include <QPainter>
 #include <QPushButton>

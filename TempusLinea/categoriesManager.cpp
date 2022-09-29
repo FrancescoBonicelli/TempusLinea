@@ -6,6 +6,10 @@ CategoriesManagerLine::CategoriesManagerLine(Category* category, QWidget *parent
     this->category = category;
 
     check_box = new QCheckBox();
+    QFile file("stylesheet.qss");
+    file.open(QFile::ReadOnly);
+    QString styleSheet = QLatin1String(file.readAll());
+    check_box->setStyleSheet(styleSheet);
     check_box->setChecked(category->isVisible());
 
     color_box = new QWidget();
