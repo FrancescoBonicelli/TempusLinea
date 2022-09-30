@@ -19,7 +19,7 @@ Canvas::Canvas(QWidget* parent) : QWidget{parent}
     connect(mouse_menu, &MouseMenu::newPeriodClicked, this, &Canvas::openPeriodCreationDialog);
 
     // Add default category
-    categories.push_back(new Category("", Qt::transparent));
+    categories.push_back(new Category("", Qt::transparent, this));
     // Implement Categories Manager
     categories_manager = new CategoriesManager(categories, this);
     categories_manager->move(QPoint(width() - categories_manager->width(), 0) + CATEGORIES_MANAGER_MARGINS);
@@ -45,6 +45,8 @@ void Canvas::paintEvent(QPaintEvent *)
     QPainter painter(this);
     painter.setRenderHint(QPainter::Antialiasing);
 
+    QFontMetrics fm = painter.fontMetrics();
+
     // Paint Eras
     for(Era* e : eras_vector)
     {
@@ -57,7 +59,6 @@ void Canvas::paintEvent(QPaintEvent *)
 
         // Paint era labels (widget)
         // Get label width
-        QFontMetrics fm = painter.fontMetrics();
         int label_width = fm.horizontalAdvance(e->getName()) + 20;
         int label_height = 30;
 
@@ -127,6 +128,19 @@ void Canvas::paintEvent(QPaintEvent *)
     painter.setPen(QPen(Qt::red, 0.5));
     int current_date_position = getDatePosition(QDate::currentDate());
     painter.drawLine(current_date_position, 0, current_date_position, height());
+
+    // Draw Events
+    for(Category* c : categories)
+    {
+        for(Event* e : c->events)
+        {
+            int event_width = fm.horizontalAdvance(e->getName()) + 20;
+            int event_height = 30;
+            e->setGeometry(getDatePosition(e->getDate())-event_width/2, (height() / 2) + v_offset - 2*event_height, event_width, event_height);
+            //e->setGeometry(100, 100, 100, 100);
+            e->show();
+        }
+    }
 }
 
 void Canvas::mousePressEvent(QMouseEvent *event)
@@ -314,7 +328,7 @@ void Canvas::openEventCreationDialog()
 
     if (dialog.exec() == QDialog::Accepted)
     {
-        Event new_event = Event(dialog.name(), dialog.date(), dialog.category()->name);        
+        Event* new_event = new Event(dialog.name(), dialog.date(), dialog.category()->name, this);
         for (Category* c : categories)
         {
             if (c == dialog.category())
@@ -336,7 +350,7 @@ void Canvas::openPeriodCreationDialog()
 
     if (dialog.exec() == QDialog::Accepted)
     {
-        Period new_period = Period(dialog.name(), dialog.starting_date(), dialog.ending_date(), dialog.category()->name);
+        Period* new_period = new Period(dialog.name(), dialog.starting_date(), dialog.ending_date(), dialog.category()->name, this);
         for (Category* c : categories)
         {
             if (c == dialog.category())

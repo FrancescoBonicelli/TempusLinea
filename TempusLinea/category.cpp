@@ -5,11 +5,12 @@ Category::Category()
 
 }
 
-Category::Category(QString name, QColor color)
+Category::Category(QString name, QColor color, QWidget* canvas)
 {
     this->name = name;
     this->color = color;
     this->visible = true;
+    this->canvas = canvas;
 }
 
 void Category::setName(QString name)
@@ -51,26 +52,38 @@ void Category::read(const QJsonObject& json)
     if (json.contains("visible") && json["visible"].isBool())
         visible = json["visible"].toBool();
 
-    if (json.contains("events") && json["events"].isArray()) {
+    if (json.contains("events") && json["events"].isArray())
+    {
         QJsonArray events_array = json["events"].toArray();
+
+        for(Event* e : events)
+            delete e;
         events.clear();
-        for (int event_index = 0; event_index < events_array.size(); ++event_index) {
+
+        for (int event_index = 0; event_index < events_array.size(); ++event_index)
+        {
             QJsonObject event_obj = events_array[event_index].toObject();
-            Event event = Event();
-            event.read(event_obj);
-            event.setCategory(name);
+            Event* event = new Event(canvas);
+            event->read(event_obj);
+            event->setCategory(name);
             events.push_back(event);
         }
     }
 
-    if (json.contains("periods") && json["periods"].isArray()) {
+    if (json.contains("periods") && json["periods"].isArray())
+    {
         QJsonArray periods_array = json["periods"].toArray();
+
+        for(Period* p : periods)
+            delete p;
         periods.clear();
-        for (int period_index = 0; period_index < periods_array.size(); ++period_index) {
+
+        for (int period_index = 0; period_index < periods_array.size(); ++period_index)
+        {
             QJsonObject period_obj = periods_array[period_index].toObject();
-            Period period = Period();
-            period.read(period_obj);
-            period.setCategory(name);
+            Period* period = new Period(canvas);
+            period->read(period_obj);
+            period->setCategory(name);
             periods.push_back(period);
         }
     }
@@ -83,19 +96,19 @@ void Category::write(QJsonObject& json) const
     json["visible"] = visible;
 
     QJsonArray events_array;
-    for (Event e : events)
+    for (Event* e : events)
     {
         QJsonObject event_object;
-        e.write(event_object);
+        e->write(event_object);
         events_array.append(event_object);
     }
     json["events"] = events_array;
 
     QJsonArray periods_array;
-    for (Period p : periods)
+    for (Period* p : periods)
     {
         QJsonObject period_object;
-        p.write(period_object);
+        p->write(period_object);
         periods_array.append(period_object);
     }
     json["periods"] = periods_array;

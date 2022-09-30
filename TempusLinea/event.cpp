@@ -1,13 +1,21 @@
 #include "event.h"
 
-Event::Event()
+Event::Event(QWidget *parent)
+    : QWidget{parent}
 {
+    label = new QLabel(this);
 
+    QHBoxLayout* layout = new QHBoxLayout();
+    layout->addWidget(label);
+
+    this->setLayout(layout);
 }
 
-Event::Event(QString name, QDate date, QString& category)
+Event::Event(QString name, QDate date, QString& category, QWidget *parent)
+    : Event{parent}
 {
     this->name = name;
+    this->label->setText(name);
     this->date = date;
     this->category = &category;
 }

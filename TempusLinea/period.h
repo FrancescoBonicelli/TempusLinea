@@ -1,15 +1,17 @@
 #ifndef PERIOD_H
 #define PERIOD_H
 
+#include <QWidget>
 #include <QString>
 #include <QDate>
 #include <QJsonObject>
 
-class Period
+class Period : public QWidget
 {
+    Q_OBJECT
 public:
-    Period();
-    Period(QString name, QDate starting_date, QDate ending_date, QString& category);
+    Period(QWidget *parent = nullptr);
+    Period(QString name, QDate starting_date, QDate ending_date, QString& category, QWidget *parent = nullptr);
 
     void setName(QString name);
     void setStartingDate(QDate starting_date);

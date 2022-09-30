@@ -107,7 +107,7 @@ void CategoriesManager::createCategory()
 
     if (dialog.exec() == QDialog::Accepted)
     {
-        Category* new_category = new Category(dialog.name(), dialog.color());
+        Category* new_category = new Category(dialog.name(), dialog.color(), this->parentWidget());
         categories->push_back(new_category);
 
         drawCategoryLine(new_category);

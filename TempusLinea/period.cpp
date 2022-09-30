@@ -1,11 +1,13 @@
 #include "period.h"
 
-Period::Period()
+Period::Period(QWidget *parent)
+    : QWidget{parent}
 {
 
 }
 
-Period::Period(QString name, QDate starting_date, QDate ending_date, QString& category)
+Period::Period(QString name, QDate starting_date, QDate ending_date, QString& category, QWidget *parent)
+    : Period{parent}
 {
     this->name = name;
     this->starting_date = starting_date;

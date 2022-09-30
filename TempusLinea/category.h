@@ -6,6 +6,7 @@
 #include <QColor>
 #include <QJsonObject>
 #include <QJsonArray>
+#include <QWidget>
 
 #include "event.h"
 #include "period.h"
@@ -14,7 +15,7 @@ class Category
 {
 public:
     Category();
-    Category(QString name, QColor color);
+    Category(QString name, QColor color, QWidget* canvas);
 
     QString name;
 
@@ -26,8 +27,8 @@ public:
     QColor getColor();
     bool isVisible();
 
-    std::vector<Event> events;
-    std::vector<Period> periods;
+    std::vector<Event*> events;
+    std::vector<Period*> periods;
 
     void read(const QJsonObject& json);
     void write(QJsonObject& json) const;
@@ -35,6 +36,7 @@ public:
 private:
     QColor color;
     bool visible;
+    QWidget* canvas;
 };
 
 #endif // CATEGORY_H
