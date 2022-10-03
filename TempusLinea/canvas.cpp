@@ -47,6 +47,9 @@ void Canvas::paintEvent(QPaintEvent *)
 
     QFontMetrics fm = painter.fontMetrics();
 
+    // Timeline axis y position
+    int y = (height() / 2) + v_offset;
+
     // Paint Eras
     for(Era* e : eras_vector)
     {
@@ -108,21 +111,34 @@ void Canvas::paintEvent(QPaintEvent *)
     {
         for(Event* e : c->events)
         {
-            events_to_show.push_back(e);
+            if(e->getDate() > canvas_start_date && e->getDate() < canvas_end_date)
+            {
+                events_to_show.push_back(e);
+            }
         }
     }
 
     placeEvents(events_to_show);
 
-    for(Event* e : events_to_show)
+    for (Category* c : categories)
     {
-        e->setGeometry(e->label_rect);
-        e->show();
+        painter.setPen(QPen(c->getColor()));
+
+        for (Event* e : c->events)
+        {
+            if (e->getDate() > canvas_start_date && e->getDate() < canvas_end_date)
+            {
+                e->setGeometry(e->label_rect);
+                e->show();
+
+                painter.drawLine(e->label_rect.bottomLeft(), e->label_rect.bottomRight());
+                painter.drawLine(getDatePosition(e->getDate()), y, getDatePosition(e->getDate()), e->label_rect.bottom());
+            }
+        }
     }
 
     // Paint Timeline
     painter.setPen(QPen(Qt::black));
-    int y = (height() / 2) + v_offset;
     painter.drawLine(0, y, width(), y);
 
     // Compute the timelline ticks
@@ -378,7 +394,7 @@ void Canvas::placeEvents(std::vector<Event*> events_vector)
 
     for(Event* e : events_vector)
     {
-        int event_width = fm.horizontalAdvance(e->getName()) + 20;
+        int event_width = fm.horizontalAdvance(e->getName()) + 2;
         int event_height = EVENT_LABEL_HEIGHT;
         int event_start_x = getDatePosition(e->getDate())-event_width/2;
         int event_start_y = (height() / 2) + v_offset - 60;
