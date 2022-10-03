@@ -11,6 +11,7 @@ CategoriesManagerLine::CategoriesManagerLine(Category* category, QWidget *parent
     QString styleSheet = QLatin1String(file.readAll());
     check_box->setStyleSheet(styleSheet);
     check_box->setChecked(category->isVisible());
+    connect(check_box, &QCheckBox::toggled, this, &CategoriesManagerLine::setVisibility);
 
     color_box = new QWidget();
     QPalette p(palette());
@@ -55,6 +56,11 @@ void CategoriesManagerLine::mouseDoubleClickEvent(QMouseEvent *event)
     {
         emit deleteCategory(category);
     }
+}
+
+void CategoriesManagerLine::setVisibility(bool checked)
+{
+    category->setVisibility(checked);
 }
 
 

@@ -30,6 +30,9 @@ public:
 signals:
     void deleteCategory(Category*);
 
+public slots:
+    void setVisibility(bool checked);
+
 protected:
     void mouseDoubleClickEvent(QMouseEvent *event) override;
 

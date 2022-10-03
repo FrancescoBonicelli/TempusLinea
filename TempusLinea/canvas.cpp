@@ -105,7 +105,7 @@ void Canvas::paintEvent(QPaintEvent *)
         else e->setVisible(false);
     }
 
-    // Draw Events
+    // Paint Events
     std::vector<Event*> events_to_show;
     for(Category* c : categories)
     {
@@ -129,10 +129,14 @@ void Canvas::paintEvent(QPaintEvent *)
             if (e->getDate() > canvas_start_date && e->getDate() < canvas_end_date)
             {
                 e->setGeometry(e->label_rect);
-                e->show();
+                e->setVisible(c->isVisible());
 
-                painter.drawLine(e->label_rect.bottomLeft(), e->label_rect.bottomRight());
-                painter.drawLine(getDatePosition(e->getDate()), y, getDatePosition(e->getDate()), e->label_rect.bottom());
+                if(c->isVisible())
+                {
+                    // Paint the lines
+                    painter.drawLine(e->label_rect.bottomLeft(), e->label_rect.bottomRight());
+                    painter.drawLine(getDatePosition(e->getDate()), y, getDatePosition(e->getDate()), e->label_rect.bottom());
+                }
             }
         }
     }
