@@ -25,6 +25,7 @@ void Category::setColor(QColor color)
 void Category::setVisibility(bool visible)
 {
     this->visible = visible;
+    this->canvas->update();
 }
 
 QString Category::getName()
