@@ -7,6 +7,7 @@ Event::Event(QWidget *parent)
 
     QHBoxLayout* layout = new QHBoxLayout();
     layout->setContentsMargins(0,0,0,0);
+    layout->setAlignment(Qt::AlignCenter);
     layout->addWidget(label);
 
     this->setLayout(layout);
