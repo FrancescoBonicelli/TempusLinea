@@ -102,6 +102,24 @@ void Canvas::paintEvent(QPaintEvent *)
         else e->setVisible(false);
     }
 
+    // Draw Events
+    std::vector<Event*> events_to_show;
+    for(Category* c : categories)
+    {
+        for(Event* e : c->events)
+        {
+            events_to_show.push_back(e);
+        }
+    }
+
+    placeEvents(events_to_show);
+
+    for(Event* e : events_to_show)
+    {
+        e->setGeometry(e->label_rect);
+        e->show();
+    }
+
     // Paint Timeline
     painter.setPen(QPen(Qt::black));
     int y = (height() / 2) + v_offset;
@@ -128,24 +146,6 @@ void Canvas::paintEvent(QPaintEvent *)
     painter.setPen(QPen(Qt::red, 0.5));
     int current_date_position = getDatePosition(QDate::currentDate());
     painter.drawLine(current_date_position, 0, current_date_position, height());
-
-    // Draw Events
-    std::vector<Event*> events_to_show;
-    for(Category* c : categories)
-    {
-        for(Event* e : c->events)
-        {
-            events_to_show.push_back(e);
-        }
-    }
-
-    placeEvents(events_to_show);
-
-    for(Event* e : events_to_show)
-    {
-        e->setGeometry(e->label_rect);
-        e->show();
-    }
 }
 
 void Canvas::mousePressEvent(QMouseEvent *event)
@@ -373,7 +373,7 @@ void Canvas::openPeriodEditDialog(Period* period)
 
 void Canvas::placeEvents(std::vector<Event*> events_vector)
 {
-    QPainter painter(this);
+    QPainter painter;
     QFontMetrics fm = painter.fontMetrics();
 
     for(Event* e : events_vector)
