@@ -381,7 +381,7 @@ void Canvas::placeEvents(std::vector<Event*> events_vector)
         int event_width = fm.horizontalAdvance(e->getName()) + 20;
         int event_height = EVENT_LABEL_HEIGHT;
         int event_start_x = getDatePosition(e->getDate())-event_width/2;
-        int event_start_y = (height() / 2) + v_offset - 40;
+        int event_start_y = (height() / 2) + v_offset - 60;
 
         e->label_rect = QRect(event_start_x, event_start_y, event_width, event_height);
     }
