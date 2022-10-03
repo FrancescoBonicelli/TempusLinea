@@ -19,7 +19,7 @@ Canvas::Canvas(QWidget* parent) : QWidget{parent}
     connect(mouse_menu, &MouseMenu::newPeriodClicked, this, &Canvas::openPeriodCreationDialog);
 
     // Add default category
-    categories.push_back(new Category("", Qt::transparent, this));
+    categories.push_back(new Category("", Qt::black, this));
     // Implement Categories Manager
     categories_manager = new CategoriesManager(categories, this);
     categories_manager->move(QPoint(width() - categories_manager->width(), 0) + CATEGORIES_MANAGER_MARGINS);
