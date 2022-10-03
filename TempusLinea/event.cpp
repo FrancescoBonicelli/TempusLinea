@@ -6,6 +6,7 @@ Event::Event(QWidget *parent)
     label = new QLabel(this);
 
     QHBoxLayout* layout = new QHBoxLayout();
+    layout->setContentsMargins(0,0,0,0);
     layout->addWidget(label);
 
     this->setLayout(layout);

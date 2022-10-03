@@ -26,6 +26,8 @@ public:
     void read(const QJsonObject& json);
     void write(QJsonObject& json) const;
 
+    QRect label_rect;
+
 private:
     QString name;
     QDate date;

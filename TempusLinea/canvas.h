@@ -23,6 +23,9 @@
 
 #define MOUSE_MENU_SIZE 100
 
+#define EVENT_LABEL_HEIGHT 20
+#define EVENT_LABEL_V_SPACING 10
+
 class Canvas : public QWidget
 {
     Q_OBJECT
@@ -65,6 +68,7 @@ private:
     bool dragging;
 
     int getDatePosition(QDate d);
+    void placeEvents(std::vector<Event*> events_vector);
 
     MouseMenu *mouse_menu;
 };

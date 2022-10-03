@@ -130,16 +130,21 @@ void Canvas::paintEvent(QPaintEvent *)
     painter.drawLine(current_date_position, 0, current_date_position, height());
 
     // Draw Events
+    std::vector<Event*> events_to_show;
     for(Category* c : categories)
     {
         for(Event* e : c->events)
         {
-            int event_width = fm.horizontalAdvance(e->getName()) + 20;
-            int event_height = 30;
-            e->setGeometry(getDatePosition(e->getDate())-event_width/2, (height() / 2) + v_offset - 2*event_height, event_width, event_height);
-            //e->setGeometry(100, 100, 100, 100);
-            e->show();
+            events_to_show.push_back(e);
         }
+    }
+
+    placeEvents(events_to_show);
+
+    for(Event* e : events_to_show)
+    {
+        e->setGeometry(e->label_rect);
+        e->show();
     }
 }
 
@@ -364,4 +369,43 @@ void Canvas::openPeriodCreationDialog()
 void Canvas::openPeriodEditDialog(Period* period)
 {
 
+}
+
+void Canvas::placeEvents(std::vector<Event*> events_vector)
+{
+    QPainter painter(this);
+    QFontMetrics fm = painter.fontMetrics();
+
+    for(Event* e : events_vector)
+    {
+        int event_width = fm.horizontalAdvance(e->getName()) + 20;
+        int event_height = EVENT_LABEL_HEIGHT;
+        int event_start_x = getDatePosition(e->getDate())-event_width/2;
+        int event_start_y = (height() / 2) + v_offset - 40;
+
+        e->label_rect = QRect(event_start_x, event_start_y, event_width, event_height);
+    }
+
+    for(int i = 0; i < events_vector.size(); i++)
+    {
+        bool placed = false;
+
+        while(!placed)
+        {
+            placed = true;
+
+            for(int y = 0; y < events_vector.size(); y++)
+            {
+                if(y != i)
+                {
+                    if(events_vector.at(i)->label_rect.intersects(events_vector.at(y)->label_rect))
+                    {
+                        placed = false;
+                        events_vector.at(i)->label_rect.adjust(0, -EVENT_LABEL_V_SPACING, 0, -EVENT_LABEL_V_SPACING);
+                        break;
+                    }
+                }
+            }
+        }
+    }
 }
