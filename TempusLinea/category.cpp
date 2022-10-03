@@ -1,16 +1,15 @@
 #include "category.h"
 
-Category::Category()
+Category::Category(QWidget* canvas)
 {
-
+    this->canvas = canvas;
 }
 
-Category::Category(QString name, QColor color, QWidget* canvas)
+Category::Category(QString name, QColor color, QWidget* canvas) : Category(canvas)
 {
     this->name = name;
     this->color = color;
     this->visible = true;
-    this->canvas = canvas;
 }
 
 void Category::setName(QString name)

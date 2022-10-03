@@ -259,7 +259,7 @@ void Canvas::read(const QJsonObject& json)
         categories.clear();
         for (int category_index = 0; category_index < categories_array.size(); ++category_index) {
             QJsonObject category_obj = categories_array[category_index].toObject();
-            Category* category = new Category();
+            Category* category = new Category(this);
             category->read(category_obj);
             categories.push_back(category);
         }

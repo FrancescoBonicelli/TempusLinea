@@ -14,7 +14,7 @@
 class Category
 {
 public:
-    Category();
+    Category(QWidget* canvas);
     Category(QString name, QColor color, QWidget* canvas);
 
     QString name;

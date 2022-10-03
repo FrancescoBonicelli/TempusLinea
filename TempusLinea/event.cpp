@@ -55,7 +55,7 @@ void Event::read(const QJsonObject& json)
     if (json.contains("name") && json["name"].isString())
         name = json["name"].toString();
     if (json.contains("date") && json["date"].isString())
-        date = QDate::fromString(json["date"].toString());
+        date = QDate::fromString(json["date"].toString(), Qt::ISODate);
 }
 
 void Event::write(QJsonObject& json) const
