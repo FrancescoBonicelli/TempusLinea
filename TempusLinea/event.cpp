@@ -24,6 +24,7 @@ Event::Event(QString name, QDate date, QString& category, QWidget *parent)
 void Event::setName(QString name)
 {
     this->name = name;
+    this->label->setText(name);
 }
 
 void Event::setDate(QDate date)
