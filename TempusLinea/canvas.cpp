@@ -131,13 +131,14 @@ void Canvas::paintEvent(QPaintEvent *)
                 e->setGeometry(e->label_rect);
                 e->setVisible(c->isVisible());
 
-                if(c->isVisible())
+                if (c->isVisible())
                 {
                     // Paint the lines
                     painter.drawLine(e->label_rect.bottomLeft(), e->label_rect.bottomRight());
                     painter.drawLine(getDatePosition(e->getDate()), y, getDatePosition(e->getDate()), e->label_rect.bottom());
                 }
             }
+            else e->setVisible(false);
         }
     }
 
