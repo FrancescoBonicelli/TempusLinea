@@ -2,7 +2,6 @@
 
 Era::Era(QWidget* parent) : QWidget{ parent }
 {
-    setVisible(false);
 }
 
 Era::Era(const Era& era) : QWidget{ era.parent }
@@ -11,7 +10,6 @@ Era::Era(const Era& era) : QWidget{ era.parent }
     this->color = era.color;
     this->starting_date = era.starting_date;
     this->ending_date = era.ending_date;
-    setVisible(false);
 }
 
 Era::Era(QString name, QDate starting_date, QDate ending_date, QColor color, QWidget* parent) : QWidget{ parent }
@@ -22,7 +20,6 @@ Era::Era(QString name, QDate starting_date, QDate ending_date, QColor color, QWi
     this->ending_date = ending_date;
 
     this->parent = parent;
-    setVisible(false);
 }
 
 Era::~Era()
