@@ -394,16 +394,13 @@ void Canvas::placeEvents(std::vector<Event*> events_vector)
         {
             placed = true;
 
-            for(int y = 0; y < events_vector.size(); y++)
+            for (int y = 0; y < i; y++)
             {
-                if(y != i)
+                if (events_vector.at(i)->label_rect.intersects(events_vector.at(y)->label_rect))
                 {
-                    if(events_vector.at(i)->label_rect.intersects(events_vector.at(y)->label_rect))
-                    {
-                        placed = false;
-                        events_vector.at(i)->label_rect.adjust(0, -EVENT_LABEL_V_SPACING, 0, -EVENT_LABEL_V_SPACING);
-                        break;
-                    }
+                    placed = false;
+                    events_vector.at(i)->label_rect.adjust(0, -EVENT_LABEL_V_SPACING, 0, -EVENT_LABEL_V_SPACING);
+                    break;
                 }
             }
         }
