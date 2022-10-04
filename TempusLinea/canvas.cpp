@@ -57,8 +57,9 @@ void Canvas::paintEvent(QPaintEvent *)
         QPoint starting_point(getDatePosition(e->getStartingDate()), 0);
         QPoint ending_point(getDatePosition(e->getEndingDate()), height());
         QColor era_color = e->getColor();
-        era_color.setAlpha(50);
-        painter.fillRect(QRect(starting_point, ending_point), era_color);
+        era_color.setAlpha(100);
+        QBrush era_brush = QBrush(era_color, Qt::DiagCrossPattern);
+        painter.fillRect(QRect(starting_point, ending_point), era_brush);
 
         // Paint era labels (widget)
         // Get label width
