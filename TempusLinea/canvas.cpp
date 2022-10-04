@@ -266,10 +266,11 @@ void Canvas::read(const QJsonObject& json)
         v_offset = json["canvas_v_offset"].toString().toInt();
     }
 
+    for (Era* e : eras_vector) delete(e);
+    eras_vector.clear();
+
     if (json.contains("eras") && json["eras"].isArray()) {
         QJsonArray eras_array = json["eras"].toArray();
-        for (Era* e : eras_vector) delete(e);
-        eras_vector.clear();
         for (int era_index = 0; era_index < eras_array.size(); ++era_index) {
             QJsonObject era_obj = eras_array[era_index].toObject();
             Era* era = new Era(this);
@@ -279,10 +280,18 @@ void Canvas::read(const QJsonObject& json)
         }
     }
 
+    for (Category* c : categories)
+    { 
+        for (Event* e : c->events) delete(e);
+        c->events.clear();
+        for (Period* p : c->periods) delete(p);
+        c->periods.clear();
+        delete(c);
+    }
+    categories.clear();
+
     if (json.contains("categories") && json["categories"].isArray()) {
         QJsonArray categories_array = json["categories"].toArray();
-        for (Category* c : categories) delete(c);
-        categories.clear();
         for (int category_index = 0; category_index < categories_array.size(); ++category_index) {
             QJsonObject category_obj = categories_array[category_index].toObject();
             Category* category = new Category(this);

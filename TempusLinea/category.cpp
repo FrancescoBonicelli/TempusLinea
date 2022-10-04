@@ -52,13 +52,13 @@ void Category::read(const QJsonObject& json)
     if (json.contains("visible") && json["visible"].isBool())
         visible = json["visible"].toBool();
 
+    for (Event* e : events)
+        delete e;
+    events.clear();
+
     if (json.contains("events") && json["events"].isArray())
     {
         QJsonArray events_array = json["events"].toArray();
-
-        for(Event* e : events)
-            delete e;
-        events.clear();
 
         for (int event_index = 0; event_index < events_array.size(); ++event_index)
         {
@@ -70,13 +70,13 @@ void Category::read(const QJsonObject& json)
         }
     }
 
+    for (Period* p : periods)
+        delete p;
+    periods.clear();
+
     if (json.contains("periods") && json["periods"].isArray())
     {
         QJsonArray periods_array = json["periods"].toArray();
-
-        for(Period* p : periods)
-            delete p;
-        periods.clear();
 
         for (int period_index = 0; period_index < periods_array.size(); ++period_index)
         {
