@@ -118,7 +118,7 @@ void Canvas::paintEvent(QPaintEvent *)
         }
     }
 
-    placeEvents(events_to_show);
+    placeEvents(events_to_show, fm);
 
     for (Category* c : categories)
     {
@@ -445,11 +445,8 @@ void Canvas::openPeriodEditDialog(Period* period)
 
 }
 
-void Canvas::placeEvents(std::vector<Event*> events_vector)
+void Canvas::placeEvents(std::vector<Event*> events_vector, QFontMetrics fm)
 {
-    QPainter painter;
-    QFontMetrics fm = painter.fontMetrics();
-
     for(Event* e : events_vector)
     {
         int event_width = fm.horizontalAdvance(e->getName()) + 2;
