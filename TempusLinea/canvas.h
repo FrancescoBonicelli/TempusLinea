@@ -67,7 +67,7 @@ private:
     bool dragging;
 
     int getDatePosition(QDate d);
-    void placeEvents(std::vector<Event*> events_vector);
+    void placeEvents(std::vector<Event*> events_vector, QFontMetrics fm);
 
     MouseMenu *mouse_menu;
 };
