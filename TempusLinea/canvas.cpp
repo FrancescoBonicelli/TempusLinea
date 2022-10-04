@@ -447,8 +447,6 @@ void Canvas::openPeriodEditDialog(Period* period)
 
 void Canvas::placeEvents(std::vector<Event*> events_vector, QFontMetrics fm)
 {
-    QPainter painter;
-    QFontMetrics fm = painter.fontMetrics();
     int event_height = EVENT_LABEL_HEIGHT;
     int event_start_y = (height() / 2) + v_offset - 60;
 
