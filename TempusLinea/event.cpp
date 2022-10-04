@@ -9,6 +9,7 @@ Event::Event(QWidget *parent)
     layout->setContentsMargins(0,0,0,0);
     layout->setAlignment(Qt::AlignCenter);
     layout->addWidget(label);
+    label->setAutoFillBackground(true);
 
     this->setLayout(layout);
 }
