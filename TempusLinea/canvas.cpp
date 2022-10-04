@@ -48,7 +48,7 @@ void Canvas::paintEvent(QPaintEvent *)
     QFontMetrics fm = painter.fontMetrics();
 
     // Timeline axis y position
-    int y = (height() / 2) + v_offset;
+    int timeline_y = (height() / 2) + v_offset;
 
     // Paint Eras
     for(Era* e : eras_vector)
@@ -135,7 +135,7 @@ void Canvas::paintEvent(QPaintEvent *)
                 {
                     // Paint the lines
                     painter.drawLine(e->label_rect.bottomLeft(), e->label_rect.bottomRight());
-                    painter.drawLine(getDatePosition(e->getDate()), y, getDatePosition(e->getDate()), e->label_rect.bottom());
+                    painter.drawLine(getDatePosition(e->getDate()), timeline_y, getDatePosition(e->getDate()), e->label_rect.bottom());
                 }
             }
             else e->setVisible(false);
@@ -144,7 +144,7 @@ void Canvas::paintEvent(QPaintEvent *)
 
     // Paint Timeline
     painter.setPen(QPen(Qt::black));
-    painter.drawLine(0, y, width(), y);
+    painter.drawLine(0, timeline_y, width(), timeline_y);
 
     // Compute the timelline ticks
     std::array<int, 3> ticks_width_array{ 1, 2, 5};
@@ -160,8 +160,8 @@ void Canvas::paintEvent(QPaintEvent *)
     for (QDate d = first_tick_date; d <= canvas_end_date; d = d.addYears(ticks_width))
     {
         int x = getDatePosition(d);
-        painter.drawLine(x, y + 5, x, y - 5);
-        painter.drawText(x, y - 10, std::to_string(d.year()).data());
+        painter.drawLine(x, timeline_y + 5, x, timeline_y - 5);
+        painter.drawText(x, timeline_y - 10, std::to_string(d.year()).data());
     }
 
     painter.setPen(QPen(Qt::red, 0.5));
@@ -449,13 +449,13 @@ void Canvas::placeEvents(std::vector<Event*> events_vector)
 {
     QPainter painter;
     QFontMetrics fm = painter.fontMetrics();
+    int event_height = EVENT_LABEL_HEIGHT;
+    int event_start_y = (height() / 2) + v_offset - 60;
 
     for(Event* e : events_vector)
     {
         int event_width = fm.horizontalAdvance(e->getName()) + 2;
-        int event_height = EVENT_LABEL_HEIGHT;
         int event_start_x = getDatePosition(e->getDate())-event_width/2;
-        int event_start_y = (height() / 2) + v_offset - 60;
 
         e->label_rect = QRect(event_start_x, event_start_y, event_width, event_height);
     }
@@ -473,7 +473,7 @@ void Canvas::placeEvents(std::vector<Event*> events_vector)
                 if (events_vector.at(i)->label_rect.intersects(events_vector.at(y)->label_rect))
                 {
                     placed = false;
-                    events_vector.at(i)->label_rect.adjust(0, -EVENT_LABEL_V_SPACING, 0, -EVENT_LABEL_V_SPACING);
+                    events_vector.at(i)->label_rect.adjust(0, -EVENT_LABEL_HEIGHT, 0, -EVENT_LABEL_HEIGHT);
                     break;
                 }
             }
