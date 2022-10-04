@@ -3,13 +3,13 @@
 Category::Category(QWidget* canvas)
 {
     this->canvas = canvas;
+    this->visible = true;
 }
 
 Category::Category(QString name, QColor color, QWidget* canvas) : Category(canvas)
 {
     this->name = name;
     this->color = color;
-    this->visible = true;
 }
 
 void Category::setName(QString name)

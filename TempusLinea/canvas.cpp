@@ -296,6 +296,14 @@ void Canvas::read(const QJsonObject& json)
             QJsonObject category_obj = categories_array[category_index].toObject();
             Category* category = new Category(this);
             category->read(category_obj);
+            for (Event* e : category->events)
+            {
+                connect(e, &Event::editEvent, this, &Canvas::openEventEditDialog);
+            }
+            //for (Period* p : category->periods)
+            //{
+            //    connect(p, &Period::editPeriod, this, &Canvas::openPeriodEditDialog);
+            //}
             categories.push_back(category);
         }
         categories_manager->refreshCategories();
@@ -364,6 +372,7 @@ void Canvas::openEventCreationDialog()
     if (dialog.exec() == QDialog::Accepted)
     {
         Event* new_event = new Event(dialog.name(), dialog.date(), dialog.category()->name, this);
+        connect(new_event, &Event::editEvent, this, &Canvas::openEventEditDialog);
         for (Category* c : categories)
         {
             if (c == dialog.category())
@@ -376,7 +385,42 @@ void Canvas::openEventCreationDialog()
 
 void Canvas::openEventEditDialog(Event* event)
 {
+    EventForm dialog(event->getName() + tr(" Event Details"), event, categories, this);
 
+    int out = dialog.exec();
+    if (out == QDialog::Accepted)
+    {
+        // Remove the event from the old category
+        for (Category* c : categories)
+        {
+            for (Event* e : c->events)
+            {
+                if(e == event) c->events.erase(std::remove(c->events.begin(), c->events.end(), e), c->events.end());
+            }
+        }
+
+        // Edit the event
+        event->setName(dialog.name());
+        event->setDate(dialog.date());
+        event->setCategory(dialog.category()->name);
+
+        // Insert the event in the new category
+        for (Category* c : categories)
+        {
+            if (c == dialog.category())
+            {
+                c->events.push_back(event);
+            }
+        }
+    }
+    else if (out == QDialog::Rejected && dialog.name() == "~")
+    {
+        delete(event);
+        for (Category* c : categories)
+        {
+            c->events.erase(std::remove(c->events.begin(), c->events.end(), event), c->events.end());
+        }
+    }
 }
 
 void Canvas::openPeriodCreationDialog()

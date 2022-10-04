@@ -70,3 +70,11 @@ void Event::write(QJsonObject& json) const
     json["name"] = name;
     json["date"] = date.toString(Qt::ISODate);
 }
+
+void Event::mouseDoubleClickEvent(QMouseEvent* event)
+{
+    if (event->button() == Qt::LeftButton)
+    {
+        emit editEvent(this);
+    }
+}

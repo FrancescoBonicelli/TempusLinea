@@ -7,6 +7,7 @@
 #include <QJsonObject>
 #include <QLabel>
 #include <QHBoxLayout>
+#include <QMouseEvent>
 
 class Event : public QWidget
 {
@@ -28,11 +29,17 @@ public:
 
     QRect label_rect;
 
+signals:
+    void editEvent(Event*);
+
 private:
     QString name;
     QDate date;
     QString *category;
     QLabel* label;
+
+protected:
+    void mouseDoubleClickEvent(QMouseEvent* event) override;
 };
 
 #endif // EVENT_H
