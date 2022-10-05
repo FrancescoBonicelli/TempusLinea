@@ -253,6 +253,12 @@ int Canvas::getDatePosition(QDate d)
     return width() * canvas_start_date.daysTo(d) / x_span;
 }
 
+QDate Canvas::getDateFromPosition(int p)
+{
+    int x_span = canvas_start_date.daysTo(canvas_end_date);
+    return canvas_start_date.addDays(p / width() * x_span);
+}
+
 void Canvas::read(const QJsonObject& json)
 {
     if (json.contains("canvas_period") && json["canvas_period"].isString())
