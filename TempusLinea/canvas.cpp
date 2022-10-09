@@ -110,11 +110,14 @@ void Canvas::paintEvent(QPaintEvent *)
     std::vector<Event*> events_to_show;
     for(Category* c : categories)
     {
-        for(Event* e : c->events)
+        if (c->isVisible())
         {
-            if(e->getDate() > canvas_start_date && e->getDate() < canvas_end_date)
+            for (Event* e : c->events)
             {
-                events_to_show.push_back(e);
+                if (e->getDate() > canvas_start_date && e->getDate() < canvas_end_date)
+                {
+                    events_to_show.push_back(e);
+                }
             }
         }
     }
