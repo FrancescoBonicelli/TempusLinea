@@ -163,6 +163,9 @@ void Canvas::paintEvent(QPaintEvent *)
             for(Period* p : c->periods)
             {
                 painter.drawLine(p->period_rect.topLeft(), p->period_rect.topRight());
+
+                p->setGeometry(p->label_rect);
+                p->setVisible(c->isVisible());
             }
         }
         else
