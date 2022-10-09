@@ -70,14 +70,18 @@ QString Period::getCategory()
 
 void Period::read(const QJsonObject& json)
 {
-    if (json.contains("period") && json["period"].isString())
+    if(json.contains("period") && json["period"].isString())
     {
         QStringList dates = json["period"].toString().split(", ");
         starting_date = QDate::fromString(dates.first(), Qt::ISODate);
         ending_date = QDate::fromString(dates.last(), Qt::ISODate);
     }
-    if (json.contains("name") && json["name"].isString())
+
+    if(json.contains("name") && json["name"].isString())
+    {
         name = json["name"].toString();
+        this->label->setText(name);
+    }
 }
 
 void Period::write(QJsonObject& json) const
