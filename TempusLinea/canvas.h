@@ -24,6 +24,7 @@
 #define MOUSE_MENU_SIZE 100
 
 #define EVENT_LABEL_HEIGHT 20
+#define PERIOD_LABEL_HEIGHT 20
 
 class Canvas : public QWidget
 {
@@ -69,6 +70,7 @@ private:
     int getDatePosition(QDate d);
     QDate getDateFromPosition(int p);
     void placeEvents(std::vector<Event*> events_vector, QFontMetrics fm);
+    void placePeriod(std::vector<Period*> periods_vector, QFontMetrics fm);
 
     MouseMenu *mouse_menu;
 };

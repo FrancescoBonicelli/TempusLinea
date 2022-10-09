@@ -488,3 +488,45 @@ void Canvas::placeEvents(std::vector<Event*> events_vector, QFontMetrics fm)
         }
     }
 }
+
+void Canvas::placePeriod(std::vector<Period*> periods_vector, QFontMetrics fm)
+{
+    int period_height = PERIOD_LABEL_HEIGHT;
+    int period_start_y = (height() / 2) + v_offset + 60;
+
+    for(Period* p : periods_vector)
+    {
+        int period_start_x = getDatePosition(p->getStartingDate());
+        int period_end_x = getDatePosition(p->getStartingDate());
+
+        int label_start_x = p->getStartingDate() > canvas_start_date ? period_start_x : 2;
+        int label_width = fm.horizontalAdvance(p->getName()) + 2;
+
+        p->label_rect = QRect(label_start_x, period_start_y, label_width, period_height);
+        p->period_rect = QRect(QPoint(period_start_x, period_start_y), QPoint(period_end_x, period_start_y+period_height));
+    }
+
+    for(int i = 0; i < periods_vector.size(); i++)
+    {
+        bool placed = false;
+
+        while(!placed)
+        {
+            placed = true;
+
+            for (int y = 0; y < i; y++)
+            {
+                if(   periods_vector.at(i)->label_rect.intersects(periods_vector.at(y)->label_rect)
+                   || periods_vector.at(i)->label_rect.intersects(periods_vector.at(y)->period_rect)
+                   || periods_vector.at(i)->period_rect.intersects(periods_vector.at(y)->label_rect)
+                   || periods_vector.at(i)->period_rect.intersects(periods_vector.at(y)->period_rect))
+                {
+                    placed = false;
+                    periods_vector.at(i)->label_rect.adjust(0, -PERIOD_LABEL_HEIGHT, 0, -PERIOD_LABEL_HEIGHT);
+                    periods_vector.at(i)->period_rect.adjust(0, -PERIOD_LABEL_HEIGHT, 0, -PERIOD_LABEL_HEIGHT);
+                    break;
+                }
+            }
+        }
+    }
+}

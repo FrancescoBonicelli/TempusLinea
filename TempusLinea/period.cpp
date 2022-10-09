@@ -3,7 +3,15 @@
 Period::Period(QWidget *parent)
     : QWidget{parent}
 {
+    label = new QLabel(this);
 
+    QHBoxLayout* layout = new QHBoxLayout();
+    layout->setContentsMargins(0,0,0,0);
+    layout->setAlignment(Qt::AlignCenter);
+    layout->addWidget(label);
+    label->setAutoFillBackground(true);
+
+    this->setLayout(layout);
 }
 
 Period::Period(QString name, QDate starting_date, QDate ending_date, QString& category, QWidget *parent)
@@ -13,11 +21,13 @@ Period::Period(QString name, QDate starting_date, QDate ending_date, QString& ca
     this->starting_date = starting_date;
     this->ending_date = ending_date;
     this->category = &category;
+    this->label->setText(name);
 }
 
 void Period::setName(QString name)
 {
     this->name = name;
+    this->label->setText(name);
 }
 
 void Period::setStartingDate(QDate starting_date)

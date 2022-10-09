@@ -5,6 +5,8 @@
 #include <QString>
 #include <QDate>
 #include <QJsonObject>
+#include <QLabel>
+#include <QHBoxLayout>
 
 class Period : public QWidget
 {
@@ -26,10 +28,13 @@ public:
     void read(const QJsonObject& json);
     void write(QJsonObject& json) const;
 
+    QRect label_rect, period_rect;
+
 private:
     QString name;
     QDate starting_date, ending_date;
     QString* category;
+    QLabel *label;
 };
 
 #endif // PERIOD_H
