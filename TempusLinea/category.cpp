@@ -4,6 +4,7 @@ Category::Category(QWidget* canvas)
 {
     this->canvas = canvas;
     this->visible = true;
+    this->collapsed = false;
 }
 
 Category::Category(QString name, QColor color, QWidget* canvas) : Category(canvas)
@@ -41,6 +42,11 @@ QColor Category::getColor()
 bool Category::isVisible()
 {
     return visible;
+}
+
+bool Category::isCollapsed()
+{
+    return collapsed;
 }
 
 void Category::read(const QJsonObject& json)

@@ -12,6 +12,9 @@ Period::Period(QWidget *parent)
     label->setAutoFillBackground(true);
 
     this->setLayout(layout);
+
+    label_rect = QRect(0, 0, 0, 0);
+    period_rect = QRect(0, 0, 0, 0);
 }
 
 Period::Period(QString name, QDate starting_date, QDate ending_date, QString& category, QWidget *parent)

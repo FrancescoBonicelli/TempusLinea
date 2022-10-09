@@ -26,6 +26,7 @@ public:
     QString getName();
     QColor getColor();
     bool isVisible();
+    bool isCollapsed();
 
     std::vector<Event*> events;
     std::vector<Period*> periods;
@@ -36,6 +37,7 @@ public:
 private:
     QColor color;
     bool visible;
+    bool collapsed;
     QWidget* canvas;
 };
 

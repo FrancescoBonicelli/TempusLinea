@@ -146,6 +146,32 @@ void Canvas::paintEvent(QPaintEvent *)
         }
     }
 
+    // Paint Periods
+    for(Category* c : categories)
+    {
+        // Place and Draw periods for visible categories
+        if(c->isVisible())
+        {
+            placePeriods(c->periods, fm);
+        }
+
+        if(!c->isCollapsed())
+        {
+            painter.setPen(QPen(c->getColor()));
+
+            // Draw single periods
+            for(Period* p : c->periods)
+            {
+                painter.drawLine(p->period_rect.topLeft(), p->period_rect.topRight());
+            }
+        }
+        else
+        {
+
+        }
+    }
+
+
     // Paint Timeline
     painter.setPen(QPen(Qt::black));
     painter.drawLine(0, timeline_y, width(), timeline_y);
@@ -489,7 +515,7 @@ void Canvas::placeEvents(std::vector<Event*> events_vector, QFontMetrics fm)
     }
 }
 
-void Canvas::placePeriod(std::vector<Period*> periods_vector, QFontMetrics fm)
+void Canvas::placePeriods(std::vector<Period*> periods_vector, QFontMetrics fm)
 {
     int period_height = PERIOD_LABEL_HEIGHT;
     int period_start_y = (height() / 2) + v_offset + 60;
@@ -497,7 +523,7 @@ void Canvas::placePeriod(std::vector<Period*> periods_vector, QFontMetrics fm)
     for(Period* p : periods_vector)
     {
         int period_start_x = getDatePosition(p->getStartingDate());
-        int period_end_x = getDatePosition(p->getStartingDate());
+        int period_end_x = getDatePosition(p->getEndingDate());
 
         int label_start_x = 0;
         int label_width = fm.horizontalAdvance(p->getName()) + 2;
