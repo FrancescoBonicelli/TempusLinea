@@ -163,6 +163,10 @@ void Canvas::paintEvent(QPaintEvent *)
             for(Period* p : c->periods)
             {
                 painter.drawLine(p->period_rect.topLeft(), p->period_rect.topRight());
+                painter.drawLine(p->period_rect.topLeft().x(), p->period_rect.topLeft().y() - 4,
+                    p->period_rect.topLeft().x(), p->period_rect.topLeft().y() + 4);
+                painter.drawLine(p->period_rect.topRight().x(), p->period_rect.topRight().y() - 4,
+                    p->period_rect.topRight().x(), p->period_rect.topRight().y() + 4);
 
                 p->setGeometry(p->label_rect);
                 p->setVisible(c->isVisible());
@@ -539,10 +543,13 @@ void Canvas::placePeriods(std::vector<Period*> periods_vector, QFontMetrics fm)
         {
             label_start_x = p->getStartingDate() > canvas_start_date ? period_start_x : 0;  // Follow left margin
 
-            if(label_start_x + label_width > period_end_x)  // If label overcomeperiod's right limit
+            if(label_start_x + label_width > period_end_x)  // If label overcome period's right limit
             {
                 label_start_x = period_end_x - label_width;
             }
+
+            // Move the label to the right to avoid period start bar
+            label_start_x += 2;
         }
 
         p->label_rect = QRect(label_start_x, period_start_y, label_width, period_height);
