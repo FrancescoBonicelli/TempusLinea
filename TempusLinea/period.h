@@ -2,6 +2,7 @@
 #define PERIOD_H
 
 #include <QWidget>
+#include <QMouseEvent>
 #include <QString>
 #include <QDate>
 #include <QJsonObject>
@@ -30,11 +31,17 @@ public:
 
     QRect label_rect, period_rect;
 
+signals:
+    void editPeriod(Period*);
+
 private:
     QString name;
     QDate starting_date, ending_date;
     QString* category;
     QLabel *label;
+
+protected:
+    void mouseDoubleClickEvent(QMouseEvent* event) override;
 };
 
 #endif // PERIOD_H

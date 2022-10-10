@@ -335,10 +335,10 @@ void Canvas::read(const QJsonObject& json)
             {
                 connect(e, &Event::editEvent, this, &Canvas::openEventEditDialog);
             }
-            //for (Period* p : category->periods)
-            //{
-            //    connect(p, &Period::editPeriod, this, &Canvas::openPeriodEditDialog);
-            //}
+            for (Period* p : category->periods)
+            {
+                connect(p, &Period::editPeriod, this, &Canvas::openPeriodEditDialog);
+            }
             categories.push_back(category);
         }
         categories_manager->refreshCategories();
@@ -465,6 +465,7 @@ void Canvas::openPeriodCreationDialog()
     if (dialog.exec() == QDialog::Accepted)
     {
         Period* new_period = new Period(dialog.name(), dialog.starting_date(), dialog.ending_date(), dialog.category()->name, this);
+        connect(new_period, &Period::editPeriod, this, &Canvas::openPeriodEditDialog);
         for (Category* c : categories)
         {
             if (c == dialog.category())
@@ -477,7 +478,43 @@ void Canvas::openPeriodCreationDialog()
 
 void Canvas::openPeriodEditDialog(Period* period)
 {
+    PeriodForm dialog(period->getName() + tr(" Period Details"), period, categories, this);
 
+    int out = dialog.exec();
+    if (out == QDialog::Accepted)
+    {
+        // Remove the event from the old category
+        for (Category* c : categories)
+        {
+            for (Period* p : c->periods)
+            {
+                if (p == period) c->periods.erase(std::remove(c->periods.begin(), c->periods.end(), p), c->periods.end());
+            }
+        }
+
+        // Edit the event
+        period->setName(dialog.name());
+        period->setStartingDate(dialog.starting_date());
+        period->setEndingDate(dialog.ending_date());
+        period->setCategory(dialog.category()->name);
+
+        // Insert the event in the new category
+        for (Category* c : categories)
+        {
+            if (c == dialog.category())
+            {
+                c->periods.push_back(period);
+            }
+        }
+    }
+    else if (out == QDialog::Rejected && dialog.name() == "~")
+    {
+        delete(period);
+        for (Category* c : categories)
+        {
+            c->periods.erase(std::remove(c->periods.begin(), c->periods.end(), period), c->periods.end());
+        }
+    }
 }
 
 void Canvas::placeEvents(std::vector<Event*> events_vector, QFontMetrics fm)

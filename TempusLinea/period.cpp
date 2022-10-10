@@ -89,3 +89,11 @@ void Period::write(QJsonObject& json) const
     json["period"] = starting_date.toString(Qt::ISODate) + ", " + ending_date.toString(Qt::ISODate);
     json["name"] = name;
 }
+
+void Period::mouseDoubleClickEvent(QMouseEvent* period)
+{
+    if (period->button() == Qt::LeftButton)
+    {
+        emit editPeriod(this);
+    }
+}
