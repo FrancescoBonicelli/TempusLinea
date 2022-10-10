@@ -3,8 +3,8 @@
 Canvas::Canvas(QWidget* parent) : QWidget{parent}
 {
     //Setup default parameters
-    canvas_start_date = QDate(1929, 1, 1);
-    canvas_end_date = QDate(2029, 1, 1);
+    canvas_start_date = QDate(QDate::currentDate().year() - 80, 1, 1);
+    canvas_end_date = QDate(QDate::currentDate().year() + 20, 1, 1);
 
     v_offset = 0;
     dragging = false;
