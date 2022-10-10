@@ -152,14 +152,17 @@ void Canvas::paintEvent(QPaintEvent *)
             {
                 if (p->getStartingDate() < canvas_end_date && p->getEndingDate() > canvas_start_date)
                 {
-                    painter.drawLine(p->period_rect.topLeft(), p->period_rect.topRight());
-                    painter.drawLine(p->period_rect.topLeft().x(), p->period_rect.topLeft().y() - 4,
-                        p->period_rect.topLeft().x(), p->period_rect.topLeft().y() + 4);
-                    painter.drawLine(p->period_rect.topRight().x(), p->period_rect.topRight().y() - 4,
-                        p->period_rect.topRight().x(), p->period_rect.topRight().y() + 4);
-
                     p->setGeometry(p->label_rect);
                     p->setVisible(c->isVisible());
+
+                    if (c->isVisible())
+                    {
+                        painter.drawLine(p->period_rect.topLeft(), p->period_rect.topRight());
+                        painter.drawLine(p->period_rect.topLeft().x(), p->period_rect.topLeft().y() - 4,
+                            p->period_rect.topLeft().x(), p->period_rect.topLeft().y() + 4);
+                        painter.drawLine(p->period_rect.topRight().x(), p->period_rect.topRight().y() - 4,
+                            p->period_rect.topRight().x(), p->period_rect.topRight().y() + 4);
+                    }
                 }
                 else p->setVisible(false);
             }
