@@ -376,6 +376,7 @@ void Canvas::resetCanvas()
         delete(c);
     }
     categories.clear();
+    categories_manager->refreshCategories();
 }
 
 void Canvas::openEraCreationDialog()

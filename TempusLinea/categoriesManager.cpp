@@ -146,6 +146,8 @@ void CategoriesManager::refreshCategories()
     {
         drawCategoryLine(categories->at(category_index));
     }
+
+    resize(CATEGORIES_MANAGER_WIDTH, 35 + 20 * lines.size());
 }
 
 void CategoriesManager::drawCategoryLine(Category* c)
