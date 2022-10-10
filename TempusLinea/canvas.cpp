@@ -292,6 +292,8 @@ QDate Canvas::getDateFromPosition(int p)
 
 void Canvas::read(const QJsonObject& json)
 {
+    resetCanvas();
+
     if (json.contains("canvas_period") && json["canvas_period"].isString())
     {
         QStringList dates = json["canvas_period"].toString().split(", ");
@@ -304,9 +306,6 @@ void Canvas::read(const QJsonObject& json)
         v_offset = json["canvas_v_offset"].toString().toInt();
     }
 
-    for (Era* e : eras_vector) delete(e);
-    eras_vector.clear();
-
     if (json.contains("eras") && json["eras"].isArray()) {
         QJsonArray eras_array = json["eras"].toArray();
         for (int era_index = 0; era_index < eras_array.size(); ++era_index) {
@@ -317,16 +316,6 @@ void Canvas::read(const QJsonObject& json)
             eras_vector.push_back(era);
         }
     }
-
-    for (Category* c : categories)
-    { 
-        for (Event* e : c->events) delete(e);
-        c->events.clear();
-        for (Period* p : c->periods) delete(p);
-        c->periods.clear();
-        delete(c);
-    }
-    categories.clear();
 
     if (json.contains("categories") && json["categories"].isArray()) {
         QJsonArray categories_array = json["categories"].toArray();
@@ -370,6 +359,23 @@ void Canvas::write(QJsonObject& json) const
         categories_array.append(category_object);
     }
     json["categories"] = categories_array;
+}
+
+void Canvas::resetCanvas()
+{
+    for (Era* e : eras_vector) delete(e);
+    eras_vector.clear();
+
+
+    for (Category* c : categories)
+    {
+        for (Event* e : c->events) delete(e);
+        c->events.clear();
+        for (Period* p : c->periods) delete(p);
+        c->periods.clear();
+        delete(c);
+    }
+    categories.clear();
 }
 
 void Canvas::openEraCreationDialog()

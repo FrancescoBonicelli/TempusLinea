@@ -14,6 +14,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
     left_menu_toggle_button = new LeftMenuToggler(this);
     left_menu_toggle_button->setGeometry(QRect(QPoint(10, 10), QPoint(60, 60)));
 
+    connect(left_menu, &LeftMenu::newCanvasButtonClicked, this, &MainWindow::newCanvasSlot);
     connect(left_menu, &LeftMenu::saveCanvasButtonClicked, this, &MainWindow::saveCanvasSlot);
     connect(left_menu, &LeftMenu::loadCanvasButtonClicked, this, &MainWindow::loadCanvasSlot);
     connect(left_menu, &LeftMenu::exportCanvasButtonClicked, this, &MainWindow::exportCanvasSlot);
@@ -66,6 +67,14 @@ bool MainWindow::saveCanvas(QString file_name)
     save_file.close();
 
     return true;
+}
+
+void MainWindow::newCanvasSlot()
+{
+    canvas->resetCanvas();
+    canvas->update();
+
+    left_menu->setVisible(false);
 }
 
 void MainWindow::saveCanvasSlot()

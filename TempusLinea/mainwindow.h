@@ -19,6 +19,7 @@ public:
     ~MainWindow();
 
 public slots:
+    void newCanvasSlot();
     void saveCanvasSlot();
     void loadCanvasSlot();
     void exportCanvasSlot();
@@ -31,7 +32,7 @@ private:
     LeftMenu* left_menu;
     LeftMenuToggler* left_menu_toggle_button;
 
-    bool loadCanvas(QString file_name);
     bool saveCanvas(QString file_name);
+    bool loadCanvas(QString file_name);
 };
 #endif // MAINWINDOW_H

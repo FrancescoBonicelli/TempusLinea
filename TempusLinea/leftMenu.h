@@ -20,8 +20,6 @@ protected:
 
 private:
     QString button_text;
-
-
 };
 
 class LeftMenu : public QWidget
@@ -31,11 +29,13 @@ public:
     explicit LeftMenu(QWidget *parent = nullptr);
 
 signals:
+    void newCanvasButtonClicked();
     void saveCanvasButtonClicked();
     void loadCanvasButtonClicked();
     void exportCanvasButtonClicked();
 
 public slots:
+    void newCanvas();
     void saveCanvas();
     void loadCanvas();
     void exportCanvas();
@@ -46,6 +46,7 @@ protected:
 private:
     QVBoxLayout* layout;
 
+    LeftMenuButton* canvas_new_button;
     LeftMenuButton* canvas_save_button;
     LeftMenuButton* canvas_load_button;
     LeftMenuButton* canvas_export_button;

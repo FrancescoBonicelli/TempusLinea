@@ -35,6 +35,8 @@ public:
     void read(const QJsonObject& json);
     void write(QJsonObject& json) const;
 
+    void resetCanvas();
+
 signals:
     void mousePress();
     void mouseWheel();
