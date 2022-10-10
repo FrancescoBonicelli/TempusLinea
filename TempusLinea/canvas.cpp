@@ -363,9 +363,16 @@ void Canvas::write(QJsonObject& json) const
 
 void Canvas::resetCanvas()
 {
+    //Setup default parameters
+    canvas_start_date = QDate(QDate::currentDate().year() - 80, 1, 1);
+    canvas_end_date = QDate(QDate::currentDate().year() + 20, 1, 1);
+
+    v_offset = 0;
+    dragging = false;
+
+    //Clean vectors
     for (Era* e : eras_vector) delete(e);
     eras_vector.clear();
-
 
     for (Category* c : categories)
     {
