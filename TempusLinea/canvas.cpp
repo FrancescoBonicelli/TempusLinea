@@ -26,18 +26,6 @@ Canvas::Canvas(QWidget* parent) : QWidget{parent}
     categories_manager->resize(CATEGORIES_MANAGER_WIDTH, 35 + 20*(categories.size()-1));
 
     connect(categories_manager, &CategoriesManager::resized, [this](){categories_manager->move(QPoint(width() - categories_manager->width(), 0) + CATEGORIES_MANAGER_MARGINS);});
-
-    // ---------- TEST LINES - TO BE REMOVED ----------
-
-    eras_vector.push_back(new Era("Test_1", QDate(2000, 1, 1), QDate(2100, 1, 1), QColor(255, 0, 0), this));  // Test era 1
-    eras_vector.push_back(new Era("Test_2_with_a_really_long_name", QDate(1800, 1, 1), QDate(1900, 1, 1), QColor(0, 255, 0), this));  // Test era 2
-
-    for(int i = 0; i < eras_vector.size(); i++)
-    {
-        connect(eras_vector.at(i), &Era::editEra, this, &Canvas::openEraEditDialog);
-    }
-
-    // ---------- END OF TEST LINES ----------
 }
 
 void Canvas::paintEvent(QPaintEvent *)
@@ -162,14 +150,18 @@ void Canvas::paintEvent(QPaintEvent *)
             // Draw single periods
             for(Period* p : c->periods)
             {
-                painter.drawLine(p->period_rect.topLeft(), p->period_rect.topRight());
-                painter.drawLine(p->period_rect.topLeft().x(), p->period_rect.topLeft().y() - 4,
-                    p->period_rect.topLeft().x(), p->period_rect.topLeft().y() + 4);
-                painter.drawLine(p->period_rect.topRight().x(), p->period_rect.topRight().y() - 4,
-                    p->period_rect.topRight().x(), p->period_rect.topRight().y() + 4);
+                if (p->getStartingDate() < canvas_end_date && p->getEndingDate() > canvas_start_date)
+                {
+                    painter.drawLine(p->period_rect.topLeft(), p->period_rect.topRight());
+                    painter.drawLine(p->period_rect.topLeft().x(), p->period_rect.topLeft().y() - 4,
+                        p->period_rect.topLeft().x(), p->period_rect.topLeft().y() + 4);
+                    painter.drawLine(p->period_rect.topRight().x(), p->period_rect.topRight().y() - 4,
+                        p->period_rect.topRight().x(), p->period_rect.topRight().y() + 4);
 
-                p->setGeometry(p->label_rect);
-                p->setVisible(c->isVisible());
+                    p->setGeometry(p->label_rect);
+                    p->setVisible(c->isVisible());
+                }
+                else p->setVisible(false);
             }
         }
         else
@@ -522,10 +514,18 @@ void Canvas::placeEvents(std::vector<Event*> events_vector, QFontMetrics fm)
     }
 }
 
-void Canvas::placePeriods(std::vector<Period*> periods_vector, QFontMetrics fm)
+void Canvas::placePeriods(std::vector<Period*> periods_vector_full, QFontMetrics fm)
 {
+    std::vector<Period*> periods_vector;
+    for (Period* p : periods_vector_full)
+    {
+        if (p->getStartingDate() < canvas_end_date && p->getEndingDate() > canvas_start_date)
+        {
+            periods_vector.push_back(p);
+        }
+    }
     int period_height = PERIOD_LABEL_HEIGHT;
-    int period_start_y = (height() / 2) + v_offset + 60;
+    int period_start_y = (height() / 2) + v_offset + 20;
 
     for(Period* p : periods_vector)
     {
