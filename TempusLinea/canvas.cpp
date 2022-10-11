@@ -135,7 +135,7 @@ void Canvas::paintEvent(QPaintEvent *)
     }
 
     // Paint Periods
-    int category_offset = v_offset;
+    int category_offset = v_offset + categories_spacing;
 
     for(Category* c : categories)
     {
@@ -148,7 +148,10 @@ void Canvas::paintEvent(QPaintEvent *)
 
             // Draw Bounding Box
             c->computeBoundingRect();
-            category_offset = category_offset + c->getBoundingRect().height() + categories_spacing;
+            if (c->periods.size() > 0)
+            {
+                category_offset += c->getBoundingRect().height() + categories_spacing;
+            }
             painter.drawRect(c->getBoundingRect());
         }
 
