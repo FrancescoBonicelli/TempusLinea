@@ -141,35 +141,39 @@ void Canvas::paintEvent(QPaintEvent *)
         if(c->isVisible())
         {
             placePeriods(c->periods, fm);
-        }
 
-        if(!c->isCollapsed())
-        {
             painter.setPen(QPen(c->getColor()));
 
-            // Draw single periods
-            for(Period* p : c->periods)
+            // Draw Bounding Box
+            c->computeBoundingRect();
+            painter.drawRect(c->getBoundingRect());
+
+            if(!c->isCollapsed())
             {
-                if (p->getStartingDate() < canvas_end_date && p->getEndingDate() > canvas_start_date)
+                // Draw single periods
+                for(Period* p : c->periods)
                 {
-                    p->setGeometry(p->label_rect);
-                    p->setVisible(c->isVisible());
-
-                    if (c->isVisible())
+                    if (p->getStartingDate() < canvas_end_date && p->getEndingDate() > canvas_start_date)
                     {
-                        painter.drawLine(p->period_rect.topLeft(), p->period_rect.topRight());
-                        painter.drawLine(p->period_rect.topLeft().x(), p->period_rect.topLeft().y() - 4,
-                            p->period_rect.topLeft().x(), p->period_rect.topLeft().y() + 4);
-                        painter.drawLine(p->period_rect.topRight().x(), p->period_rect.topRight().y() - 4,
-                            p->period_rect.topRight().x(), p->period_rect.topRight().y() + 4);
-                    }
-                }
-                else p->setVisible(false);
-            }
-        }
-        else
-        {
+                        p->setGeometry(p->label_rect);
+                        p->setVisible(c->isVisible());
 
+                        if (c->isVisible())
+                        {
+                            painter.drawLine(p->period_rect.topLeft(), p->period_rect.topRight());
+                            painter.drawLine(p->period_rect.topLeft().x(), p->period_rect.topLeft().y() - 4,
+                                p->period_rect.topLeft().x(), p->period_rect.topLeft().y() + 4);
+                            painter.drawLine(p->period_rect.topRight().x(), p->period_rect.topRight().y() - 4,
+                                p->period_rect.topRight().x(), p->period_rect.topRight().y() + 4);
+                        }
+                    }
+                    else p->setVisible(false);
+                }
+            }
+            else
+            {
+
+            }
         }
     }
 
