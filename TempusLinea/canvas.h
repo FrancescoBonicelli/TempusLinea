@@ -69,7 +69,7 @@ private:
     int getDatePosition(QDate d);
     QDate getDateFromPosition(int p);
     void placeEvents(std::vector<Event*> events_vector, QFontMetrics fm);
-    void placePeriods(std::vector<Period*> periods_vector, QFontMetrics fm);
+    void placePeriods(std::vector<Period*> periods_vector, QFontMetrics fm, int v_offset);
 
     MouseMenu *mouse_menu;
 };

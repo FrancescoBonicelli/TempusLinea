@@ -135,45 +135,48 @@ void Canvas::paintEvent(QPaintEvent *)
     }
 
     // Paint Periods
+    int category_offset = v_offset;
+
     for(Category* c : categories)
     {
         // Place and Draw periods for visible categories
         if(c->isVisible())
         {
-            placePeriods(c->periods, fm);
+            placePeriods(c->periods, fm, category_offset);
 
             painter.setPen(QPen(c->getColor()));
 
             // Draw Bounding Box
             c->computeBoundingRect();
+            category_offset = c->getBoundingRect().bottom() - height()/2;
             painter.drawRect(c->getBoundingRect());
+        }
 
-            if(!c->isCollapsed())
+        if(!c->isCollapsed())
+        {
+            // Draw single periods
+            for(Period* p : c->periods)
             {
-                // Draw single periods
-                for(Period* p : c->periods)
+                if (p->getStartingDate() < canvas_end_date && p->getEndingDate() > canvas_start_date)
                 {
-                    if (p->getStartingDate() < canvas_end_date && p->getEndingDate() > canvas_start_date)
+                    p->setGeometry(p->label_rect);
+                    p->setVisible(c->isVisible());
+
+                    if (c->isVisible())
                     {
-                        p->setGeometry(p->label_rect);
-                        p->setVisible(c->isVisible());
-
-                        if (c->isVisible())
-                        {
-                            painter.drawLine(p->period_rect.topLeft(), p->period_rect.topRight());
-                            painter.drawLine(p->period_rect.topLeft().x(), p->period_rect.topLeft().y() - 4,
-                                p->period_rect.topLeft().x(), p->period_rect.topLeft().y() + 4);
-                            painter.drawLine(p->period_rect.topRight().x(), p->period_rect.topRight().y() - 4,
-                                p->period_rect.topRight().x(), p->period_rect.topRight().y() + 4);
-                        }
+                        painter.drawLine(p->period_rect.topLeft(), p->period_rect.topRight());
+                        painter.drawLine(p->period_rect.topLeft().x(), p->period_rect.topLeft().y() - 4,
+                            p->period_rect.topLeft().x(), p->period_rect.topLeft().y() + 4);
+                        painter.drawLine(p->period_rect.topRight().x(), p->period_rect.topRight().y() - 4,
+                            p->period_rect.topRight().x(), p->period_rect.topRight().y() + 4);
                     }
-                    else p->setVisible(false);
                 }
+                else p->setVisible(false);
             }
-            else
-            {
+        }
+        else
+        {
 
-            }
         }
     }
 
@@ -572,7 +575,7 @@ void Canvas::placeEvents(std::vector<Event*> events_vector, QFontMetrics fm)
     }
 }
 
-void Canvas::placePeriods(std::vector<Period*> periods_vector_full, QFontMetrics fm)
+void Canvas::placePeriods(std::vector<Period*> periods_vector_full, QFontMetrics fm, int v_offset)
 {
     std::vector<Period*> periods_vector;
     for (Period* p : periods_vector_full)
