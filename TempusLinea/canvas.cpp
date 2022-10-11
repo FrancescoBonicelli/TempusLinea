@@ -561,7 +561,7 @@ void Canvas::placeEvents(std::vector<Event*> events_vector, QFontMetrics fm)
 
             for (int y = 0; y < i; y++)
             {
-                if (events_vector.at(i)->label_rect.intersects(events_vector.at(y)->label_rect))
+                if (events_vector.at(i)->label_rect.adjusted(1, 1, -1, -1).intersects(events_vector.at(y)->label_rect))
                 {
                     placed = false;
                     events_vector.at(i)->label_rect.translate(0, -1.1 * event_label_height);
@@ -624,10 +624,10 @@ void Canvas::placePeriods(std::vector<Period*> periods_vector_full, QFontMetrics
 
             for (int y = 0; y < i; y++)
             {
-                if(   periods_vector.at(i)->label_rect.intersects(periods_vector.at(y)->label_rect)
-                   || periods_vector.at(i)->label_rect.intersects(periods_vector.at(y)->period_rect)
-                   || periods_vector.at(i)->period_rect.intersects(periods_vector.at(y)->label_rect)
-                   || periods_vector.at(i)->period_rect.intersects(periods_vector.at(y)->period_rect))
+                if(   periods_vector.at(i)->label_rect.adjusted(1,1,-1,-1).intersects(periods_vector.at(y)->label_rect)
+                   || periods_vector.at(i)->label_rect.adjusted(1, 1, -1, -1).intersects(periods_vector.at(y)->period_rect)
+                   || periods_vector.at(i)->period_rect.adjusted(1,1,-1,-1).intersects(periods_vector.at(y)->label_rect)
+                   || periods_vector.at(i)->period_rect.adjusted(1,1,-1,-1).intersects(periods_vector.at(y)->period_rect))
                 {
                     placed = false;
                     periods_vector.at(i)->label_rect.translate(0, 1.1 * period_label_height);
