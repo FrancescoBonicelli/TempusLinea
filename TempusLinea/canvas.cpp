@@ -148,7 +148,7 @@ void Canvas::paintEvent(QPaintEvent *)
 
             // Draw Bounding Box
             c->computeBoundingRect();
-            category_offset = category_offset + c->getBoundingRect().height();
+            category_offset = category_offset + c->getBoundingRect().height() + categories_spacing;
             painter.drawRect(c->getBoundingRect());
         }
 
