@@ -25,7 +25,7 @@ PeriodForm::PeriodForm(const QString& title, std::vector<Category*>& categories,
     ending_date_value->setCalendarPopup(true);
     ending_date_value->setMinimumDate(min_date);
 
-    starting_date_value->setDate(QDate(QDate::currentDate().year(), 7, 1));
+    starting_date_value->setDate(QDate(QDate::currentDate().year()-1, 7, 1));
     ending_date_value->setDate(QDate(QDate::currentDate().year(), 6, 30));
 
     button_box = new QDialogButtonBox(QDialogButtonBox::Ok
