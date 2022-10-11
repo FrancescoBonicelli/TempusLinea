@@ -16,7 +16,9 @@ EraForm::EraForm(const QString& title, QWidget* parent)
     delete_era_button->setVisible(false);
 
     starting_date_value->setCalendarPopup(true);
+    starting_date_value->setMinimumDate(min_date);
     ending_date_value->setCalendarPopup(true);
+    ending_date_value->setMinimumDate(min_date);
 
     starting_date_value->setDate(QDate(QDate::currentDate().year(), 1, 1));
     ending_date_value->setDate(QDate(QDate::currentDate().year(), 12, 31));

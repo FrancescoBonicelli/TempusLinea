@@ -11,6 +11,8 @@
 #include <vector>
 #include <cmath>
 
+#include "conf.h"
+
 #include "era.h"
 #include "eraForm.h"
 #include "mouseMenu.h"
@@ -20,11 +22,6 @@
 #include "eventForm.h"
 #include "period.h"
 #include "periodForm.h"
-
-#define MOUSE_MENU_SIZE 100
-
-#define EVENT_LABEL_HEIGHT 20
-#define PERIOD_LABEL_HEIGHT 20
 
 class Canvas : public QWidget
 {
