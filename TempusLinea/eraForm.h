@@ -12,6 +12,8 @@
 #include <QMessageBox>
 #include <QDateTimeEdit>
 
+#include"conf.h"
+
 #include "colorPicker.h"
 #include "era.h"
 

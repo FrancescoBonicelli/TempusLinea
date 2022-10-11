@@ -221,7 +221,7 @@ void Canvas::mousePressEvent(QMouseEvent *event)
 void Canvas::mouseDoubleClickEvent(QMouseEvent *event)
 {
         QPoint mouse_position = event->pos();
-        mouse_menu->setGeometry(QRect(mouse_position - QPoint(MOUSE_MENU_SIZE/2, MOUSE_MENU_SIZE/2), QSize(MOUSE_MENU_SIZE, MOUSE_MENU_SIZE)));
+        mouse_menu->setGeometry(QRect(mouse_position - QPoint(mouse_menu_size/2, mouse_menu_size/2), QSize(mouse_menu_size, mouse_menu_size)));
         mouse_menu->setVisible(true);
 }
 
@@ -536,7 +536,7 @@ void Canvas::openPeriodEditDialog(Period* period)
 
 void Canvas::placeEvents(std::vector<Event*> events_vector, QFontMetrics fm)
 {
-    int event_height = EVENT_LABEL_HEIGHT;
+    int event_height = event_label_height;
     int event_start_y = (height() / 2) + v_offset - 60;
 
     for(Event* e : events_vector)
@@ -560,7 +560,7 @@ void Canvas::placeEvents(std::vector<Event*> events_vector, QFontMetrics fm)
                 if (events_vector.at(i)->label_rect.intersects(events_vector.at(y)->label_rect))
                 {
                     placed = false;
-                    events_vector.at(i)->label_rect.adjust(0, -1.1 * EVENT_LABEL_HEIGHT, 0, -1.1 * EVENT_LABEL_HEIGHT);
+                    events_vector.at(i)->label_rect.adjust(0, -1.1 * event_label_height, 0, -1.1 * event_label_height);
                     break;
                 }
             }
@@ -578,7 +578,7 @@ void Canvas::placePeriods(std::vector<Period*> periods_vector_full, QFontMetrics
             periods_vector.push_back(p);
         }
     }
-    int period_height = PERIOD_LABEL_HEIGHT;
+    int period_height = period_label_height;
     int period_start_y = (height() / 2) + v_offset + 20;
 
     for(Period* p : periods_vector)
@@ -626,8 +626,8 @@ void Canvas::placePeriods(std::vector<Period*> periods_vector_full, QFontMetrics
                    || periods_vector.at(i)->period_rect.intersects(periods_vector.at(y)->period_rect))
                 {
                     placed = false;
-                    periods_vector.at(i)->label_rect.adjust(0, 1.1 * PERIOD_LABEL_HEIGHT, 0, 1.1 * PERIOD_LABEL_HEIGHT);
-                    periods_vector.at(i)->period_rect.adjust(0, 1.1 * PERIOD_LABEL_HEIGHT, 0, 1.1 * PERIOD_LABEL_HEIGHT);
+                    periods_vector.at(i)->label_rect.adjust(0, 1.1 * period_label_height, 0, 1.1 * period_label_height);
+                    periods_vector.at(i)->period_rect.adjust(0, 1.1 * period_label_height, 0, 1.1 * period_label_height);
                     break;
                 }
             }

@@ -19,6 +19,7 @@ EventForm::EventForm(const QString& title, std::vector<Category*>& categories, Q
     delete_event_button->setVisible(false);
 
     date_value->setCalendarPopup(true);
+    date_value->setMinimumDate(min_date);
 
     date_value->setDate(QDate(QDate::currentDate().year(), 7, 1));
 

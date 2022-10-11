@@ -21,7 +21,9 @@ PeriodForm::PeriodForm(const QString& title, std::vector<Category*>& categories,
     delete_period_button->setVisible(false);
 
     starting_date_value->setCalendarPopup(true);
+    starting_date_value->setMinimumDate(min_date);
     ending_date_value->setCalendarPopup(true);
+    ending_date_value->setMinimumDate(min_date);
 
     starting_date_value->setDate(QDate(QDate::currentDate().year(), 6, 30));
     ending_date_value->setDate(QDate(QDate::currentDate().year(), 7, 1));

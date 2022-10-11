@@ -12,6 +12,8 @@
 #include <QMessageBox>
 #include <QDateTimeEdit>
 
+#include"conf.h"
+
 #include "event.h"
 #include "category.h"
 
