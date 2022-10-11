@@ -28,6 +28,9 @@ public:
     bool isVisible();
     bool isCollapsed();
 
+    void computeBoundingRect();
+    QRect getBoundingRect();
+
     std::vector<Event*> events;
     std::vector<Period*> periods;
 
@@ -39,6 +42,7 @@ private:
     bool visible;
     bool collapsed;
     QWidget* canvas;
+    QRect bounding_rect;
 };
 
 #endif // CATEGORY_H

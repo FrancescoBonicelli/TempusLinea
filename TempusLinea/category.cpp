@@ -5,6 +5,8 @@ Category::Category(QWidget* canvas)
     this->canvas = canvas;
     this->visible = true;
     this->collapsed = false;
+
+    bounding_rect = QRect(0, 0, 0, 0);
 }
 
 Category::Category(QString name, QColor color, QWidget* canvas) : Category(canvas)
@@ -118,4 +120,38 @@ void Category::write(QJsonObject& json) const
         periods_array.append(period_object);
     }
     json["periods"] = periods_array;
+}
+
+void Category::computeBoundingRect()
+{
+    if(periods.size() > 0)
+    {
+        bounding_rect = periods.at(0)->period_rect;
+
+        for(Period* p : periods)
+        {
+            int x1, y1, x2, y2;
+            p->period_rect.getCoords(&x1, &y1, &x2, &y2);
+
+            // Place clearance
+            x1 -= 10;
+            y1 -= 10;
+            x2 += 10;
+
+            int xx1, yy1, xx2, yy2;
+            bounding_rect.getCoords(&xx1, &yy1, &xx2, &yy2);
+
+            int final_x1 = x1 < xx1 ? x1 : xx1;
+            int final_y1 = y1 < yy1 ? y1 : yy1;
+            int final_x2 = x2 > xx2 ? x2 : xx2;
+            int final_y2 = y2 > yy2 ? y2 : yy2;
+
+            bounding_rect = QRect(QPoint(final_x1, final_y1), QPoint(final_x2, final_y2));
+        }
+    }
+}
+
+QRect Category::getBoundingRect()
+{
+    return bounding_rect;
 }
