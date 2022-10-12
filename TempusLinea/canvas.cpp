@@ -399,6 +399,8 @@ void Canvas::resetCanvas()
         delete(c);
     }
     categories.clear();
+    // Re-add default category
+    categories.push_back(new Category("", Qt::black, this));
     categories_manager->refreshCategories();
 }
 
