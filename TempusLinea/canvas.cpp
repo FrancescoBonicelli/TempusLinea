@@ -581,11 +581,25 @@ void Canvas::placeEvents(std::vector<Event*> events_vector, QFontMetrics fm)
 void Canvas::placePeriods(std::vector<Period*> periods_vector_full, QFontMetrics fm, int v_offset)
 {
     std::vector<Period*> periods_vector;
+    std::vector<Period*> hided_periods;
     for (Period* p : periods_vector_full)
     {
         if (p->getStartingDate() < canvas_end_date && p->getEndingDate() > canvas_start_date)
         {
             periods_vector.push_back(p);
+        }
+        else
+        {
+            if(p->getStartingDate() > canvas_end_date)
+            {
+                p->period_rect = QRect(2*width(), (height() / 2) + v_offset + 20, 1, 1);
+                p->label_rect = QRect(2*width(), (height() / 2) + v_offset + 20, 1, 1);
+            }
+            else
+            {
+                p->period_rect = QRect(-width(), (height() / 2) + v_offset + 20, 1, 1);
+                p->label_rect = QRect(-width(), (height() / 2) + v_offset + 20, 1, 1);
+            }
         }
     }
     int period_height = period_label_height;
