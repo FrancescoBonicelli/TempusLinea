@@ -615,19 +615,19 @@ void Canvas::placePeriods(std::vector<Period*> periods_vector_full, QFontMetrics
 
         if(period_end_x - period_start_x < label_width)  // If label wider than period
         {
-            label_start_x = period_start_x;  // Place label start at period's start point
+            label_start_x = period_start_x + 2;  // Place label start at period's start point
         }
         else
         {
             label_start_x = p->getStartingDate() > canvas_start_date ? period_start_x : 0;  // Follow left margin
 
-            if(label_start_x + label_width > period_end_x)  // If label overcome period's right limit
-            {
-                label_start_x = period_end_x - label_width;
-            }
-
             // Move the label to the right to avoid period start bar
             label_start_x += 2;
+
+            if(label_start_x + label_width > period_end_x - 2)  // If label overcome period's right limit
+            {
+                label_start_x = period_end_x - label_width - 2;
+            }
         }
 
         p->label_rect = QRect(label_start_x, period_start_y, label_width, period_height);
