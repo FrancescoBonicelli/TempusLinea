@@ -76,6 +76,12 @@ void Category::read(const QJsonObject& json)
             event->setCategory(name);
             events.push_back(event);
         }
+
+        sort(events.begin(), events.end(),
+            [](Event* a, Event* b) -> bool
+            {
+                return a->getDate() < b->getDate();
+            });
     }
 
     for (Period* p : periods)
@@ -94,6 +100,12 @@ void Category::read(const QJsonObject& json)
             period->setCategory(name);
             periods.push_back(period);
         }
+
+        sort(periods.begin(), periods.end(),
+            [](Period* a, Period* b) -> bool
+            {
+                return a->getStartingDate() < b->getStartingDate();
+            });
     }
 }
 

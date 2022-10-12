@@ -325,6 +325,12 @@ void Canvas::read(const QJsonObject& json)
             connect(era, &Era::editEra, this, &Canvas::openEraEditDialog);
             eras_vector.push_back(era);
         }
+
+        sort(eras_vector.begin(), eras_vector.end(),
+            [](Era* a, Era* b) -> bool
+            {
+                return a->getStartingDate() < b->getStartingDate();
+            });
     }
 
     if (json.contains("categories") && json["categories"].isArray()) {
@@ -405,6 +411,12 @@ void Canvas::openEraCreationDialog()
         Era* new_era = new Era(dialog.name(), dialog.startingDate(), dialog.endingDate(), dialog.color(), this);
         connect(new_era, &Era::editEra, this, &Canvas::openEraEditDialog);
         eras_vector.push_back(new_era);
+
+        sort(eras_vector.begin(), eras_vector.end(),
+            [](Era* a, Era* b) -> bool
+            {
+                return a->getStartingDate() < b->getStartingDate();
+            });
     }
 }
 
@@ -440,6 +452,12 @@ void Canvas::openEventCreationDialog()
             if (c == dialog.category())
             {
                 c->events.push_back(new_event);
+
+                sort(c->events.begin(), c->events.end(),
+                    [](Event* a, Event* b) -> bool
+                    {
+                        return a->getDate() < b->getDate();
+                    });
             }
         }
     }
@@ -472,6 +490,12 @@ void Canvas::openEventEditDialog(Event* event)
             if (c == dialog.category())
             {
                 c->events.push_back(event);
+
+                sort(c->events.begin(), c->events.end(),
+                    [](Event* a, Event* b) -> bool
+                    {
+                        return a->getDate() < b->getDate();
+                    });
             }
         }
     }
@@ -498,6 +522,12 @@ void Canvas::openPeriodCreationDialog()
             if (c == dialog.category())
             {
                 c->periods.push_back(new_period);
+
+                sort(c->periods.begin(), c->periods.end(),
+                    [](Period* a, Period* b) -> bool
+                    {
+                        return a->getStartingDate() < b->getStartingDate();
+                    });
             }
         }
     }
@@ -531,6 +561,12 @@ void Canvas::openPeriodEditDialog(Period* period)
             if (c == dialog.category())
             {
                 c->periods.push_back(period);
+
+                sort(c->periods.begin(), c->periods.end(),
+                    [](Period* a, Period* b) -> bool
+                    {
+                        return a->getStartingDate() < b->getStartingDate();
+                    });
             }
         }
     }
