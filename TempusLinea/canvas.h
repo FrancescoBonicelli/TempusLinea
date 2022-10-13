@@ -33,6 +33,7 @@ public:
     void write(QJsonObject& json) const;
 
     void resetCanvas();
+    void restoreDefaults();
 
 signals:
     void mousePress();

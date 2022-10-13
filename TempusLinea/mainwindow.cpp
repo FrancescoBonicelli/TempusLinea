@@ -72,6 +72,7 @@ bool MainWindow::saveCanvas(QString file_name)
 void MainWindow::newCanvasSlot()
 {
     canvas->resetCanvas();
+    canvas->restoreDefaults();
     canvas->update();
 
     left_menu->setVisible(false);
