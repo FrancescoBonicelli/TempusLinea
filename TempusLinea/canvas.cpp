@@ -137,12 +137,12 @@ void Canvas::paintEvent(QPaintEvent *)
     // Paint Periods
     int category_offset = v_offset + categories_spacing;
 
-    for(Category* c : categories)
+    for (Category* c : categories)
     {
         // Place and Draw periods for visible categories
-        if(c->isVisible())
+        if (c->isVisible())
         {
-            placePeriods(c->periods, fm, category_offset);
+            placePeriods(c->periods, fm, category_offset, c->isCollapsed());
 
             painter.setPen(QPen(c->getColor()));
 
@@ -154,35 +154,30 @@ void Canvas::paintEvent(QPaintEvent *)
             }
             painter.drawRect(c->getBoundingRect());
         }
-
-        if(!c->isCollapsed())
+        // Draw single periods
+        for (Period* p : c->periods)
         {
-            // Draw single periods
-            for(Period* p : c->periods)
+            if (p->getStartingDate() < canvas_end_date && p->getEndingDate() > canvas_start_date)
             {
-                if (p->getStartingDate() < canvas_end_date && p->getEndingDate() > canvas_start_date)
-                {
-                    p->setGeometry(p->label_rect);
-                    p->setVisible(c->isVisible());
+                p->setGeometry(p->label_rect);
+                p->setVisible(c->isVisible() && !c->isCollapsed());
 
-                    if (c->isVisible())
+                if (c->isVisible())
+                {
+                    painter.drawLine(p->period_rect.topLeft(), p->period_rect.topRight());
+
+                    if(!c->isCollapsed())
                     {
-                        painter.drawLine(p->period_rect.topLeft(), p->period_rect.topRight());
                         painter.drawLine(p->period_rect.topLeft().x(), p->period_rect.topLeft().y() - 4,
                             p->period_rect.topLeft().x(), p->period_rect.topLeft().y() + 4);
                         painter.drawLine(p->period_rect.topRight().x(), p->period_rect.topRight().y() - 4,
                             p->period_rect.topRight().x(), p->period_rect.topRight().y() + 4);
                     }
                 }
-                else p->setVisible(false);
             }
-        }
-        else
-        {
-
+            else p->setVisible(false);
         }
     }
-
 
     // Paint Timeline
     painter.setPen(QPen(Qt::black));
@@ -621,7 +616,7 @@ void Canvas::placeEvents(std::vector<Event*> events_vector, QFontMetrics fm)
     }
 }
 
-void Canvas::placePeriods(std::vector<Period*> periods_vector_full, QFontMetrics fm, int v_offset)
+void Canvas::placePeriods(std::vector<Period*> periods_vector_full, QFontMetrics fm, int v_offset, bool is_collapsed)
 {
     std::vector<Period*> periods_vector;
     std::vector<Period*> hided_periods;
@@ -645,7 +640,7 @@ void Canvas::placePeriods(std::vector<Period*> periods_vector_full, QFontMetrics
             }
         }
     }
-    int period_height = period_label_height;
+    int period_height = is_collapsed ? 10 : period_label_height;
     int period_start_y = (height() / 2) + v_offset + 20;
 
     for(Period* p : periods_vector)
@@ -677,25 +672,28 @@ void Canvas::placePeriods(std::vector<Period*> periods_vector_full, QFontMetrics
         p->period_rect = QRect(QPoint(period_start_x, period_start_y), QPoint(period_end_x, period_start_y+period_height));
     }
 
-    for(int i = 0; i < periods_vector.size(); i++)
+    if(!is_collapsed)
     {
-        bool placed = false;
-
-        while(!placed)
+        for (int i = 0; i < periods_vector.size(); i++)
         {
-            placed = true;
+            bool placed = false;
 
-            for (int y = 0; y < i; y++)
+            while (!placed)
             {
-                if(   periods_vector.at(i)->label_rect.adjusted(1,1,-1,-1).intersects(periods_vector.at(y)->label_rect)
-                   || periods_vector.at(i)->label_rect.adjusted(1, 1, -1, -1).intersects(periods_vector.at(y)->period_rect)
-                   || periods_vector.at(i)->period_rect.adjusted(1,1,-1,-1).intersects(periods_vector.at(y)->label_rect)
-                   || periods_vector.at(i)->period_rect.adjusted(1,1,-1,-1).intersects(periods_vector.at(y)->period_rect))
+                placed = true;
+
+                for (int y = 0; y < i; y++)
                 {
-                    placed = false;
-                    periods_vector.at(i)->label_rect.translate(0, 1.1 * period_label_height);
-                    periods_vector.at(i)->period_rect.translate(0, 1.1 * period_label_height);
-                    break;
+                    if (periods_vector.at(i)->label_rect.adjusted(1, 1, -1, -1).intersects(periods_vector.at(y)->label_rect)
+                        || periods_vector.at(i)->label_rect.adjusted(1, 1, -1, -1).intersects(periods_vector.at(y)->period_rect)
+                        || periods_vector.at(i)->period_rect.adjusted(1, 1, -1, -1).intersects(periods_vector.at(y)->label_rect)
+                        || periods_vector.at(i)->period_rect.adjusted(1, 1, -1, -1).intersects(periods_vector.at(y)->period_rect))
+                    {
+                        placed = false;
+                        periods_vector.at(i)->label_rect.translate(0, 1.1 * period_label_height);
+                        periods_vector.at(i)->period_rect.translate(0, 1.1 * period_label_height);
+                        break;
+                    }
                 }
             }
         }
