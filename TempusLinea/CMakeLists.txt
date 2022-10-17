@@ -47,6 +47,8 @@ set(PROJECT_SOURCES
         periodForm.h
         eventWidget.cpp
         eventWidget.h
+
+        resources.rc
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
@@ -86,6 +88,7 @@ configure_file(TempusLineaLogo_100.png TempusLineaLogo_100.png COPYONLY)
 configure_file(eye-on.png eye-on.png COPYONLY)
 configure_file(eye-off.png eye-off.png COPYONLY)
 configure_file(stylesheet.qss stylesheet.qss COPYONLY)
+configure_file(TempusLinea.ico TempusLinea.ico COPYONLY)
 
 install(TARGETS TempusLinea
     BUNDLE DESTINATION .
