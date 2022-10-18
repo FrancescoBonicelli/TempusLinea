@@ -66,7 +66,11 @@ bool MainWindow::loadCanvas()
 
 void MainWindow::setTitle()
 {
-    QString window_title = "TempusLinea - " + current_file_name.mid(current_file_name.lastIndexOf("/")+1);
+    QString window_title = "TempusLinea";
+    if (!current_file_name.isEmpty())
+    {
+        window_title = "TempusLinea - " + current_file_name.mid(current_file_name.lastIndexOf("/") + 1);
+    }
     setWindowTitle(window_title);
 }
 
@@ -109,6 +113,9 @@ bool MainWindow::saveCanvas()
 
 void MainWindow::newCanvasSlot()
 {
+    current_file_name = QString();
+    setTitle();
+
     canvas->resetCanvas();
     canvas->restoreDefaults();
     canvas->update();
