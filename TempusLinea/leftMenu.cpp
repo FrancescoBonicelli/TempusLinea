@@ -25,9 +25,10 @@ LeftMenu::LeftMenu(QWidget *parent)
     : QWidget{parent}
 {
     canvas_new_button = new LeftMenuButton("New Canvas");
-    canvas_save_button = new LeftMenuButton("Save Canvas");
-    canvas_load_button = new LeftMenuButton("Load Canvas");
-    canvas_export_button = new LeftMenuButton("Export Canvas");
+    canvas_save_button = new LeftMenuButton("Save");
+    canvas_save_as_button = new LeftMenuButton("Save As ...");
+    canvas_load_button = new LeftMenuButton("Load ...");
+    canvas_export_button = new LeftMenuButton("Export ...");
     canvas_export_button->setToolTip("Export current view as image");
 
     layout = new QVBoxLayout(this);
@@ -35,13 +36,15 @@ LeftMenu::LeftMenu(QWidget *parent)
 
     layout->addWidget(canvas_new_button);
     layout->addWidget(canvas_save_button);
+    layout->addWidget(canvas_save_as_button);
     layout->addWidget(canvas_load_button);
     layout->addWidget(canvas_export_button);
 
-    connect(canvas_new_button, &LeftMenuButton::clicked, this, &LeftMenu:: newCanvas);
-    connect(canvas_save_button, &LeftMenuButton::clicked, this, &LeftMenu::saveCanvas);
-    connect(canvas_load_button, &LeftMenuButton::clicked, this, &LeftMenu::loadCanvas);
-    connect(canvas_export_button, &LeftMenuButton::clicked, this, &LeftMenu::exportCanvas);
+    connect(canvas_new_button, &LeftMenuButton::clicked, [this]() {emit newCanvasButtonClicked(); });
+    connect(canvas_save_button, &LeftMenuButton::clicked, [this]() {emit saveCanvasButtonClicked(); });
+    connect(canvas_save_as_button, &LeftMenuButton::clicked, [this]() {emit saveAsCanvasButtonClicked(); });
+    connect(canvas_load_button, &LeftMenuButton::clicked, [this]() {emit loadCanvasButtonClicked(); });
+    connect(canvas_export_button, &LeftMenuButton::clicked, [this]() {emit exportCanvasButtonClicked(); });
 }
 
 void LeftMenu::paintEvent(QPaintEvent *event)
@@ -50,29 +53,10 @@ void LeftMenu::paintEvent(QPaintEvent *event)
     painter.setRenderHint(QPainter::Antialiasing);
     canvas_new_button->resize(canvas_new_button->width(), 50);
     canvas_save_button->resize(canvas_save_button->width(), 50);
+    canvas_save_as_button->resize(canvas_save_button->width(), 50);
     canvas_load_button->resize(canvas_load_button->width(), 50);
     canvas_export_button->resize(canvas_export_button->width(), 50);
     painter.fillRect(QRect(QPoint(0, 0), QPoint(width(), height())), QColor(200, 200, 200));
-}
-
-void LeftMenu::newCanvas()
-{
-    emit newCanvasButtonClicked();
-}
-
-void LeftMenu::saveCanvas()
-{
-    emit saveCanvasButtonClicked();
-}
-
-void LeftMenu::loadCanvas()
-{
-    emit loadCanvasButtonClicked();
-}
-
-void LeftMenu::exportCanvas()
-{
-    emit exportCanvasButtonClicked();
 }
 
 LeftMenuToggler::LeftMenuToggler(QWidget *parent)

@@ -49,7 +49,7 @@ MouseMenu::MouseMenu(QWidget *parent) : QWidget{parent}
     new_event_button = new MouseMenuButton(this, "EVENT");
     new_period_button = new MouseMenuButton(this, "PERIOD");
     new_era_button = new MouseMenuButton(this, "ERA");
-    spare_button = new MouseMenuButton(this, "SPARE");
+    spare_button = new MouseMenuButton(this, "***");
 
     connect(new_era_button, &MouseMenuButton::clicked, this, &MouseMenu::createEra);
     connect(new_event_button, &MouseMenuButton::clicked, this, &MouseMenu::createEvent);

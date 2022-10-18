@@ -21,6 +21,7 @@ public:
 public slots:
     void newCanvasSlot();
     void saveCanvasSlot();
+    void saveAsCanvasSlot();
     void loadCanvasSlot();
     void exportCanvasSlot();
 
@@ -31,8 +32,10 @@ private:
     Canvas* canvas;
     LeftMenu* left_menu;
     LeftMenuToggler* left_menu_toggle_button;
+    QString current_file_name;
 
-    bool saveCanvas(QString file_name);
-    bool loadCanvas(QString file_name);
+    bool saveCanvas();
+    bool loadCanvas();
+    void setTitle();
 };
 #endif // MAINWINDOW_H

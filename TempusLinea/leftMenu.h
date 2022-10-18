@@ -31,14 +31,9 @@ public:
 signals:
     void newCanvasButtonClicked();
     void saveCanvasButtonClicked();
+    void saveAsCanvasButtonClicked();
     void loadCanvasButtonClicked();
     void exportCanvasButtonClicked();
-
-public slots:
-    void newCanvas();
-    void saveCanvas();
-    void loadCanvas();
-    void exportCanvas();
 
 protected:
     void paintEvent(QPaintEvent *event) override;
@@ -48,6 +43,7 @@ private:
 
     LeftMenuButton* canvas_new_button;
     LeftMenuButton* canvas_save_button;
+    LeftMenuButton* canvas_save_as_button;
     LeftMenuButton* canvas_load_button;
     LeftMenuButton* canvas_export_button;
 };
