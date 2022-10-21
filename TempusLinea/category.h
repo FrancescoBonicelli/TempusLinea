@@ -10,6 +10,7 @@
 
 #include "event.h"
 #include "period.h"
+#include "era.h"
 
 class Category
 {
@@ -33,6 +34,7 @@ public:
 
     std::vector<Event*> events;
     std::vector<Period*> periods;
+    std::vector<Era*> eras;
 
     void read(const QJsonObject& json);
     void write(QJsonObject& json) const;

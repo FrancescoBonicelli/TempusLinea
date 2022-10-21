@@ -39,6 +39,26 @@ void Canvas::paintEvent(QPaintEvent *)
     int timeline_y = (height() / 2) + v_offset;
 
     // Paint Eras
+    std::vector<Era*> eras_vector;
+
+    for(Category* c : categories)
+    {
+        if(c->isVisible())
+        {
+            for(Era* e : c->eras)
+            {
+                eras_vector.push_back(e);
+            }
+        }
+        else
+        {
+            for(Era* e : c->eras)
+            {
+               e->setVisible(false);
+            }
+        }
+    }
+
     for(Era* e : eras_vector)
     {
         // Paint eras background
@@ -311,23 +331,6 @@ void Canvas::read(const QJsonObject& json)
         v_offset = json["canvas_v_offset"].toString().toInt();
     }
 
-    if (json.contains("eras") && json["eras"].isArray()) {
-        QJsonArray eras_array = json["eras"].toArray();
-        for (int era_index = 0; era_index < eras_array.size(); ++era_index) {
-            QJsonObject era_obj = eras_array[era_index].toObject();
-            Era* era = new Era(this);
-            era->read(era_obj);
-            connect(era, &Era::editEra, this, &Canvas::openEraEditDialog);
-            eras_vector.push_back(era);
-        }
-
-        sort(eras_vector.begin(), eras_vector.end(),
-            [](Era* a, Era* b) -> bool
-            {
-                return a->getStartingDate() < b->getStartingDate();
-            });
-    }
-
     if (json.contains("categories") && json["categories"].isArray()) {
         QJsonArray categories_array = json["categories"].toArray();
         for (int category_index = 0; category_index < categories_array.size(); ++category_index) {
@@ -342,6 +345,10 @@ void Canvas::read(const QJsonObject& json)
             {
                 connect(p, &Period::editPeriod, this, &Canvas::openPeriodEditDialog);
             }
+            for (Era* e : category->eras)
+            {
+                connect(e, &Era::editEra, this, &Canvas::openEraEditDialog);
+            }
             categories.push_back(category);
         }
         categories_manager->refreshCategories();
@@ -352,15 +359,6 @@ void Canvas::write(QJsonObject& json) const
 {
     json["canvas_period"] = canvas_start_date.toString(Qt::ISODate) + ", " + canvas_end_date.toString(Qt::ISODate);
     json["canvas_v_offset"] = QString::number(v_offset);
-
-    QJsonArray eras_array;
-    for (Era* e : eras_vector)
-    {
-        QJsonObject era_object;
-        e->write(era_object);
-        eras_array.append(era_object);
-    }
-    json["eras"] = eras_array;
 
     QJsonArray categories_array;
     for (Category* c : categories)
@@ -380,10 +378,6 @@ void Canvas::resetCanvas()
 
     v_offset = 0;
     dragging = false;
-
-    //Clean vectors
-    for (Era* e : eras_vector) delete(e);
-    eras_vector.clear();
 
     for (Category* c : categories)
     {
@@ -406,15 +400,15 @@ void Canvas::restoreDefaults()
 
 void Canvas::openEraCreationDialog()
 {
-    EraForm dialog(tr("New Era Details"), this);
+    EraForm dialog(tr("New Era Details"), categories, this);
 
     if (dialog.exec() == QDialog::Accepted)
     {
-        Era* new_era = new Era(dialog.name(), dialog.startingDate(), dialog.endingDate(), dialog.color(), this);
+        Era* new_era = new Era(dialog.name(), dialog.startingDate(), dialog.endingDate(), dialog.color(), dialog.category()->name, this);
         connect(new_era, &Era::editEra, this, &Canvas::openEraEditDialog);
-        eras_vector.push_back(new_era);
 
-        sort(eras_vector.begin(), eras_vector.end(),
+        dialog.category()->eras.push_back(new_era);
+        sort(dialog.category()->eras.begin(), dialog.category()->eras.end(),
             [](Era* a, Era* b) -> bool
             {
                 return a->getStartingDate() < b->getStartingDate();
@@ -424,20 +418,42 @@ void Canvas::openEraCreationDialog()
 
 void Canvas::openEraEditDialog(Era* era)
 {
-    EraForm dialog(era->getName() + tr(" Era Details"), era, this);
+    EraForm dialog(era->getName() + tr(" Era Details"), era, categories, this);
 
     int out = dialog.exec();
     if (out == QDialog::Accepted)
     {
+        // Remove the event from the old category
+        for (Category* c : categories)
+        {
+            for (Era* e : c->eras)
+            {
+                if(e == era) c->eras.erase(std::remove(c->eras.begin(), c->eras.end(), e), c->eras.end());
+            }
+        }
+
+        // Edit the event
         era->setName(dialog.name());
         era->setStartingDate(dialog.startingDate());
         era->setEndingDate(dialog.endingDate());
         era->setColor(dialog.color());
+        era->setCategory(dialog.category()->name);
+
+        // Insert the event in the new category
+        dialog.category()->eras.push_back(era);
+        sort(dialog.category()->eras.begin(), dialog.category()->eras.end(),
+            [](Era* a, Era* b) -> bool
+            {
+                return a->getStartingDate() < b->getStartingDate();
+            });
     }
     else if (out == QDialog::Rejected && dialog.name() == "~")
     {
         delete(era);
-        eras_vector.erase(std::remove(eras_vector.begin(), eras_vector.end(), era), eras_vector.end());
+        for (Category* c : categories)
+        {
+            c->eras.erase(std::remove(c->eras.begin(), c->eras.end(), era), c->eras.end());
+        }
     }
 }
 

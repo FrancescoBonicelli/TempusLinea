@@ -107,6 +107,30 @@ void Category::read(const QJsonObject& json)
                 return a->getStartingDate() < b->getStartingDate();
             });
     }
+
+    for (Era* e : eras)
+        delete e;
+    eras.clear();
+
+    if (json.contains("eras") && json["eras"].isArray())
+    {
+        QJsonArray eras_array = json["eras"].toArray();
+
+        for (int era_index = 0; era_index < eras_array.size(); ++era_index)
+        {
+            QJsonObject era_obj = eras_array[era_index].toObject();
+            Era* era = new Era(canvas);
+            era->read(era_obj);
+            era->setCategory(name);
+            eras.push_back(era);
+        }
+
+        sort(eras.begin(), eras.end(),
+            [](Era* a, Era* b) -> bool
+            {
+                return a->getStartingDate() < b->getStartingDate();
+            });
+    }
 }
 
 void Category::write(QJsonObject& json) const
@@ -132,6 +156,15 @@ void Category::write(QJsonObject& json) const
         periods_array.append(period_object);
     }
     json["periods"] = periods_array;
+
+    QJsonArray eras_array;
+    for (Era* e : eras)
+    {
+        QJsonObject era_object;
+        e->write(era_object);
+        eras_array.append(era_object);
+    }
+    json["eras"] = eras_array;
 }
 
 void Category::computeBoundingRect()

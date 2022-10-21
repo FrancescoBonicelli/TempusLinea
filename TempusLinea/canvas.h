@@ -60,7 +60,6 @@ private:
     QDate canvas_start_date, canvas_end_date;
     int v_offset;
 
-    std::vector<Era*> eras_vector;
     std::vector<Category*> categories;
     CategoriesManager* categories_manager;
 

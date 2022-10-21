@@ -14,7 +14,7 @@ class Era : public QWidget
 public:
     explicit Era(QWidget* parent = nullptr);
     explicit Era(const Era&);
-    explicit Era(QString, QDate starting_date, QDate ending_date, QColor color, QWidget* parent = nullptr);
+    explicit Era(QString, QDate starting_date, QDate ending_date, QColor color, QString& category, QWidget* parent = nullptr);
     ~Era();
 
     QDate getStartingDate();
@@ -28,6 +28,9 @@ public:
     void setColor(QColor color);
     QColor getColor();
 
+    QString getCategory();
+    void setCategory(QString& category);
+
     void read(const QJsonObject& json);
     void write(QJsonObject& json) const;
 
@@ -39,6 +42,7 @@ private:
     QColor color;
     QDate starting_date;
     QDate ending_date;
+    QString* category;
 
     QWidget* parent = nullptr;
 

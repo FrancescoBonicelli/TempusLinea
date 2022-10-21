@@ -1,8 +1,9 @@
 #include "eraForm.h"
 
-EraForm::EraForm(const QString& title, QWidget* parent)
+EraForm::EraForm(const QString& title, std::vector<Category*>& categories, QWidget* parent)
     : QDialog(parent)
 {
+    this->categories = categories;
     name_label = new QLabel(tr("Name:"));
     name_value = new QLineEdit;
     starting_date_label = new QLabel(tr("Starting date:"));
@@ -11,6 +12,12 @@ EraForm::EraForm(const QString& title, QWidget* parent)
     ending_date_value = new QDateEdit();
     color_label = new QLabel(tr("Color:"));
     color_value = new ColorPicker();
+    category_label = new QLabel(tr("Category:"));
+    category_value = new QComboBox();
+    for (Category* c : categories)
+    {
+        category_value->addItem(c->getName());
+    }
 
     delete_era_button = new QPushButton("Delete era");
     delete_era_button->setVisible(false);
@@ -39,20 +46,23 @@ EraForm::EraForm(const QString& title, QWidget* parent)
     mainLayout->addWidget(starting_date_value, 1, 1);
     mainLayout->addWidget(ending_date_label, 1, 2);
     mainLayout->addWidget(ending_date_value, 1, 3);
-    mainLayout->addWidget(button_box, 2, 3);
-    mainLayout->addWidget(delete_era_button, 2, 0);
+    mainLayout->addWidget(category_label, 2, 0);
+    mainLayout->addWidget(category_value, 2, 1);
+    mainLayout->addWidget(button_box, 3, 3);
+    mainLayout->addWidget(delete_era_button, 3, 0);
     setLayout(mainLayout);
 
     setWindowTitle(title);
 }
 
-EraForm::EraForm(const QString& title, Era* era, QWidget* parent)
-    : EraForm(title, parent)
+EraForm::EraForm(const QString& title, Era* era, std::vector<Category*>& categories, QWidget* parent)
+    : EraForm(title, categories, parent)
 {
     name_value->setText(era->getName());
     starting_date_value->setDate(era->getStartingDate());
     ending_date_value->setDate(era->getEndingDate());
     color_value->setCurrentColor(era->getColor());
+    category_value->setCurrentText(era->getCategory());
 
     delete_era_button->setVisible(true);
 }
@@ -75,6 +85,11 @@ QDate EraForm::endingDate() const
 QColor EraForm::color() const
 {
     return color_value->getCurrentColor();
+}
+
+Category* EraForm::category() const
+{
+    return categories.at(category_value->currentIndex());;
 }
 
 void EraForm::verify()

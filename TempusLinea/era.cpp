@@ -12,12 +12,13 @@ Era::Era(const Era& era) : QWidget{ era.parent }
     this->ending_date = era.ending_date;
 }
 
-Era::Era(QString name, QDate starting_date, QDate ending_date, QColor color, QWidget* parent) : QWidget{ parent }
+Era::Era(QString name, QDate starting_date, QDate ending_date, QColor color, QString& category, QWidget* parent) : QWidget{ parent }
 {
     this->name = name;
     this->color = color;
     this->starting_date = starting_date;
     this->ending_date = ending_date;
+    this->category = &category;
 
     this->parent = parent;
 }
@@ -65,6 +66,16 @@ void Era::setColor(QColor color)
 QColor Era::getColor()
 {
     return color;
+}
+
+QString Era::getCategory()
+{
+    return *category;
+}
+
+void Era::setCategory(QString& category)
+{
+    this->category = &category;
 }
 
 void Era::read(const QJsonObject& json)
