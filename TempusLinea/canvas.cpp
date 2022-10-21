@@ -385,6 +385,8 @@ void Canvas::resetCanvas()
         c->events.clear();
         for (Period* p : c->periods) delete(p);
         c->periods.clear();
+        for (Era* e : c->eras) delete(e);
+        c->eras.clear();
         delete(c);
     }
     categories.clear();
