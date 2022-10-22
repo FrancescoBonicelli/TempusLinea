@@ -58,6 +58,12 @@ QString Era::getName()
     return name;
 }
 
+QString Era::getFullName()
+{
+
+    return category->isEmpty()? name : (*category + " - " + name);
+}
+
 void Era::setColor(QColor color)
 {
     this->color = color;
@@ -110,7 +116,7 @@ void Era::paintEvent(QPaintEvent* event)
     QRect rect = QRect(starting_point, ending_point);
 
     painter.drawRoundedRect(rect, 5, 5);
-    painter.drawText(rect, Qt::AlignCenter, name);
+    painter.drawText(rect, Qt::AlignCenter, getFullName());
 }
 
 void Era::mouseDoubleClickEvent(QMouseEvent* event)

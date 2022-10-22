@@ -71,7 +71,7 @@ void Canvas::paintEvent(QPaintEvent *)
 
         // Paint era labels (widget)
         // Get label width
-        int label_width = fm.horizontalAdvance(e->getName()) + 20;
+        int label_width = fm.horizontalAdvance(e->getFullName()) + 20;
         int label_height = 30;
 
         int i = 0;
@@ -172,7 +172,7 @@ void Canvas::paintEvent(QPaintEvent *)
             {
                 category_offset += c->getBoundingRect().height() + categories_spacing;
             }
-            painter.drawRect(c->getBoundingRect());
+            painter.drawRoundedRect(c->getBoundingRect(), 5, 5);
         }
         // Draw single periods
         for (Period* p : c->periods)
