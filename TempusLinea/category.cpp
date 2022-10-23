@@ -31,6 +31,7 @@ void CategoryLabel::paintEvent(QPaintEvent* event)
 void CategoryLabel::mouseDoubleClickEvent(QMouseEvent *event)
 {
     *visibility = !*visibility;
+    parentWidget()->update();
 }
 //----------------------------------------------------------------------------------
 

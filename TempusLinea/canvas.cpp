@@ -164,7 +164,7 @@ void Canvas::paintEvent(QPaintEvent*)
 		{
 			placePeriods(c->periods, fm, category_offset, c->isCollapsed());
 
-			painter.setPen(QPen(c->getColor()));
+            painter.setPen(QPen(c->getColor()));
 
             // Draw Category Label
             int label_width = fm.horizontalAdvance(c->getName()) + 20;
@@ -197,6 +197,7 @@ void Canvas::paintEvent(QPaintEvent*)
             {
                 p->setGeometry(p->label_rect);
                 p->setVisible(c->isVisible() && !c->isCollapsed());
+            }
 
 			// Draw Bounding Box
 			c->computeBoundingRect();
