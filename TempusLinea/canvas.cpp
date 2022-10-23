@@ -379,16 +379,8 @@ void Canvas::resetCanvas()
     v_offset = 0;
     dragging = false;
 
-    for (Category* c : categories)
-    {
-        for (Event* e : c->events) delete(e);
-        c->events.clear();
-        for (Period* p : c->periods) delete(p);
-        c->periods.clear();
-        for (Era* e : c->eras) delete(e);
-        c->eras.clear();
-        delete(c);
-    }
+    // Clear all categories
+    for (Category* c : categories) delete(c);
     categories.clear();
 
     categories_manager->refreshCategories();

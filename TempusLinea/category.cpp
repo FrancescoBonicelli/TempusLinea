@@ -15,6 +15,13 @@ Category::Category(QString name, QColor color, QWidget* canvas) : Category(canva
     this->color = color;
 }
 
+Category::~Category()
+{
+    for (Event* e : events) delete(e);
+    for (Period* p : periods) delete(p);
+    for (Era* e : eras) delete(e);
+}
+
 void Category::setName(QString name)
 {
     this->name = name;
