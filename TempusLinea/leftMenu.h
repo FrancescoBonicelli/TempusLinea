@@ -2,6 +2,7 @@
 #define LEFTMENU_H
 
 #include <QWidget>
+#include <QShortcut>
 #include <QPushButton>
 #include <QPainter>
 #include <QVBoxLayout>

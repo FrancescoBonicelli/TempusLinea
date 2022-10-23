@@ -25,11 +25,15 @@ LeftMenu::LeftMenu(QWidget *parent)
     : QWidget{parent}
 {
     canvas_new_button = new LeftMenuButton("New Canvas");
+    canvas_new_button->setToolTip("(Ctrl+N)");
     canvas_save_button = new LeftMenuButton("Save");
+    canvas_save_button->setToolTip("(Ctrl+S)");
     canvas_save_as_button = new LeftMenuButton("Save As ...");
-    canvas_load_button = new LeftMenuButton("Load ...");
+    canvas_save_as_button->setToolTip("(Ctrl+Maiusc+S)");
+    canvas_load_button = new LeftMenuButton("Open ...");
+    canvas_load_button->setToolTip("(Ctrl+O)");
     canvas_export_button = new LeftMenuButton("Export ...");
-    canvas_export_button->setToolTip("Export current view as image");
+    canvas_export_button->setToolTip("Export current view as image (Ctrl+E)");
 
     layout = new QVBoxLayout(this);
     setLayout(layout);
@@ -45,6 +49,17 @@ LeftMenu::LeftMenu(QWidget *parent)
     connect(canvas_save_as_button, &LeftMenuButton::clicked, [this]() {emit saveAsCanvasButtonClicked(); });
     connect(canvas_load_button, &LeftMenuButton::clicked, [this]() {emit loadCanvasButtonClicked(); });
     connect(canvas_export_button, &LeftMenuButton::clicked, [this]() {emit exportCanvasButtonClicked(); });
+
+    QShortcut* shortcut_new = new QShortcut(QKeySequence("Ctrl+N"), parent);
+    QObject::connect(shortcut_new, &QShortcut::activated, [this]() {emit newCanvasButtonClicked(); });
+    QShortcut* shortcut_save = new QShortcut(QKeySequence("Ctrl+S"), parent);
+    QObject::connect(shortcut_save, &QShortcut::activated, [this]() {emit saveCanvasButtonClicked(); });
+    QShortcut* shortcut_save_as = new QShortcut(QKeySequence("Shift+Ctrl+S"), parent);
+    QObject::connect(shortcut_save_as, &QShortcut::activated, [this]() {emit saveAsCanvasButtonClicked(); });
+    QShortcut* shortcut_load = new QShortcut(QKeySequence("Ctrl+O"), parent);
+    QObject::connect(shortcut_load, &QShortcut::activated, [this]() {emit loadCanvasButtonClicked(); });
+    QShortcut* shortcut_export = new QShortcut(QKeySequence("Ctrl+E"), parent);
+    QObject::connect(shortcut_export, &QShortcut::activated, [this]() {emit exportCanvasButtonClicked(); });
 }
 
 void LeftMenu::paintEvent(QPaintEvent *event)
