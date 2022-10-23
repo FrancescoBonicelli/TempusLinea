@@ -265,6 +265,13 @@ void Canvas::mouseMoveEvent(QMouseEvent *event)
         v_offset += event->pos().y() - starting_drag_position.y();
         canvas_start_date = canvas_start_date.addDays(-(event->pos().x() - starting_drag_position.x()) * (canvas_start_date.daysTo(canvas_end_date)) / width());
         canvas_end_date = canvas_end_date.addDays(-(event->pos().x() - starting_drag_position.x()) * (canvas_start_date.daysTo(canvas_end_date)) / width());
+        
+        if (canvas_start_date < min_date)
+        {
+            canvas_end_date = canvas_end_date.addDays(canvas_start_date.daysTo(min_date));
+            canvas_start_date = min_date;
+        }
+        
         starting_drag_position = event->pos();
         update();
     }
@@ -290,6 +297,13 @@ void Canvas::wheelEvent(QWheelEvent* event)
     float cursor_position = (float)event->position().x() / width();
     canvas_start_date = canvas_start_date.addDays(delta_x * cursor_position);
     canvas_end_date = canvas_end_date.addDays(-delta_x * (1 - cursor_position));
+
+    if (canvas_start_date < min_date)
+    {
+        canvas_end_date = canvas_end_date.addDays(canvas_start_date.daysTo(min_date));
+        canvas_start_date = min_date;
+    }
+
     update();
 
     if (mouse_menu->isVisible())
