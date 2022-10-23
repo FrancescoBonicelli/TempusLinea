@@ -102,7 +102,7 @@ bool Category::isCollapsed()
 void Category::read(const QJsonObject& json)
 {
     if (json.contains("name") && json["name"].isString())
-        name = json["name"].toString();
+        setName(json["name"].toString());
     if (json.contains("color") && json["color"].isString())
         color = json["color"].toString();
     if (json.contains("visible") && json["visible"].isBool())
