@@ -12,6 +12,26 @@
 #include "period.h"
 #include "era.h"
 
+#include "conf.h"
+
+class CategoryLabel : public QWidget
+{
+    Q_OBJECT
+public:
+    explicit CategoryLabel(QString name, bool& visibility, QWidget* parent = nullptr);
+
+    void setName(QString name);
+
+private:
+    QString name;
+    bool* visibility;
+
+protected:
+    void paintEvent(QPaintEvent* event) override;
+    void mouseDoubleClickEvent(QMouseEvent *event) override;
+
+};
+
 class Category
 {
 public:
@@ -39,6 +59,8 @@ public:
 
     void read(const QJsonObject& json);
     void write(QJsonObject& json) const;
+
+    CategoryLabel* label;
 
 private:
     QColor color;

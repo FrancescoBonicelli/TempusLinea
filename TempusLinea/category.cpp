@@ -1,5 +1,39 @@
 #include "category.h"
 
+CategoryLabel::CategoryLabel(QString name, bool& visibility, QWidget* parent) : QWidget{ parent }
+{
+    this->name = name;
+    this->visibility = &visibility;
+}
+
+void CategoryLabel::setName(QString name)
+{
+    this->name = name;
+}
+
+void CategoryLabel::paintEvent(QPaintEvent* event)
+{
+    if(name.size() > 0)
+    {
+        QPainter painter(this);
+        painter.setRenderHint(QPainter::Antialiasing);
+
+        QPoint starting_point(5, 5);
+        QPoint ending_point(width()-5, height()-5);
+
+        QRect rect = QRect(starting_point, ending_point);
+
+        painter.drawRoundedRect(rect, 5, 5);
+        painter.drawText(rect, Qt::AlignCenter, name);
+    }
+}
+
+void CategoryLabel::mouseDoubleClickEvent(QMouseEvent *event)
+{
+    *visibility = !*visibility;
+}
+//----------------------------------------------------------------------------------
+
 Category::Category(QWidget* canvas)
 {
     this->canvas = canvas;
@@ -7,12 +41,15 @@ Category::Category(QWidget* canvas)
     this->collapsed = false;
 
     bounding_rect = QRect(0, 0, 0, 0);
+
+    label = new CategoryLabel(name, collapsed, canvas);
 }
 
 Category::Category(QString name, QColor color, QWidget* canvas) : Category(canvas)
 {
     this->name = name;
     this->color = color;
+    label->setName(name);
 }
 
 Category::~Category()
@@ -20,11 +57,14 @@ Category::~Category()
     for (Event* e : events) delete(e);
     for (Period* p : periods) delete(p);
     for (Era* e : eras) delete(e);
+
+    delete label;
 }
 
 void Category::setName(QString name)
 {
     this->name = name;
+    label->setName(name);
 }
 
 void Category::setColor(QColor color)
@@ -197,6 +237,8 @@ void Category::computeBoundingRect()
             int final_y1 = y1 < yy1 ? y1 : yy1;
             int final_x2 = x2 > xx2 ? x2 : xx2;
             int final_y2 = y2 > yy2 ? y2 : yy2;
+
+            if(name.size() > 0) final_y2 += category_label_height;
 
             bounding_rect = QRect(QPoint(final_x1, final_y1), QPoint(final_x2, final_y2));
         }

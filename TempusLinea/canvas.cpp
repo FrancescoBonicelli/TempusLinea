@@ -166,6 +166,18 @@ void Canvas::paintEvent(QPaintEvent *)
 
             painter.setPen(QPen(c->getColor()));
 
+            // Draw Category Label
+            int label_width = fm.horizontalAdvance(c->getName()) + 20;
+            int label_height = category_label_height;
+            QPoint label_start = c->getBoundingRect().bottomRight();
+            label_start.setX(label_start.x() - label_width);
+            label_start.setY(label_start.y() - label_height);
+            if(label_start.x() + label_width > width()) label_start.setX(width() - label_width);
+            if(label_start.x() < c->getBoundingRect().bottomLeft().x()) label_start.setX(c->getBoundingRect().bottomLeft().x());
+
+            c->label->setVisible(true);
+            c->label->setGeometry(label_start.x(), label_start.y(), label_width, label_height);
+
             // Draw Bounding Box
             c->computeBoundingRect();
             if (c->periods.size() > 0)
@@ -173,6 +185,10 @@ void Canvas::paintEvent(QPaintEvent *)
                 category_offset += c->getBoundingRect().height() + categories_spacing;
             }
             painter.drawRoundedRect(c->getBoundingRect(), 5, 5);
+        }
+        else
+        {
+            c->label->setVisible(false);
         }
         // Draw single periods
         for (Period* p : c->periods)
