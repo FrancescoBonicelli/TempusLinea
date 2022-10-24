@@ -191,23 +191,7 @@ void Canvas::paintEvent(QPaintEvent*)
         {
             c->label->setVisible(false);
         }
-        // Draw single periods
-        for (Period* p : c->periods)
-        {
-            if (p->getStartingDate() < canvas_end_date && p->getEndingDate() > canvas_start_date)
-            {
-                p->setGeometry(p->label_rect);
-                p->setVisible(c->isVisible() && !c->isCollapsed());
-            }
-
-            // Draw Bounding Box
-            c->computeBoundingRect();
-            if (c->periods.size() > 0)
-            {
-                category_offset += c->getBoundingRect().height() + categories_spacing;
-            }
-            painter.drawRoundedRect(c->getBoundingRect(), 5, 5);
-        }
+       
         // Draw single periods
         for (Period* p : c->periods)
         {
