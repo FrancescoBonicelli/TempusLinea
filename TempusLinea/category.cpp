@@ -241,6 +241,8 @@ void Category::computeBoundingRect()
 
             bounding_rect = QRect(QPoint(final_x1, final_y1), QPoint(final_x2, final_y2));
         }
+
+        if (name.size() > 0) bounding_rect.adjust(0, 0, 0, category_label_height);
     }
     else
     {
