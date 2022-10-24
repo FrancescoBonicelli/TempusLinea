@@ -14,17 +14,16 @@
 
 #include "conf.h"
 
-class CategoryLabel : public QWidget
+class CategoryController : public QWidget
 {
     Q_OBJECT
 public:
-    explicit CategoryLabel(QString name, bool& visibility, QWidget* parent = nullptr);
-
-    void setName(QString name);
+    explicit CategoryController(QColor color, bool& visibility, QWidget* parent = nullptr);
+    void setColor(QColor color);
 
 private:
-    QString name;
     bool* visibility;
+    QColor color;
 
 protected:
     void paintEvent(QPaintEvent* event) override;
@@ -49,6 +48,7 @@ public:
     QColor getColor();
     bool isVisible();
     bool isCollapsed();
+    bool isDefault();
 
     void computeBoundingRect();
     QRect getBoundingRect();
@@ -60,7 +60,7 @@ public:
     void read(const QJsonObject& json);
     void write(QJsonObject& json) const;
 
-    CategoryLabel* label;
+    CategoryController* control;
 
 private:
     QColor color;

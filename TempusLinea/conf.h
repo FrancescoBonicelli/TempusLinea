@@ -9,7 +9,7 @@ const int mouse_menu_size = 100;
 
 const int event_label_height = 20;
 const int period_label_height = 20;
-const int category_label_height = 30;
+const int category_controller_size = 10;
 
 const int categories_spacing = 10;
 

@@ -1,34 +1,32 @@
 #include "category.h"
 
-CategoryLabel::CategoryLabel(QString name, bool& visibility, QWidget* parent) : QWidget{ parent }
+CategoryController::CategoryController(QColor color, bool& visibility, QWidget* parent) : QWidget{ parent }
 {
-    this->name = name;
     this->visibility = &visibility;
+    this->color = color;
 }
 
-void CategoryLabel::setName(QString name)
+void CategoryController::setColor(QColor color)
 {
-    this->name = name;
+    this->color = color;
 }
 
-void CategoryLabel::paintEvent(QPaintEvent* event)
+void CategoryController::paintEvent(QPaintEvent* event)
 {
-    if(name.size() > 0)
-    {
-        QPainter painter(this);
-        painter.setRenderHint(QPainter::Antialiasing);
+    QPainter painter(this);
+    painter.setRenderHint(QPainter::Antialiasing);
 
-        QPoint starting_point(5, 5);
-        QPoint ending_point(width()-5, height()-5);
+    QLinearGradient gradient(width() / 2, height() / 2, width(), height());
+    gradient.setColorAt(0, Qt::transparent);
+    gradient.setColorAt(1, color);
 
-        QRect rect = QRect(starting_point, ending_point);
+    QBrush brush(gradient);
 
-        painter.drawRoundedRect(rect, 5, 5);
-        painter.drawText(rect, Qt::AlignCenter, name);
-    }
+    painter.setPen(Qt::NoPen);
+    painter.fillRect(QRect(0, 0, width(), height()), brush);
 }
 
-void CategoryLabel::mouseDoubleClickEvent(QMouseEvent *event)
+void CategoryController::mouseDoubleClickEvent(QMouseEvent *event)
 {
     *visibility = !*visibility;
     parentWidget()->update();
@@ -43,14 +41,13 @@ Category::Category(QWidget* canvas)
 
     bounding_rect = QRect(0, 0, 0, 0);
 
-    label = new CategoryLabel(name, collapsed, canvas);
+    control = new CategoryController(color, collapsed, canvas);
 }
 
 Category::Category(QString name, QColor color, QWidget* canvas) : Category(canvas)
 {
-    this->name = name;
-    this->color = color;
-    label->setName(name);
+    setName(name);
+    setColor(color);
 }
 
 Category::~Category()
@@ -59,18 +56,18 @@ Category::~Category()
     for (Period* p : periods) delete(p);
     for (Era* e : eras) delete(e);
 
-    delete label;
+    delete control;
 }
 
 void Category::setName(QString name)
 {
     this->name = name;
-    label->setName(name);
 }
 
 void Category::setColor(QColor color)
 {
     this->color = color;
+    control->setColor(color);
 }
 
 void Category::setVisibility(bool visible)
@@ -99,14 +96,19 @@ bool Category::isCollapsed()
     return collapsed;
 }
 
+bool Category::isDefault()
+{
+    return name.size() == 0;
+}
+
 void Category::read(const QJsonObject& json)
 {
     if (json.contains("name") && json["name"].isString())
         setName(json["name"].toString());
     if (json.contains("color") && json["color"].isString())
-        color = json["color"].toString();
+        setColor(json["color"].toString());
     if (json.contains("visible") && json["visible"].isBool())
-        visible = json["visible"].toBool();
+        setVisibility(json["visible"].toBool());
 
     for (Event* e : events)
         delete e;
@@ -242,7 +244,7 @@ void Category::computeBoundingRect()
             bounding_rect = QRect(QPoint(final_x1, final_y1), QPoint(final_x2, final_y2));
         }
 
-        if (name.size() > 0) bounding_rect.adjust(0, 0, 0, category_label_height);
+        if (!isDefault()) bounding_rect.adjust(0, 0, 0, category_controller_size);
     }
     else
     {
