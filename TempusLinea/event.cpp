@@ -74,8 +74,8 @@ void Event::write(QJsonObject& json) const
 
 QString Event::toString()
 {
-    return "Event: " + name + ( category->isEmpty() ? "" : ("     Category: " + *category)) +
-        "     Date: " + date.toString(Qt::ISODate);
+    return "Event: " + name + ( category->isEmpty() ? "" : ("          Category: " + *category)) +
+        "          Date: " + date.toString(Qt::ISODate);
 }
 
 void Event::mouseDoubleClickEvent(QMouseEvent* event)

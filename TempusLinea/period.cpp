@@ -92,8 +92,8 @@ void Period::write(QJsonObject& json) const
 
 QString Period::toString()
 {
-    return "Period: " + name + ( category->isEmpty() ? "" : ("     Category: " + *category)) +
-        "     Dates: " + starting_date.toString(Qt::ISODate) + ", " + ending_date.toString(Qt::ISODate);
+    return "Period: " + name + ( category->isEmpty() ? "" : ("          Category: " + *category)) +
+        "          Dates: " + starting_date.toString(Qt::ISODate) + ", " + ending_date.toString(Qt::ISODate);
 }
 
 void Period::mouseDoubleClickEvent(QMouseEvent* period)

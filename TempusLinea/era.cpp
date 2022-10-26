@@ -107,8 +107,8 @@ void Era::write(QJsonObject& json) const
 
 QString Era::toString()
 {
-    return "Era: " + name + ( category->isEmpty() ? "" : ("     Category: " + *category)) +
-        "     Dates: " + starting_date.toString(Qt::ISODate) + ", " + ending_date.toString(Qt::ISODate);
+    return "Era: " + name + ( category->isEmpty() ? "" : ("          Category: " + *category)) +
+        "          Dates: " + starting_date.toString(Qt::ISODate) + ", " + ending_date.toString(Qt::ISODate);
 }
 
 void Era::paintEvent(QPaintEvent* event)

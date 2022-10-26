@@ -3,7 +3,7 @@
 
 Canvas::Canvas(QWidget* parent) : QWidget{ parent }
 {
-    //Setup default parameters
+    // Setup default parameters
     canvas_start_date = QDate(QDate::currentDate().year() - 80, 1, 1);
     canvas_end_date = QDate(QDate::currentDate().year() + 20, 1, 1);
 
@@ -168,7 +168,6 @@ void Canvas::paintEvent(QPaintEvent*)
             painter.setPen(QPen(c->getColor()));
 
             // Draw Category Label
-            //int label_width = fm.horizontalAdvance(c->getName()) + 20;
             int label_width = category_controller_size;
             int label_height = category_controller_size;
             QPoint label_start = c->getBoundingRect().bottomRight();
@@ -380,10 +379,12 @@ void Canvas::read(const QJsonObject& json)
             for (Period* p : category->periods)
             {
                 connect(p, &Period::editPeriod, this, &Canvas::openPeriodEditDialog);
+                connect(p, &Period::showMessage, [this](QString message) {((MainWindow*)parentWidget())->statusBar()->showMessage(message); });
             }
             for (Era* e : category->eras)
             {
                 connect(e, &Era::editEra, this, &Canvas::openEraEditDialog);
+                connect(e, &Era::showMessage, [this](QString message) {((MainWindow*)parentWidget())->statusBar()->showMessage(message); });
             }
             categories.push_back(category);
         }
@@ -436,6 +437,7 @@ void Canvas::openEraCreationDialog()
     {
         Era* new_era = new Era(dialog.name(), dialog.startingDate(), dialog.endingDate(), dialog.color(), dialog.category()->name, this);
         connect(new_era, &Era::editEra, this, &Canvas::openEraEditDialog);
+        connect(new_era, &Era::showMessage, [this](QString message) {((MainWindow*)parentWidget())->statusBar()->showMessage(message); });
 
         dialog.category()->eras.push_back(new_era);
         sort(dialog.category()->eras.begin(), dialog.category()->eras.end(),
@@ -566,6 +568,7 @@ void Canvas::openPeriodCreationDialog()
     {
         Period* new_period = new Period(dialog.name(), dialog.starting_date(), dialog.ending_date(), dialog.category()->name, this);
         connect(new_period, &Period::editPeriod, this, &Canvas::openPeriodEditDialog);
+        connect(new_period, &Period::showMessage, [this](QString message) {((MainWindow*)parentWidget())->statusBar()->showMessage(message); });
         for (Category* c : categories)
         {
             if (c == dialog.category())
