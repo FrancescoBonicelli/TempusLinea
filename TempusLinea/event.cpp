@@ -74,8 +74,7 @@ void Event::write(QJsonObject& json) const
 
 QString Event::toString()
 {
-    return   "Event: " + name +
-        "     Category: " + * category +
+    return "Event: " + name + ( category->isEmpty() ? "" : ("     Category: " + *category)) +
         "     Date: " + date.toString(Qt::ISODate);
 }
 
