@@ -29,8 +29,11 @@ public:
 
     QRect label_rect;
 
+    QString toString();
+
 signals:
     void editEvent(Event*);
+    void showMessage(QString);
 
 private:
     QString name;
@@ -40,6 +43,8 @@ private:
 
 protected:
     void mouseDoubleClickEvent(QMouseEvent* event) override;
+    void enterEvent(QEnterEvent *event) override;
+    void leaveEvent(QEvent *event) override;
 };
 
 #endif // EVENT_H
