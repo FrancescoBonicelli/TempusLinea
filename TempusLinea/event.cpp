@@ -74,7 +74,9 @@ void Event::write(QJsonObject& json) const
 
 QString Event::toString()
 {
-    return "";
+    return   "Event: " + name +
+        "     Category: " + * category +
+        "     Date: " + date.toString(Qt::ISODate);
 }
 
 void Event::mouseDoubleClickEvent(QMouseEvent* event)
@@ -87,9 +89,7 @@ void Event::mouseDoubleClickEvent(QMouseEvent* event)
 
 void Event::enterEvent(QEnterEvent *event)
 {
-    QString message;
-    // fill message
-    emit showMessage(message);
+    emit showMessage(this->toString());
 }
 
 void Event::leaveEvent(QEvent *event)

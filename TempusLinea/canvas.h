@@ -2,6 +2,7 @@
 #define CANVAS_H
 
 #include <QWidget>
+#include <QStatusBar>
 #include <QPainter>
 #include <QMouseEvent>
 #include <QJsonObject>

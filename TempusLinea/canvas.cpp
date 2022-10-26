@@ -1,4 +1,5 @@
 #include "canvas.h"
+#include <mainwindow.h>
 
 Canvas::Canvas(QWidget* parent) : QWidget{ parent }
 {
@@ -374,6 +375,7 @@ void Canvas::read(const QJsonObject& json)
             for (Event* e : category->events)
             {
                 connect(e, &Event::editEvent, this, &Canvas::openEventEditDialog);
+                connect(e, &Event::showMessage, [this](QString message) {((MainWindow*)parentWidget())->statusBar()->showMessage(message); });
             }
             for (Period* p : category->periods)
             {
@@ -493,6 +495,7 @@ void Canvas::openEventCreationDialog()
     {
         Event* new_event = new Event(dialog.name(), dialog.date(), dialog.category()->name, this);
         connect(new_event, &Event::editEvent, this, &Canvas::openEventEditDialog);
+        connect(new_event, &Event::showMessage, [this](QString message) {((MainWindow*)parentWidget())->statusBar()->showMessage(message); });
         for (Category* c : categories)
         {
             if (c == dialog.category())

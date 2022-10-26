@@ -4,6 +4,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 {
     setWindowTitle(tr("TempusLinea"));
     setWindowIcon(QIcon("TempusLinea.ico"));
+    this->statusBar()->showMessage("");
 
     canvas = new Canvas(this);
     setCentralWidget(canvas);
