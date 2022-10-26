@@ -31,8 +31,11 @@ public:
 
     QRect label_rect, period_rect;
 
+    QString toString();
+
 signals:
     void editPeriod(Period*);
+    void showMessage(QString);
 
 private:
     QString name;
@@ -42,6 +45,8 @@ private:
 
 protected:
     void mouseDoubleClickEvent(QMouseEvent* event) override;
+    void enterEvent(QEnterEvent *event) override;
+    void leaveEvent(QEvent *event) override;
 };
 
 #endif // PERIOD_H

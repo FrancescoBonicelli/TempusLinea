@@ -105,6 +105,12 @@ void Era::write(QJsonObject& json) const
     json["color"] = color.name(QColor::HexArgb);
 }
 
+QString Era::toString()
+{
+    return "Era: " + name + ( category->isEmpty() ? "" : ("     Category: " + *category)) +
+        "     Dates: " + starting_date.toString(Qt::ISODate) + ", " + ending_date.toString(Qt::ISODate);
+}
+
 void Era::paintEvent(QPaintEvent* event)
 {
     QPainter painter(this);
@@ -125,4 +131,14 @@ void Era::mouseDoubleClickEvent(QMouseEvent* event)
     {
         emit editEra(this);
     }
+}
+
+void Era::enterEvent(QEnterEvent *event)
+{
+    emit showMessage(this->toString());
+}
+
+void Era::leaveEvent(QEvent *event)
+{
+    emit showMessage("");
 }

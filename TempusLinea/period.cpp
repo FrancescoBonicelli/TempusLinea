@@ -90,10 +90,26 @@ void Period::write(QJsonObject& json) const
     json["name"] = name;
 }
 
+QString Period::toString()
+{
+    return "Period: " + name + ( category->isEmpty() ? "" : ("     Category: " + *category)) +
+        "     Dates: " + starting_date.toString(Qt::ISODate) + ", " + ending_date.toString(Qt::ISODate);
+}
+
 void Period::mouseDoubleClickEvent(QMouseEvent* period)
 {
     if (period->button() == Qt::LeftButton)
     {
         emit editPeriod(this);
     }
+}
+
+void Period::enterEvent(QEnterEvent *event)
+{
+    emit showMessage(this->toString());
+}
+
+void Period::leaveEvent(QEvent *event)
+{
+    emit showMessage("");
 }

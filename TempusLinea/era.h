@@ -35,8 +35,11 @@ public:
     void read(const QJsonObject& json);
     void write(QJsonObject& json) const;
 
+    QString toString();
+
 signals:
     void editEra(Era*);
+    void showMessage(QString);
 
 private:
     QString name;
@@ -50,6 +53,8 @@ private:
 protected:
     void paintEvent(QPaintEvent* event) override;
     void mouseDoubleClickEvent(QMouseEvent* event) override;
+    void enterEvent(QEnterEvent *event) override;
+    void leaveEvent(QEvent *event) override;
 };
 
 #endif // ERA_H
