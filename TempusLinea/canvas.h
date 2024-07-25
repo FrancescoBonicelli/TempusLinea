@@ -71,6 +71,7 @@ private:
     QDate getDateFromPosition(int p);
     void placeEvents(std::vector<Event*> events_vector, QFontMetrics fm);
     void placePeriods(std::vector<Period*> periods_vector, QFontMetrics fm, int v_offset, bool is_collapsed);
+    void paintEras(Era* e, QFontMetrics fm, QPainter* painter);
 
     MouseMenu *mouse_menu;
 };

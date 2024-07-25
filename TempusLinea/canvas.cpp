@@ -40,129 +40,47 @@ void Canvas::paintEvent(QPaintEvent*)
     int timeline_y = (height() / 2) + v_offset;
 
     // Paint Eras
-    std::vector<Era*> eras_vector;
+    // Paint Events
+    std::vector<Event*> events_to_show;
 
     for (Category* c : categories)
     {
         if (c->isVisible())
         {
-            for (Era* e : c->eras)
+            for (Era* era : c->eras)
             {
-                eras_vector.push_back(e);
+                paintEras(era, fm, &painter);
+            }
+            for (Event* ev : c->events)
+            {
+                if (ev->getDate() > canvas_start_date && ev->getDate() < canvas_end_date)
+                {
+                    events_to_show.push_back(ev);
+                }
             }
         }
         else
         {
-            for (Era* e : c->eras)
+            for (Era* era : c->eras)
             {
-                e->setVisible(false);
+                era->setVisible(false);
             }
-        }
-    }
-
-    for (Era* e : eras_vector)
-    {
-        // Paint eras background
-        QPoint starting_point(getDatePosition(e->getStartingDate()), 0);
-        QPoint ending_point(getDatePosition(e->getEndingDate()), height());
-        QColor era_color = e->getColor();
-        era_color.setAlpha(100);
-        QBrush era_brush = QBrush(era_color, Qt::DiagCrossPattern);
-        painter.fillRect(QRect(starting_point, ending_point), era_brush);
-
-        // Paint era labels (widget)
-        // Get label width
-        int label_width = fm.horizontalAdvance(e->getFullName()) + 20;
-        int label_height = 30;
-
-        int i = 0;
-        // Compute vertical position to avoid overlapping
-        while (Era* test = dynamic_cast<Era*>(this->childAt(QPoint(getDatePosition(e->getStartingDate()), height() - (0.5 + i) * label_height))))
-        {
-            if (test == e) break;
-            i++;
-        }
-
-        if (e->getStartingDate() > canvas_start_date)
-        {
-            // Place and show the widget
-            e->setGeometry(QRect(getDatePosition(e->getStartingDate()), height() - label_height * (1 + i),
-                label_width, label_height));
-            e->setVisible(true);
-        }
-        else if (e->getEndingDate() > canvas_start_date)
-        {
-            // If the visible era is larger than the label width, place the label to the left margin
-            if (getDatePosition(e->getEndingDate()) > label_width)
+            for (Event* ev : c->events)
             {
-                e->setGeometry(QRect(0, height() - label_height * (1 + i), label_width, label_height));
-            }
-            // If the era is larger than the label width, place the end of the label @ era end date
-            else if (getDatePosition(e->getEndingDate()) - getDatePosition(e->getStartingDate()) > label_width)
-            {
-                e->setGeometry(QRect(getDatePosition(e->getEndingDate()) - label_width, height() - label_height * (1 + i),
-                    label_width, label_height));
-            }
-            // Else place the start of the label @ era start date
-            else
-            {
-                e->setGeometry(QRect(getDatePosition(e->getStartingDate()), height() - label_height * (1 + i),
-                    label_width, label_height));
-            }
-
-            e->setVisible(true);
-        }
-        else e->setVisible(false);
-    }
-
-    // Paint Events
-    std::vector<Event*> events_to_show;
-    for (Category* c : categories)
-    {
-        if (c->isVisible())
-        {
-            for (Event* e : c->events)
-            {
-                if (e->getDate() > canvas_start_date && e->getDate() < canvas_end_date)
-                {
-                    events_to_show.push_back(e);
-                }
+                ev->setVisible(false);
             }
         }
     }
 
     placeEvents(events_to_show, fm);
 
-    for (Category* c : categories)
-    {
-        painter.setPen(QPen(c->getColor()));
-
-        for (Event* e : c->events)
-        {
-            if (e->getDate() > canvas_start_date && e->getDate() < canvas_end_date)
-            {
-                e->setGeometry(e->label_rect);
-                e->setVisible(c->isVisible());
-
-                if (c->isVisible())
-                {
-                    // Paint the lines
-                    painter.drawLine(e->label_rect.bottomLeft(), e->label_rect.bottomRight());
-                    painter.drawLine(getDatePosition(e->getDate()), timeline_y, getDatePosition(e->getDate()), e->label_rect.bottom());
-                }
-            }
-            else e->setVisible(false);
-        }
-    }
-
-    // Paint Periods
     int category_offset = v_offset + categories_spacing;
 
     for (Category* c : categories)
     {
-        // Place and Draw periods for visible categories
         if (c->isVisible())
         {
+            // Place periods for visible categories
             placePeriods(c->periods, fm, category_offset, c->isCollapsed());
 
             painter.setPen(QPen(c->getColor()));
@@ -190,6 +108,21 @@ void Canvas::paintEvent(QPaintEvent*)
             {
                 QRect bounding_rect = c->getBoundingRect();
                 painter.drawRoundedRect(bounding_rect, 5, 5);
+            }
+
+            // Draw events
+            for (Event* e : c->events)
+            {
+                if (e->getDate() > canvas_start_date && e->getDate() < canvas_end_date)
+                {
+                    e->setGeometry(e->label_rect);
+                    e->setVisible(true);
+
+                    // Paint the lines
+                    painter.drawLine(e->label_rect.bottomLeft(), e->label_rect.bottomRight());
+                    painter.drawLine(getDatePosition(e->getDate()), timeline_y, getDatePosition(e->getDate()), e->label_rect.bottom());
+                }
+                else e->setVisible(false);
             }
         }
         else
@@ -746,4 +679,59 @@ void Canvas::placePeriods(std::vector<Period*> periods_vector_full, QFontMetrics
             }
         }
     }
+}
+
+void Canvas::paintEras(Era* e, QFontMetrics fm, QPainter* painter)
+{
+    // Paint eras background
+    QPoint starting_point(getDatePosition(e->getStartingDate()), 0);
+    QPoint ending_point(getDatePosition(e->getEndingDate()), height());
+    QColor era_color = e->getColor();
+    era_color.setAlpha(100);
+    QBrush era_brush = QBrush(era_color, Qt::DiagCrossPattern);
+    painter->fillRect(QRect(starting_point, ending_point), era_brush);
+
+    // Paint era labels (widget)
+    // Get label width
+    int label_width = fm.horizontalAdvance(e->getFullName()) + 20;
+    int label_height = 30;
+
+    int i = 0;
+    // Compute vertical position to avoid overlapping
+    while (Era* test = dynamic_cast<Era*>(this->childAt(QPoint(getDatePosition(e->getStartingDate()), height() - (0.5 + i) * label_height))))
+    {
+        if (test == e) break;
+        i++;
+    }
+
+    if (e->getStartingDate() > canvas_start_date)
+    {
+        // Place and show the widget
+        e->setGeometry(QRect(getDatePosition(e->getStartingDate()), height() - label_height * (1 + i),
+            label_width, label_height));
+        e->setVisible(true);
+    }
+    else if (e->getEndingDate() > canvas_start_date)
+    {
+        // If the visible era is larger than the label width, place the label to the left margin
+        if (getDatePosition(e->getEndingDate()) > label_width)
+        {
+            e->setGeometry(QRect(0, height() - label_height * (1 + i), label_width, label_height));
+        }
+        // If the era is larger than the label width, place the end of the label @ era end date
+        else if (getDatePosition(e->getEndingDate()) - getDatePosition(e->getStartingDate()) > label_width)
+        {
+            e->setGeometry(QRect(getDatePosition(e->getEndingDate()) - label_width, height() - label_height * (1 + i),
+                label_width, label_height));
+        }
+        // Else place the start of the label @ era start date
+        else
+        {
+            e->setGeometry(QRect(getDatePosition(e->getStartingDate()), height() - label_height * (1 + i),
+                label_width, label_height));
+        }
+
+        e->setVisible(true);
+    }
+    else e->setVisible(false);
 }
